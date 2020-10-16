@@ -24,8 +24,6 @@ public class TestUI : UIBase
             GameMgr.Get<IMainDataManager>().RefreshNum(_gos["InputField"].transform.Find("Text").GetComponent<Text>().text);
             GameMgr.Get<IMainDataManager>().SaveTo();
         }));
-
-
     }
     public void Load()
     {

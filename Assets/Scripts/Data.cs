@@ -14,8 +14,6 @@ namespace App.Common
     public class Data : MonoSingleton<Data>
     {
         public float TimeSize = 1;
-        public bool Ceshi = false;
-        public bool _lock = true;
 
         #region 游戏数据存取接口
 
@@ -156,14 +154,6 @@ namespace App.Common
         }
 
         #endregion 读表类函数,基层轮子
-
-        private void Start()
-        {
-        }
-
-        private void Update()
-        {
-        }
 
         #region 胜利失败的监听
 

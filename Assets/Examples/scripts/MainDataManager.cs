@@ -15,6 +15,11 @@ public class MainDataManager : LogicModuleBase, IMainDataManager
         }
     }
 
+    public override void Update()
+    {
+        base.Update();
+    }
+
     private void InitMainData()
     {
         _mainData.DataNumber = ReadFromCSV();
