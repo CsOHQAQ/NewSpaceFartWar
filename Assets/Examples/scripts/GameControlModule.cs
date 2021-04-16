@@ -13,6 +13,6 @@ public class GameControlModule : Submodule
     }
     private void InitGame()
     {
-        UIManager.Instance.Open("TestUI", 0);
+        UIManager.Instance.Open("TestUI");
     }
 }

@@ -41,17 +41,6 @@ namespace QxFramework.Core
         /// </summary>
         private readonly List<KeyValuePair<string, UIBase>> _openUI = new List<KeyValuePair<string, UIBase>>();
 
-        /// <summary>
-        ///  打开一个UI。
-        /// </summary>
-        /// <param name="uiName">UI预设的名称。</param>
-        /// <param name="layer">显示在哪一个层。</param>
-        /// <param name="args">附带的参数。</param>
-        /// <returns></returns>
-        public UIBase Open(string uiName, int layer = 2, string name = "", object args = null)
-        {
-            return Open(uiName, _panels[layer], name, args);
-        }
 
         /// <summary>
         /// 检测ui是否开启
@@ -76,14 +65,14 @@ namespace QxFramework.Core
         ///  打开一个UI。
         /// </summary>
         /// <param name="uiName">UI预设的名称。</param>
-        /// <param name="parent">父对象</param>
+        /// <param name="name">名称</param>
         /// <param name="args">附带的参数。</param>
         /// <returns></returns>
-        public UIBase Open(string uiName, Transform parent, string name = "", object args = null)
+        public UIBase Open(string uiName, string name = "", object args = null)
         {
             //实例化UI
 
-            GameObject ui = ResourceManager.Instance.Instantiate(FoldPath + uiName, parent);
+            GameObject ui = ResourceManager.Instance.Instantiate(FoldPath + uiName, transform);
 
             if (name != "")
             {
@@ -101,10 +90,9 @@ namespace QxFramework.Core
             else
             {
                 //通过脚本覆盖掉执行的层级
-                if (ui.GetComponent<UIBase>().UILayer!=-1)
-                {
-                    ui.transform.SetParent(_panels[ui.GetComponent<UIBase>().UILayer]);
-                }
+
+                ui.transform.SetParent(_panels[ui.GetComponent<UIBase>().UILayer]);
+                
                 ui.GetComponent<UIBase>().DoDisplay(args);
             }
 

@@ -137,10 +137,10 @@ public class DialogWindowUI : UIBase
     private void Awake()
     {
         CollectObject();
-        _onlyTextGroup = _gos["OnlyText"];
+        _onlyTextGroup = Get<Transform>("OnlyText").gameObject;
         _onlyTextTextText = Get<Text>("OnlyTextText");
         _titleText = Get<Text>("TitleText");
-        _buttonList = _gos["ButtonList"].transform;
+        _buttonList = Get<Transform>("ButtonList");
         Get<Button>("CloseButton").onClick.AddListener(Close);
     }
 
@@ -254,6 +254,6 @@ public class DialogWindowUI : UIBase
     /// <param name="args"></param>
     public static void OpenDialog(DialogWindowUIArg args)
     {
-        UIManager.Instance.Open("DialogWindowUI",0, args: args);
+        UIManager.Instance.Open("DialogWindowUI",args: args);
     }
 }

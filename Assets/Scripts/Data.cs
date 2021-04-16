@@ -108,7 +108,7 @@ namespace App.Common
             }
             catch (Exception e)
             {
-                UIManager.Instance.Open("DialogWindowUI", 0, args: new DialogWindowUI.DialogWindowUIArg
+                UIManager.Instance.Open("DialogWindowUI", args: new DialogWindowUI.DialogWindowUIArg
                 ("警告", "存档已损坏或不兼容最新版本", null, "确定", () => { }));
                 Debug.LogError(FileName);
                 return;
