@@ -13,11 +13,51 @@ using UnityEngine;
 public class EventManager : LogicModuleBase, IEventManager
 {
 
+    [Serializable]
+    public class EventHistory
+    {
+        public int Id;
+        public int TemplateId;
+        public List<int> ParamList;
+        public int Selected;
+
+        public EventHistory(int id, int templateId, List<int> paramList, int selected)
+        {
+            Id = id;
+            TemplateId = templateId;
+            ParamList = ((paramList != null) ? new List<int>(paramList) : null);
+            Selected = selected;
+        }
+    }
 
     /// <summary>
     /// 事件生成器
     /// </summary>
     private ConditionEventCreator _conditionEventCreator;
+
+    /// <summary>
+    /// 序列化的时间事件列表，注意需要倒序
+    /// </summary>
+    private class PresetEventList : GameDataBase
+    {
+        /// <summary>
+        /// 随机列表
+        /// </summary>
+        [SerializeField]
+        public List<int> RandomList = new List<int>();
+
+        /// <summary>
+        /// 历史记录
+        /// </summary>
+        [SerializeField]
+        public List<EventHistory> Histories = new List<EventHistory>();
+    }
+
+
+    /// <summary>
+    /// 预设事件列表
+    /// </summary>
+    private PresetEventList _presetEvents;
 
     /// <summary>
     /// 事件列表
@@ -29,6 +69,9 @@ public class EventManager : LogicModuleBase, IEventManager
 
     public override void Init()
     {
+        if (!RegisterData(out _presetEvents))
+        {
+        }
         LoadFile();
         InitEventCreator();
     }
@@ -166,7 +209,72 @@ public class EventManager : LogicModuleBase, IEventManager
         //ShowEvent(evt);
         return true;
     }
+    /// <summary>
+    /// 显示事件的Hint或者弹窗
+    /// </summary>
+    /// <param name="evt"></param>
+    private void ShowEvent(ConditionEvent evt)
+    {
+        //结果Hint
+        if (evt.Show == ShowType.Hint)
+        {
+            MessageManager.Instance.Get<HintType>().DispatchMessage(HintType.CommonHint, this, new HintMessage(evt.GetText()));
+            _presetEvents.Histories.Add(new EventHistory(evt.UniqueId, evt.TemplateId, evt.Params, 0));
+        }
 
+        //弹窗
+        else if (evt.Show == ShowType.Dialog)
+        {
+            //普通弹窗
+            if (evt.GetSelections() == null || evt.GetSelections().Count == 0)
+            {
+                MessageManager.Instance.Get<HintType>().DispatchMessage(HintType.ClickWindow, this, new ClickMessage(evt.GetName(), evt.GetText()));
+                _presetEvents.Histories.Add(new EventHistory(evt.UniqueId, evt.TemplateId, evt.Params, 0));
+            }
+            else
+            {
+                //选项框
+                List<Choose> tmpChooseList = new List<Choose>();
+                for (int i = 0; i < evt.GetSelections().Count; i++)
+                {
+                    var selection = evt.GetSelections()[i];
+                    bool enable = selection.TryCondition();
+
+                    if (selection.Disable == SelectionDisableType.Hide && !enable)
+                    {
+                        continue;
+                    }
+
+                    Choose newChoose = new Choose();
+                    newChoose.ActionBool = enable;
+                    newChoose.ChooseButton = selection.GetSelectionText();
+                    if (selection.ShowCondition && (enable || selection.Disable != SelectionDisableType.HideComdition))
+                    {
+                        newChoose.ChooseContent = selection.ConditionDescription();
+                    }
+                    else
+                    {
+                        newChoose.ChooseContent = string.Empty;
+                    }
+                    int selectionIndex = i;
+                    newChoose.ChooseAction = () =>
+                    {
+                        //记录选项历史
+                        _presetEvents.Histories.Add(new EventHistory(evt.UniqueId, evt.TemplateId, evt.Params, selectionIndex));
+
+                        selection.DoEffect();
+                    };
+                    tmpChooseList.Add(newChoose);
+                }
+                MessageManager.Instance.Get<HintType>().DispatchMessage(HintType.ChooseWindow, this, new ChooseMessage(evt.GetName(), evt.GetText(), evt.ImagePath, tmpChooseList));
+            }
+        }
+        else
+        {
+            //记录历史
+            _presetEvents.Histories.Add(new EventHistory(evt.UniqueId, evt.TemplateId, evt.Params, 0));
+        }
+    }
     /// <summary>
     /// 得到模板名称
     /// </summary>
