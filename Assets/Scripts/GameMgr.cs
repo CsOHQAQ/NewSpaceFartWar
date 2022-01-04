@@ -23,7 +23,7 @@ public class GameMgr : MonoSingleton<GameMgr>
     {
         _modules.Clear();
         Add<IMainDataManager>(new MainDataManager(), ModuleEnum.MainDataManager);
-        Add<IEventManager>(new EventManager(), ModuleEnum.MainDataManager);
+        Add<IEventManager>(new EventManager(), ModuleEnum.EventManager);
     }
 
     public static T Get<T>()
