@@ -206,7 +206,7 @@ public class EventManager : LogicModuleBase, IEventManager
             return false;
         }
         evt.DoEffect();
-        //ShowEvent(evt);
+        ShowEvent(evt);
         return true;
     }
     /// <summary>

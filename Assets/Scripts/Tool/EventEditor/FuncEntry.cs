@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using XLua;
 using App.Common;
+using QxFramework.Core;
 
 namespace EventLogicSystem
 {
@@ -136,6 +137,60 @@ namespace EventLogicSystem
             return "输出日志：" + list[0].Value;
         }
     }
+    public class OpenUI : BaseFunc
+    {
+        protected override int GetParams(out List<ParamDefinition> list)
+        {
+            list = new List<ParamDefinition>(){
+                new ParamDefinition("UI名称",typeof(string), "")
+            };
+            return list.Count;
+        }
+
+        public override bool Run(EventContext context, List<ParamInfo> list)
+        {
+            UIManager.Instance.Open(list[0].Value.ToString());
+            Debug.Log("打开UI：" + list[0].Value);
+            return true;
+        }
+
+        public override string GetItemName()
+        {
+            return "主要功能/打开UI";
+        }
+
+        public override string GetDescription(EventContext context, List<ParamInfo> list)
+        {
+            return "打开UI：" + list[0].Value;
+        }
+    }
+    public class TryEvent : BaseFunc
+    {
+        protected override int GetParams(out List<ParamDefinition> list)
+        {
+            list = new List<ParamDefinition>(){
+                new ParamDefinition("触发事件",typeof(int), 0)
+            };
+            return list.Count;
+        }
+
+        public override bool Run(EventContext context, List<ParamInfo> list)
+        {
+            GameMgr.Get<IEventManager>().ForceEvent((int)list[0].Value);
+            Debug.Log("触发事件" + list[0].Value);
+            return true;
+        }
+
+        public override string GetItemName()
+        {
+            return "主要功能/触发事件";
+        }
+
+        public override string GetDescription(EventContext context, List<ParamInfo> list)
+        {
+            return "触发事件：" + list[0].Value;
+        }
+    }
 
     public class MoreThan : BaseFunc
     {
@@ -163,6 +218,44 @@ namespace EventLogicSystem
             return list[0].Value.ToString() + " >" + list[1].Value.ToString();
         }
     }
+
+    public class DialogHit : BaseFunc
+    {
+        protected override int GetParams(out List<ParamDefinition> list)
+        {
+            list = new List<ParamDefinition>(){
+                new ParamDefinition("提示",typeof(string), "")
+            };
+            //数量可重复增加参数数量
+            return 0;
+        }
+
+        /// <summary>
+        /// 运行函数
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public override bool Run(EventContext context, List<ParamInfo> list)
+        {
+            UIManager.Instance.Open("DialogWindowUI", args: new DialogWindowUI.DialogWindowUIArg
+            ("提示", list[0].Value.ToString(), null, "确定", () =>
+            {
+            }));
+            return true;
+        }
+
+        public override string GetItemName()
+        {
+            return "主要功能/提示框";
+        }
+
+        public override string GetDescription(EventContext context, List<ParamInfo> list)
+        {
+            return "提示框：" + list[0].Value;
+        }
+    }
+
 
     /// <summary>
     /// 基础类型转换
