@@ -13,6 +13,7 @@ namespace QxFramework.Core
         /// 入口流程。
         /// </summary>
         public string StartProcedure;
+        public string SecondProcedure;
 
         /// <summary>
         /// 系统组件列表

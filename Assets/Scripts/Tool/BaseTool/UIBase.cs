@@ -15,7 +15,7 @@ namespace QxFramework.Core
     public abstract class UIBase : MonoBehaviour
     {
         //用于存储和快速查找子物体
-        private Dictionary<string, GameObject> _gos => _childBindTool.Gos;
+        public Dictionary<string, GameObject> _gos => _childBindTool.Gos;
 
         private ChildBindTool _childBindTool;
 

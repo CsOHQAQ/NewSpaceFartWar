@@ -24,6 +24,8 @@ public class GameMgr : MonoSingleton<GameMgr>
         _modules.Clear();
         Add<IMainDataManager>(new MainDataManager(), ModuleEnum.MainDataManager);
         Add<IEventManager>(new EventManager(), ModuleEnum.EventManager);
+        Add<IItemManager>(new ItemManager(), ModuleEnum.ItemManager);
+        Add<IGameTimeManager>(new GameTimeManager(), ModuleEnum.GameTimeManager);
     }
 
     public static T Get<T>()
@@ -141,5 +143,7 @@ public enum ModuleEnum
     Unknow = 0,
     MainDataManager,
     EventManager,
+    ItemManager,
+    GameTimeManager,
     Max,
 }

@@ -1,11 +1,11 @@
 ﻿using QxFramework.Core;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using App.Common;
-public class GameControlModule : Submodule
-{
+
+public class Titlemodule : Submodule {
+
     protected override void OnInit()
     {
         base.OnInit();
@@ -14,6 +14,7 @@ public class GameControlModule : Submodule
     private void InitGame()
     {
         UIManager.Instance.Open("HintUI");
-        GameMgr.Get<IEventManager>().ForceEvent(100);
+        Data.Instance.SetTableAgent();
+        GameMgr.Instance.InitModules();
     }
 }

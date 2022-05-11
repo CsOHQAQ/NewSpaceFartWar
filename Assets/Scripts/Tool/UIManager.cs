@@ -2,6 +2,7 @@
 using QxFramework.Utilities;
 using UnityEngine;
 using System.Net;
+using System;
 
 namespace QxFramework.Core
 {
@@ -30,6 +31,11 @@ namespace QxFramework.Core
         /// </summary>
         public readonly string FoldPath = "Prefabs/UI/";
 
+        //internal void Open(string v, object args)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
         /// <summary>
         /// 子面板对象列表
         /// </summary>
@@ -41,6 +47,36 @@ namespace QxFramework.Core
         /// </summary>
         private readonly List<KeyValuePair<string, UIBase>> _openUI = new List<KeyValuePair<string, UIBase>>();
 
+        /// <summary>
+        ///  打开一个UI。
+        /// </summary>
+        /// <param name="uiName">UI预设的名称。</param>
+        /// <param name="layer">显示在哪一个层。</param>
+        /// <param name="args">附带的参数。</param>
+        /// <returns></returns>
+        public UIBase Open(string uiName, int layer = 2, string name = "", object args = null)
+        {
+            return Open(uiName, _panels[layer], name, args);
+        }
+
+        public UIBase OpenInChild(string uiName, string ChildName, string name = "", object args = null)
+        {
+            Transform parent = null;
+            RectTransform[] allChildren = GetComponentsInChildren<RectTransform>();
+            foreach(RectTransform child in allChildren)
+            {
+                if(child.gameObject.name == ChildName)
+                {
+                    parent = child;
+                }
+            }
+            return Open(uiName, parent, name, args);
+        }
+        public UIBase OpenAt(string uiName, string ObjName, string name = "", object args = null)
+        {
+            RectTransform parent = GameObject.Find(ObjName).GetComponent<RectTransform>();
+            return Open(uiName, parent, name, args);
+        }
 
         /// <summary>
         /// 检测ui是否开启
@@ -65,14 +101,15 @@ namespace QxFramework.Core
         ///  打开一个UI。
         /// </summary>
         /// <param name="uiName">UI预设的名称。</param>
-        /// <param name="name">名称</param>
+        /// <param name="parent">父对象</param>
         /// <param name="args">附带的参数。</param>
         /// <returns></returns>
-        public UIBase Open(string uiName, string name = "", object args = null)
+        public UIBase Open(string uiName, Transform parent, string name = "", object args = null)
         {
             //实例化UI
 
-            GameObject ui = ResourceManager.Instance.Instantiate(FoldPath + uiName, transform);
+            GameObject ui = ResourceManager.Instance.Instantiate(FoldPath + uiName, parent);
+            ui.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
             if (name != "")
             {
@@ -90,9 +127,10 @@ namespace QxFramework.Core
             else
             {
                 //通过脚本覆盖掉执行的层级
-
-                ui.transform.SetParent(_panels[ui.GetComponent<UIBase>().UILayer]);
-                
+                if (ui.GetComponent<UIBase>().UILayer!=-1)
+                {
+                    ui.transform.SetParent(_panels[ui.GetComponent<UIBase>().UILayer]);
+                }
                 ui.GetComponent<UIBase>().DoDisplay(args);
             }
 
@@ -135,6 +173,10 @@ namespace QxFramework.Core
             for (int i = _openUI.Count - 1; i >= 0; i--)
             {
                 var pair = _openUI[i];
+                if(pair.Key == "HintUI")
+                {
+                    continue;
+                }
                 _openUI.RemoveAt(i);
                 CloseUI(pair.Value);
                 //break;
@@ -194,6 +236,18 @@ namespace QxFramework.Core
                 }
             }
             return IsFind;
+        }
+        
+        public bool FindUIs(string[] UIs)
+        {
+            for(int i = 0; i < UIs.Length; i++)
+            {
+                if (FindUI(UIs[i]))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public UIBase GetUI(string uiName)

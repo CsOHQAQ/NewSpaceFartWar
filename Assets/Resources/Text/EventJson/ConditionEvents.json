@@ -47,24 +47,6 @@
                         {
                             "DisableShow": 0,
                             "ShowCondition": true,
-                            "SelectionText": "存档功能",
-                            "Condition": {
-                                "And": []
-                            },
-                            "Effect": {
-                                "List": [
-                                    {
-                                        "Func": [
-                                            "OpenUI",
-                                            "\"TestUI\""
-                                        ]
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "DisableShow": 0,
-                            "ShowCondition": true,
                             "SelectionText": "输出日志",
                             "Condition": {
                                 "And": []

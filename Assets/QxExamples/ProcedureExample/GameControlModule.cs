@@ -1,11 +1,11 @@
 ﻿using QxFramework.Core;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using App.Common;
-
-public class Titlemodule : Submodule {
-
+public class GameControlModule : Submodule
+{
     protected override void OnInit()
     {
         base.OnInit();
@@ -13,7 +13,5 @@ public class Titlemodule : Submodule {
     }
     private void InitGame()
     {
-        Data.Instance.SetTableAgent();
-        GameMgr.Instance.InitModules();
     }
 }

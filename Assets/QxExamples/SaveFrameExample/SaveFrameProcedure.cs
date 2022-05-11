@@ -3,12 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TitleProcedure : ProcedureBase {
-
+public class SaveFrameProcedure : ProcedureBase
+{
     protected override void OnEnter(object args)
     {
-        AddSubmodule(new Titlemodule());
         base.OnEnter(args);
-        ChangeTo<GameProcedure>();
+        UIManager.Instance.Open("Example_SaveTestUI");
     }
 }
