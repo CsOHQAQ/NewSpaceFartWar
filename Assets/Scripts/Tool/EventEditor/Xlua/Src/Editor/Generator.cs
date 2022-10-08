@@ -1820,13 +1820,20 @@ namespace CSObjectWrapEditor
         [UnityEditor.Callbacks.PostProcessBuild(1)]
         public static void CheckGenrate(BuildTarget target, string pathToBuiltProject)
         {
-            if (EditorApplication.isCompiling || Application.isPlaying)
+            try
             {
-                return;
+                if (EditorApplication.isCompiling || Application.isPlaying)
+                {
+                    return;
+                }
+                if (!DelegateBridge.Gen_Flag)
+                {
+                    throw new InvalidOperationException("Code has not been generated, may be not work in phone!");
+                }
             }
-            if (!DelegateBridge.Gen_Flag)
+            catch (Exception e)
             {
-                throw new InvalidOperationException("Code has not been generated, may be not work in phone!");
+                Debug.LogWarning("[大概率不影响正常打包]" + e);
             }
         }
 #endif
