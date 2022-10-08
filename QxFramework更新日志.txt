@@ -5,3 +5,4 @@
 *注释掉了一句打包时的报错
 *去除了Launcher的第二流程设定
 *加入LevelManager脚本
+*修复了EventEditor会修改全局字体的Bug
