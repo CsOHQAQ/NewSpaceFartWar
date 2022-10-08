@@ -1,8 +1,4 @@
 ﻿using QxFramework.Core;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using App.Common;
 
 public class Titlemodule : Submodule {
 
@@ -14,7 +10,7 @@ public class Titlemodule : Submodule {
     private void InitGame()
     {
         UIManager.Instance.Open("HintUI");
-        Data.Instance.SetTableAgent();
+        QXData.Instance.SetTableAgent();
         GameMgr.Instance.InitModules();
     }
 }

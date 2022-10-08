@@ -9,6 +9,9 @@ public class TitleProcedure : ProcedureBase {
     {
         AddSubmodule(new Titlemodule());
         base.OnEnter(args);
-        ChangeTo(Launcher.Instance.SecondProcedure);
+        if (Launcher.Instance.skipStartProcedure)
+        {
+            ChangeTo(Launcher.Instance.SecondProcedure);
+        }
     }
 }

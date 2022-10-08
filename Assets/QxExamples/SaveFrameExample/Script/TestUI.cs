@@ -1,48 +1,58 @@
-﻿using App.Common;
-using QxFramework.Core;
+﻿using QxFramework.Core;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TestUI : UIBase
+namespace SaveFramework
 {
-    [ChildValueBind("LoadBtn", nameof(Button.onClick))]
-    Action OnLoadButton;
-
-    [ChildValueBind("SaveBtn", nameof(Button.onClick))]
-    Action OnSaveButton;
-
-    [ChildValueBind("DisplayBtn", nameof(Button.onClick))]
-    Action OnDisplayButton;
-       
-    public override void OnDisplay(object args)
+    public class TestUI : UIBase
     {
-        base.OnDisplay(args);
-        CollectObject();
-        OnLoadButton = Load;
-        OnSaveButton = Save;
-        OnDisplayButton = Display;
-        CommitValue();
+        private void Awake()
+        {
+            CollectObject();
+            Get<Button>("ShowData").onClick.SetListener(Display);
+            Get<Button>("SaveToMemory").onClick.SetListener(SaveToMemory);
+            Get<Button>("SaveToDisk").onClick.SetListener(Save);
+            Get<Button>("Load").onClick.SetListener(Load);
+        }
 
-    }
-    public void Save()
-    {
-        UIManager.Instance.Open("DialogWindowUI",args: new DialogWindowUI.DialogWindowUIArg("提示", "是否保存数据", null, "确定", () => {
-            GameMgr.Get<IMainDataManager>().RefreshNum(Get<Transform>("InputField").Find("Text").GetComponent<Text>().text);
+        public override void OnDisplay(object args)
+        {
+            base.OnDisplay(args); 
+            if (GameMgr.Get<IMainDataManager>().LoadFrom())
+            {
+                Get<Text>("DiskText").text = GameMgr.Get<IMainDataManager>().DisplayNum();
+                Get<Text>("MemoryText").text = GameMgr.Get<IMainDataManager>().DisplayNum();
+            }
+            else
+            {
+                Get<Text>("DiskText").text = "无存档";
+            }
+        }
+
+        public void Save()
+        {
             GameMgr.Get<IMainDataManager>().SaveTo();
-        }));
-    }
-    public void Load()
-    {
-        UIManager.Instance.Open("DialogWindowUI", args: new DialogWindowUI.DialogWindowUIArg("提示", "是否载入存档", null, "确定", () => {
-            GameMgr.Get<IMainDataManager>().LoadFrom();
-        }));
-    }
-    public void Display()
-    {
-        Get<Transform>("BG").GetComponentInChildren<Text>().text = GameMgr.Get<IMainDataManager>().DisplayNum().ToString();
+            Get<Text>("DiskText").text = GameMgr.Get<IMainDataManager>().DisplayNum();
+        }
+
+        public void Load()
+        {
+            if (GameMgr.Get<IMainDataManager>().LoadFrom())
+            {
+                Get<Text>("MemoryText").text = GameMgr.Get<IMainDataManager>().DisplayNum();
+            }
+        }
+
+        public void Display()
+        {
+            Get<InputField>("InputText").text = GameMgr.Get<IMainDataManager>().DisplayNum();
+        }
+
+        public void SaveToMemory()
+        {
+            GameMgr.Get<IMainDataManager>().RefreshNum(Get<InputField>("InputText").text);
+            Get<Text>("MemoryText").text = GameMgr.Get<IMainDataManager>().DisplayNum();
+        }
     }
 }
-

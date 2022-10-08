@@ -1,0 +1,3 @@
+#2022.10.8
+*把Data类重命名为QXData，同时将其移入QxFramework.Core命名空间下
+*修复了MainDataManager使用例的一个Bug，同时优化了使用例（也许更直观，和其他模块解耦，附带注释）

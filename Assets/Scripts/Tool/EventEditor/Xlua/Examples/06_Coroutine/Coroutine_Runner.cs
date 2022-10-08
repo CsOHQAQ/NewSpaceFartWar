@@ -3,6 +3,7 @@ using XLua;
 using System.Collections.Generic;
 using System.Collections;
 using System;
+using UnityEngine.Networking;
 
 namespace XLuaTest
 {
@@ -21,7 +22,7 @@ namespace XLuaTest
                 return new List<Type>()
             {
                 typeof(WaitForSeconds),
-                typeof(WWW)
+                typeof(UnityWebRequest)
             };
             }
         }

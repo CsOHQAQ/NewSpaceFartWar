@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using App.Common;
-using QxFramework.Core;
 using UnityEngine;
 
 public class GameTimeManager : LogicModuleBase,IGameTimeManager
@@ -105,9 +101,9 @@ public class GameTimeManager : LogicModuleBase,IGameTimeManager
         }
 
         //如果单纯的被停了
-        if (_playing && App.Common.Data.Instance.TimeSize > 0)
+        if (_playing && QxFramework.Core.QXData.Instance.TimeSize > 0)
         {
-            StepMinute(Time.fixedDeltaTime / App.Common.Data.Instance.TimeSize);
+            StepMinute(Time.fixedDeltaTime / QxFramework.Core.QXData.Instance.TimeSize);
         }
     }
     public override void Update()

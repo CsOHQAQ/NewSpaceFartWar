@@ -1,13 +1,13 @@
 ﻿using QxFramework.Core;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class SaveFrameProcedure : ProcedureBase
+namespace SaveFramework
 {
-    protected override void OnEnter(object args)
+    public class SaveFrameProcedure : ProcedureBase
     {
-        base.OnEnter(args);
-        UIManager.Instance.Open("Example_SaveTestUI");
+        protected override void OnEnter(object args)
+        {
+            base.OnEnter(args);
+            UIManager.Instance.Open("Example_SaveTestUI");
+        }
     }
 }

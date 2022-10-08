@@ -1,12 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using QxFramework.Core;
 using UnityEngine.UI;
-using App.Common;
-using ButtonEvent = UnityEngine.Events.UnityAction;
 using System;
-using QxFramework.Utilities;
 
 /// <summary>
 /// 收到外交信息的UI

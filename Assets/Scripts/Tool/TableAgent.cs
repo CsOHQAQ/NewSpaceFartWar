@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using App.Common;
 
 /// <summary>
 /// 配置表代理
@@ -203,7 +201,7 @@ public class TableAgent
             _floats[new TableItemKey(name, key1, key2)] = output;
             return output;
         }
-        catch (Exception e)
+        catch (Exception)
         {
             Debug.LogError("Table[" + name + "] Parse Float Error Key->[" + key1 + "," + key2 + "]");
             throw;
@@ -241,7 +239,7 @@ public class TableAgent
             _ints[new TableItemKey(name, key1, key2)] = output;
             return output;
         }
-        catch (Exception e)
+        catch (Exception)
         {
             Debug.LogError("Table[" + name + "] Parse Int Error Key->[" + key1 + "," + key2 + "]");
             throw;

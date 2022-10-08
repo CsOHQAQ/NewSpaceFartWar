@@ -2493,7 +2493,7 @@ public class LogicReorderableList<T> where T : ILogicBaseObj
     public bool Enable = false;
     private Action _onUpdate;
 
-    public void Init<T>(List<T> modityList, Action onUpdate)
+    public void Init(List<T> modityList, Action onUpdate)
     {
         _onUpdate = onUpdate;
         _reorderableList = new ReorderableList(modityList, typeof(T), true, true, true, true);

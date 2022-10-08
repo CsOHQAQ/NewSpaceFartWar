@@ -1,6 +1,4 @@
-﻿using App.Common;
-using QxFramework.Core;
-using System.Collections;
+﻿using QxFramework.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -50,9 +48,9 @@ namespace EventLogicSystem
 
 #endif
             //如果有现成的表格
-            if (Data.Instance.TableAgent != null)
+            if (QXData.Instance.TableAgent != null)
             {
-                _table = Data.Instance.TableAgent;
+                _table = QXData.Instance.TableAgent;
                 return;
             }
 

@@ -1,7 +1,4 @@
-﻿using App.Common;
-using QxFramework.Core;
-using System.Collections;
-using System.Collections.Generic;
+﻿using QxFramework.Core;
 using UnityEngine;
 using UnityEngine.UI;
 

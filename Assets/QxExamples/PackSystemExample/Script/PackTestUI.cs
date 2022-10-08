@@ -1,8 +1,4 @@
-﻿using App.Common;
-using QxFramework.Core;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using QxFramework.Core;
 using UnityEngine.UI;
 
 public class PackTestUI : UIBase

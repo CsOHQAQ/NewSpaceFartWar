@@ -22,7 +22,7 @@ public class GameMgr : MonoSingleton<GameMgr>
     public void InitModules()
     {
         _modules.Clear();
-        Add<IMainDataManager>(new MainDataManager(), ModuleEnum.MainDataManager);
+        Add<SaveFramework.IMainDataManager>(new SaveFramework.MainDataManager(),  ModuleEnum.MainDataManager);
         Add<IEventManager>(new EventManager(), ModuleEnum.EventManager);
         Add<IItemManager>(new ItemManager(), ModuleEnum.ItemManager);
         Add<IGameTimeManager>(new GameTimeManager(), ModuleEnum.GameTimeManager);

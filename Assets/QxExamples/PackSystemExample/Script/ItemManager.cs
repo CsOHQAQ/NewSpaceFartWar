@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using App.Common;
-using QxFramework.Core;
 
 public class ItemManager : LogicModuleBase,IItemManager
 {
@@ -20,17 +17,17 @@ public class ItemManager : LogicModuleBase,IItemManager
     private void InitItemStatus()
     {
         Items = new Dictionary<int, Item>();
-        List<string> AllItemsStatus = App.Common.Data.Instance.TableAgent.CollectKey1("Items");
+        List<string> AllItemsStatus = QxFramework.Core.QXData.Instance.TableAgent.CollectKey1("Items");
         for(int i=0;i< AllItemsStatus.Count; i++)
         {
             Item item = new Item();
             item.ItemID = int.Parse(AllItemsStatus[i]);
-            item.ItemPrice = App.Common.Data.Instance.TableAgent.GetInt("Items", AllItemsStatus[i].ToString(), "Price");
-            item.ItemImg = App.Common.Data.Instance.TableAgent.GetString("Items", AllItemsStatus[i].ToString(), "Image");
-            item.ItemName = App.Common.Data.Instance.TableAgent.GetString("Items", AllItemsStatus[i].ToString(), "Name");
-            item.ItemDescription = App.Common.Data.Instance.TableAgent.GetString("Items", AllItemsStatus[i].ToString(), "Description");
-            item.ItemType = (ItemType)System.Enum.Parse(typeof(ItemType),App.Common.Data.Instance.TableAgent.GetString("Items", AllItemsStatus[i].ToString(), "Type"));
-            item.MaxPile = App.Common.Data.Instance.TableAgent.GetInt("Items", AllItemsStatus[i].ToString(), "MaxPile");
+            item.ItemPrice = QxFramework.Core.QXData.Instance.TableAgent.GetInt("Items", AllItemsStatus[i].ToString(), "Price");
+            item.ItemImg = QxFramework.Core.QXData.Instance.TableAgent.GetString("Items", AllItemsStatus[i].ToString(), "Image");
+            item.ItemName = QxFramework.Core.QXData.Instance.TableAgent.GetString("Items", AllItemsStatus[i].ToString(), "Name");
+            item.ItemDescription = QxFramework.Core.QXData.Instance.TableAgent.GetString("Items", AllItemsStatus[i].ToString(), "Description");
+            item.ItemType = (ItemType)System.Enum.Parse(typeof(ItemType),QxFramework.Core.QXData.Instance.TableAgent.GetString("Items", AllItemsStatus[i].ToString(), "Type"));
+            item.MaxPile = QxFramework.Core.QXData.Instance.TableAgent.GetInt("Items", AllItemsStatus[i].ToString(), "MaxPile");
             Items.Add(int.Parse(AllItemsStatus[i]), item);
         }
     }

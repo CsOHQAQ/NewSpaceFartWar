@@ -666,9 +666,9 @@ public static class Utils
 
     public static ulong BitSet(ulong data, int nBit)
     {
-        if (nBit >= 0 && nBit < (int)sizeof(ulong) * 8)
+        if (nBit >= 0 && nBit < sizeof(ulong) * 8)
         {
-            data |= (ulong)(1 << nBit);
+            data = (uint)data | (uint)(1 << nBit);
         }
 
         return data;

@@ -1,17 +1,12 @@
-using QxFramework.Core;
 using QxFramework.Utilities;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEngine.SceneManagement;
-using Random = UnityEngine.Random;
-using System.Reflection;
 using System.IO;
 
-namespace App.Common
+namespace QxFramework.Core
 {
-    public class Data : MonoSingleton<Data>
+    public class QXData : MonoSingleton<QXData>
     {
         public float TimeSize = 1;
 
@@ -95,23 +90,25 @@ namespace App.Common
                 return;
             }
             var json = _gameDataContainer.ToSaveJson();
-            File.WriteAllText(Application.persistentDataPath+"/" +FileName,json);
+            File.WriteAllText(Application.persistentDataPath+"/" + FileName, json);
         }
 
-        public void LoadFromFile(string FileName)
+        public bool LoadFromFile(string FileName)
         {
             try
             {
                 var json = File.ReadAllText(Application.persistentDataPath + "/" + FileName);
                 _gameDataContainer.FromSaveJson(json);
-                LoadLevel(FileName);
+                //LoadLevel(FileName);
+                return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
+                /*
                 UIManager.Instance.Open("DialogWindowUI", args: new DialogWindowUI.DialogWindowUIArg
-                ("警告", "存档已损坏或不兼容最新版本", null, "确定", () => { }));
-                Debug.LogError(FileName);
-                return;
+                ("警告", "存档已损坏或不兼容最新版本", null, "确定", () => { }));*/
+                Debug.LogError("存档" + FileName + "已损坏或不兼容最新版本，或者压根就没有╮(╯▽╰)╭");
+                return false;
             }
         }
 
@@ -120,6 +117,7 @@ namespace App.Common
             File.Delete(Application.persistentDataPath + "/" + FileName);
         }
 
+        /*
         /// <summary>
         /// 加载关卡的逻辑放在这里
         /// </summary>
@@ -128,7 +126,7 @@ namespace App.Common
         {
             ProcedureManager.Instance.ChangeTo(Launcher.Instance.StartProcedure);
         }
-
+        */
 
         #endregion 游戏数据存取接口
 

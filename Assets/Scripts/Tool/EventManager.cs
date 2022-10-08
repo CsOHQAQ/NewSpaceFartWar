@@ -1,9 +1,7 @@
-﻿using App.Common;
+﻿using QxFramework.Core;
 using EventLogicSystem;
 using Newtonsoft.Json;
-using QxFramework.Core;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -88,7 +86,7 @@ public class EventManager : LogicModuleBase, IEventManager
         {
             //注入数据
             //这种方法可以使各种lua通过xx.xx来调用C#数据
-            foreach (var dic in Data.Instance.GetAllData())
+            foreach (var dic in QXData.Instance.GetAllData())
             {
                 foreach (var pair in dic.Value)
                 {

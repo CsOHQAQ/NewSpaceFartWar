@@ -1,7 +1,4 @@
-﻿using App.Common;
-using QxFramework.Core;
-using System.Collections;
-using System.Collections.Generic;
+﻿using QxFramework.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,11 +23,11 @@ public class TimeTestUI : UIBase
 
         _gos["SpeedUpBtn"].GetComponent<Button>().onClick.RemoveAllListeners();
         _gos["SpeedUpBtn"].GetComponent<Button>().onClick.AddListener(() => {
-            App.Common.Data.Instance.TimeSize *= 0.75f; 
+            QxFramework.Core.QXData.Instance.TimeSize *= 0.75f; 
         });
         _gos["SpeedDownBtn"].GetComponent<Button>().onClick.RemoveAllListeners();
         _gos["SpeedDownBtn"].GetComponent<Button>().onClick.AddListener(() => {
-            App.Common.Data.Instance.TimeSize *= 1.25f;
+            QxFramework.Core.QXData.Instance.TimeSize *= 1.25f;
         });
         _gos["PauseBtn"].GetComponent<Button>().onClick.RemoveAllListeners();
         _gos["PauseBtn"].GetComponent<Button>().onClick.AddListener(() => {
@@ -38,7 +35,7 @@ public class TimeTestUI : UIBase
             { GameMgr.Get<IGameTimeManager>().Pause(); }
             else
             {
-                App.Common.Data.Instance.TimeSize = 1;
+                QxFramework.Core.QXData.Instance.TimeSize = 1;
                 GameMgr.Get<IGameTimeManager>().DoStart();
             }
         });

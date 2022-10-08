@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using QxFramework.Core;
 using UnityEngine;
 using UnityEngine.UI;
-using App.Common;
 
 public class HintUI : UIBase
 {
