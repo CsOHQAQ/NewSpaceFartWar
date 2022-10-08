@@ -29,8 +29,7 @@ namespace QxFramework.Core
             _modules.Add(ProcedureManager.Instance);
             _modules.Add(MessageManager.Instance);
             _modules.Add(ResourceManager.Instance);
-     
- 
+            _modules.Add(LevelManager.Instance);
 
             for (int i = 0; i < _modules.Count; i++)
             {
