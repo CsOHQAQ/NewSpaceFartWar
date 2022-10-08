@@ -13,14 +13,6 @@ namespace QxFramework.Core
         /// 入口流程。
         /// </summary>
         public string StartProcedure;
-        /// <summary>
-        /// 方便测试，可以跳过标题流程直接进入下一流程
-        /// </summary>
-        public string SecondProcedure;
-        /// <summary>
-        /// 是否直接跳过第一流程
-        /// </summary>
-        public bool skipStartProcedure = true;
 
         /// <summary>
         /// 系统组件列表

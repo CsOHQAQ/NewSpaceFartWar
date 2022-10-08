@@ -9,8 +9,8 @@ public class Titlemodule : Submodule {
     }
     private void InitGame()
     {
-        UIManager.Instance.Open("HintUI");
         QXData.Instance.SetTableAgent();
         GameMgr.Instance.InitModules();
+        OpenUI("TitleUI");
     }
 }

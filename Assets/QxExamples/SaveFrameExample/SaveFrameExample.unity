@@ -301,6 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d91345a7b787ea8419110a877949028d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _foldPath: Prefabs/QxExamples/UI/
 --- !u!1 &290962695
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,9 +437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 070f832344557234caddfbb652c0cf0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartProcedure: TitleProcedure
-  SecondProcedure: SaveFrameProcedure
-  skipStartProcedure: 1
+  StartProcedure: SaveFrameProcedure
 --- !u!1 &1346884682
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,6 +502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56f49d7f6a3c8d74f9972aabc7985d88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modulesToLoad: 01000000
 --- !u!4 &1473708552
 Transform:
   m_ObjectHideFlags: 0
@@ -763,7 +763,7 @@ Camera:
   m_GameObject: {fileID: 2047469118}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.3, g: 0.3, b: 0.3, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2

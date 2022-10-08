@@ -123,6 +123,13 @@ public class GameEventEditor : OdinMenuEditorWindow
         }
 
         GUILayout.BeginHorizontal();
+        int helpBoxFontSize = EditorStyles.helpBox.fontSize;
+        int labelFontSize = EditorStyles.label.fontSize;
+        int foldoutFontSize = EditorStyles.foldout.fontSize;
+        int foldoutHeaderFontSize = EditorStyles.foldoutHeader.fontSize;
+        int textFieldFontSize = EditorStyles.textField.fontSize;
+        int textAreaFontSize = EditorStyles.textArea.fontSize;
+        int toggleFontSize = EditorStyles.toggle.fontSize;
         int fontSize = 14;
         EditorStyles.helpBox.fontSize = fontSize;
         EditorStyles.label.fontSize = fontSize;
@@ -404,6 +411,14 @@ public class GameEventEditor : OdinMenuEditorWindow
         GUILayout.EndVertical();
 
         GUILayout.EndHorizontal();
+
+        EditorStyles.helpBox.fontSize = helpBoxFontSize;
+        EditorStyles.label.fontSize = labelFontSize;
+        EditorStyles.foldout.fontSize = foldoutFontSize;
+        EditorStyles.foldoutHeader.fontSize = foldoutHeaderFontSize;
+        EditorStyles.textField.fontSize = textFieldFontSize;
+        EditorStyles.textArea.fontSize = textAreaFontSize;
+        EditorStyles.toggle.fontSize = toggleFontSize;
 
         this.RepaintIfRequested();
     }
