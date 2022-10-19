@@ -1,0 +1,443 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8181774650659479414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: Identifier
+  type: System.String
+  value: DisableTurning
+--- !u!114 &-7536353328198736877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: Name
+  type: System.String
+  value: 
+--- !u!114 &-6347279585768692726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959ff8717b5c80d45a040e3085099bae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: 0
+  args:
+  - {fileID: -8181774650659479414}
+  startTime: 0.033333335
+  endTime: 0.38333333
+  isPlaying: 0
+  linkedState: {fileID: 11400000}
+--- !u!114 &-6139181974052774877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 085be835ebdd44c4aacc670eb7d61231, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: 1
+  args:
+  - {fileID: -34719360187119085}
+  - {fileID: 2390239628080142026}
+  startTime: 0.75
+  endTime: 1.1
+  isPlaying: 0
+  linkedState: {fileID: 11400000}
+--- !u!114 &-5894561537239192253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2b37d85a5acf74394b644da95c16e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: 1
+  args:
+  - {fileID: -2164778862389391688}
+  startTime: 0.4166666
+  endTime: 0.48333332
+  isPlaying: 0
+  linkedState: {fileID: 11400000}
+--- !u!114 &-4558784610327222315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: IsOpened
+  type: System.Boolean
+  value: false
+--- !u!114 &-4289036994119796579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: IsOpened
+  type: System.Boolean
+  value: false
+--- !u!114 &-4219399463458202570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: Name
+  type: System.String
+  value: DashCancel
+--- !u!114 &-3228575889150903727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: IsOpened
+  type: System.Boolean
+  value: false
+--- !u!114 &-2164778862389391688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: Speed
+  type: System.Single
+  value: 22
+--- !u!114 &-1956935413771138922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: Identifier
+  type: System.String
+  value: DisableTurning
+--- !u!114 &-1283643724775087514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ad09f66c6fe14247a5c2855b61c8b6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: 0
+  args:
+  - {fileID: -1956935413771138922}
+  startTime: 0.033333335
+  endTime: 0.38333333
+  isPlaying: 0
+  linkedState: {fileID: 11400000}
+--- !u!114 &-34719360187119085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: Name
+  type: System.String
+  value: CanAttack2
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22b6ea9a4a2e83b489f65235cda3305e, type: 3}
+  m_Name: 0_Attack1
+  m_EditorClassIdentifier: 
+  linkedController: {fileID: 8467333600109102045, guid: a7fb8f45c4facb34d99abe07eb100c6a,
+    type: 3}
+  layerIndex: 0
+  linkedState: Attack1
+  animationTime: 1.1
+  events:
+  - {fileID: 7728440977469706909}
+  - {fileID: -5894561537239192253}
+  - {fileID: -6139181974052774877}
+  - {fileID: 1553164100479665518}
+  - {fileID: 8843879987279215664}
+  - {fileID: -1283643724775087514}
+  - {fileID: 1042960865868602696}
+--- !u!114 &850936459719160015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: Multipler
+  type: System.Single
+  value: 0.8
+--- !u!114 &1042960865868602696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ad09f66c6fe14247a5c2855b61c8b6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: 0
+  args:
+  - {fileID: 7795815569469359867}
+  startTime: 0.41666663
+  endTime: 1.1
+  isPlaying: 0
+  linkedState: {fileID: 11400000}
+--- !u!114 &1553164100479665518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 085be835ebdd44c4aacc670eb7d61231, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: 2
+  args:
+  - {fileID: -4219399463458202570}
+  - {fileID: -3228575889150903727}
+  startTime: 0.8333333
+  endTime: 1.1
+  isPlaying: 0
+  linkedState: {fileID: 11400000}
+--- !u!114 &1940654637954354685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: Knockback
+  type: System.Single
+  value: 15
+--- !u!114 &2390239628080142026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: IsOpened
+  type: System.Boolean
+  value: false
+--- !u!114 &2483042666178903594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: Name
+  type: System.String
+  value: Attack1
+--- !u!114 &6056713161838542169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: Name
+  type: System.String
+  value: MoveCancel
+--- !u!114 &7577540404599645371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: Identifier
+  type: System.String
+  value: DisableTurning
+--- !u!114 &7728440977469706909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bb42bcf4083b574fb426d506dadb679, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: 1
+  args:
+  - {fileID: 2483042666178903594}
+  - {fileID: 850936459719160015}
+  - {fileID: 1940654637954354685}
+  startTime: 0.5
+  endTime: 0.6166667
+  isPlaying: 0
+  linkedState: {fileID: 11400000}
+--- !u!114 &7795815569469359867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: Identifier
+  type: System.String
+  value: DisableTurning
+--- !u!114 &8843879987279215664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 085be835ebdd44c4aacc670eb7d61231, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: 3
+  args:
+  - {fileID: 6056713161838542169}
+  - {fileID: -4558784610327222315}
+  startTime: 0.9166667
+  endTime: 1.1
+  isPlaying: 0
+  linkedState: {fileID: 11400000}
+--- !u!114 &9056237392188483044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959ff8717b5c80d45a040e3085099bae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: 0
+  args:
+  - {fileID: 7577540404599645371}
+  startTime: 0.41666666
+  endTime: 1.1
+  isPlaying: 0
+  linkedState: {fileID: 11400000}

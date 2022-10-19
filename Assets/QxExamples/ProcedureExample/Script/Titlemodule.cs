@@ -11,6 +11,5 @@ public class Titlemodule : Submodule {
     {
         QXData.Instance.SetTableAgent();
         GameMgr.Instance.InitModules();
-        OpenUI("TitleUI");
     }
 }

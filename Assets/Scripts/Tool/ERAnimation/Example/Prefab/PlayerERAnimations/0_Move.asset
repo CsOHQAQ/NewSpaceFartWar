@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3465299889707022297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959ff8717b5c80d45a040e3085099bae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: 1
+  args:
+  - {fileID: 3119909897529475201}
+  startTime: 0
+  endTime: 0.68333334
+  isPlaying: 0
+  linkedState: {fileID: 11400000}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22b6ea9a4a2e83b489f65235cda3305e, type: 3}
+  m_Name: 0_Move
+  m_EditorClassIdentifier: 
+  linkedController: {fileID: 4497254091240538169, guid: 62bae0af92b93f5479af69ee44924d6f,
+    type: 3}
+  layerIndex: 0
+  linkedState: Move
+  animationTime: 0.68333334
+  events:
+  - {fileID: 8286790588771030578}
+--- !u!114 &3119909897529475201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f0c62093b012048bc9afbf06e80e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argName: Identifier
+  type: System.String
+  value: CanJump
+--- !u!114 &8286790588771030578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bad6d8bf473e753479f839b23fca916d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: 0
+  args: []
+  startTime: 0
+  endTime: 0.68333334
+  isPlaying: 0
+  linkedState: {fileID: 11400000}
