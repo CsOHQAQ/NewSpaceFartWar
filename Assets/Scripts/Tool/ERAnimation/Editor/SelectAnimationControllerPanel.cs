@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEditor.Experimental.SceneManagement;
@@ -16,6 +17,7 @@ namespace ERAnimation
         const float panelHeight = 540;
         ERAnimatorController controller;
         Vector2 pos;
+        string searchText;
 
         [MenuItem("Tools/ERAnimation/AnimatorControler")]
         public static void OpenWindow()
@@ -158,44 +160,112 @@ namespace ERAnimation
                             AssetDatabase.Refresh();
                         }
 
-                        //获取所有动画状态，创建自己的动画状态
-                        for (int i = 0; i < runtimeAnimatorController.layers.Length; i++)
+                        GUILayout.BeginHorizontal();
+                        searchText = GUILayout.TextField(searchText, GUILayout.Height(18), GUILayout.MinWidth(100));
+                        if (GUILayout.Button("CheckAll", GUILayout.MaxWidth(100)))
                         {
-                            GUILayout.Box(runtimeAnimatorController.layers[i].name, GUILayout.ExpandWidth(true), GUILayout.Height(AnimatorControllerPanel.height));
-                            var animations = runtimeAnimatorController.layers[i].stateMachine.states;
-                            foreach (var clip in animations)
+                            for (int i = 0; i < runtimeAnimatorController.layers.Length; i++)
                             {
-                                GUILayout.BeginHorizontal();
-                                string path = PATH + "/" + folderName + "/" + i.ToString() + "_" + clip.state.name + ".asset";
-                                bool edited = File.Exists(path);
-                                if (GUILayout.Button(clip.state.name + (!edited ? " <color=#ff0000>(Not Edited)</color>" : " <color=#00ff00>(Edited)</color>"), new GUIStyle(GUI.skin.button) { richText = true }, GUILayout.Height(18), GUILayout.MinWidth(100)))
+                                var animations = runtimeAnimatorController.layers[i].stateMachine.states;
+                                foreach (var clip in animations)
                                 {
-                                    if (!edited)
+                                    string path = PATH + "/" + folderName + "/" + i.ToString() + "_" + clip.state.name + ".asset";
+                                    if (File.Exists(path))
                                     {
-                                        AssetDatabase.CreateAsset(CreateInstance<ERAnimationState>().Init(controller, i, clip.state.name, clip.state.motion.name), path);
-                                        AssetDatabase.Refresh();
+                                        var asset = AssetDatabase.LoadAssetAtPath<ERAnimationState>(path);
+                                        asset.animationTime = clip.state.motion.averageDuration;
                                     }
-                                    var asset = AssetDatabase.LoadAssetAtPath<ERAnimationState>(path);
-                                    if (!controller.States.Contains(asset))
-                                    {
-                                        controller.States.Add(asset);
-                                    }
-                                    EditorUtility.SetDirty(controller);
-                                    AssetDatabase.SaveAssets();
-                                    AnimatorControllerPanel.OpenWindow(asset, controller);
-                                    Close();
                                 }
-                                if (GUILayout.Button("Delete", GUILayout.MaxWidth(50)))
+                            }
+                            AssetDatabase.Refresh();
+                            AssetDatabase.SaveAssets();
+                        }
+                        GUILayout.EndHorizontal();
+                        if (string.IsNullOrEmpty(searchText))
+                        {
+                            //获取所有动画状态，创建自己的动画状态
+                            for (int i = 0; i < runtimeAnimatorController.layers.Length; i++)
+                            {
+                                GUILayout.Box(runtimeAnimatorController.layers[i].name, GUILayout.ExpandWidth(true), GUILayout.Height(AnimatorControllerPanel.height));
+                                var animations = runtimeAnimatorController.layers[i].stateMachine.states;
+                                foreach (var clip in animations)
                                 {
-                                    if (edited)
+                                    GUILayout.BeginHorizontal();
+                                    string path = PATH + "/" + folderName + "/" + i.ToString() + "_" + clip.state.name + ".asset";
+                                    bool edited = File.Exists(path);
+                                    if (GUILayout.Button(clip.state.name + (!edited ? " <color=#ff0000>(Not Edited)</color>" : " <color=#00ff00>(Edited)</color>"), new GUIStyle(GUI.skin.button) { richText = true }, GUILayout.Height(18), GUILayout.MinWidth(100)))
                                     {
-                                        if (EditorUtility.DisplayDialog("警告", "你确定要删除吗？此操作无法撤销", "确定", "取消"))
+                                        if (!edited)
                                         {
-                                            controller.States.Remove(AssetDatabase.LoadAssetAtPath<ERAnimationState>(path)); Debug.Log(AssetDatabase.DeleteAsset(path) ? "成功删除" + clip.state.name : "删除" + clip.state.name + "失败");
+                                            AssetDatabase.CreateAsset(CreateInstance<ERAnimationState>().Init(controller, i, clip.state.name, clip.state.motion.name), path);
+                                            AssetDatabase.Refresh();
+                                        }
+                                        var asset = AssetDatabase.LoadAssetAtPath<ERAnimationState>(path);
+                                        if (!controller.States.Contains(asset))
+                                        {
+                                            controller.States.Add(asset);
+                                        }
+                                        EditorUtility.SetDirty(controller);
+                                        AssetDatabase.SaveAssets();
+                                        AnimatorControllerPanel.OpenWindow(asset, controller);
+                                        Close();
+                                    }
+                                    if (GUILayout.Button("Delete", GUILayout.MaxWidth(50)))
+                                    {
+                                        if (edited)
+                                        {
+                                            if (EditorUtility.DisplayDialog("警告", "你确定要删除吗？此操作无法撤销", "确定", "取消"))
+                                            {
+                                                controller.States.Remove(AssetDatabase.LoadAssetAtPath<ERAnimationState>(path)); Debug.Log(AssetDatabase.DeleteAsset(path) ? "成功删除" + clip.state.name : "删除" + clip.state.name + "失败");
+                                            }
                                         }
                                     }
+                                    GUILayout.EndHorizontal();
                                 }
-                                GUILayout.EndHorizontal();
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i < runtimeAnimatorController.layers.Length; i++)
+                            {
+                                var animations = runtimeAnimatorController.layers[i].stateMachine.states;
+                                foreach (var clip in animations)
+                                {
+                                    if (Regex.IsMatch(clip.state.name, searchText, RegexOptions.IgnoreCase))
+                                    {
+                                        GUILayout.BeginHorizontal();
+                                        string path = PATH + "/" + folderName + "/" + i.ToString() + "_" + clip.state.name + ".asset";
+                                        bool edited = File.Exists(path);
+                                        if (GUILayout.Button(clip.state.name + (!edited ? " <color=#ff0000>(Not Edited)</color>" : " <color=#00ff00>(Edited)</color>"), new GUIStyle(GUI.skin.button) { richText = true }, GUILayout.Height(18), GUILayout.MinWidth(100)))
+                                        {
+                                            if (!edited)
+                                            {
+                                                AssetDatabase.CreateAsset(CreateInstance<ERAnimationState>().Init(controller, i, clip.state.name, clip.state.motion.name), path);
+                                                AssetDatabase.Refresh();
+                                            }
+                                            var asset = AssetDatabase.LoadAssetAtPath<ERAnimationState>(path);
+                                            if (!controller.States.Contains(asset))
+                                            {
+                                                controller.States.Add(asset);
+                                            }
+                                            EditorUtility.SetDirty(controller);
+                                            AssetDatabase.SaveAssets();
+                                            AnimatorControllerPanel.OpenWindow(asset, controller);
+                                            Close();
+                                        }
+                                        if (GUILayout.Button("Delete", GUILayout.MaxWidth(50)))
+                                        {
+                                            if (edited)
+                                            {
+                                                if (EditorUtility.DisplayDialog("警告", "你确定要删除吗？此操作无法撤销", "确定", "取消"))
+                                                {
+                                                    controller.States.Remove(AssetDatabase.LoadAssetAtPath<ERAnimationState>(path)); Debug.Log(AssetDatabase.DeleteAsset(path) ? "成功删除" + clip.state.name : "删除" + clip.state.name + "失败");
+                                                }
+                                            }
+                                        }
+                                        GUILayout.EndHorizontal();
+                                    }
+                                }
                             }
                         }
                         GUILayout.EndVertical();
