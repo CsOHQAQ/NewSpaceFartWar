@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameTimeManager : LogicModuleBase,IGameTimeManager
+public class GameTimeManager : LogicModuleBase, IGameTimeManager
 {
     private class TimeActionItem
     {
@@ -26,6 +26,9 @@ public class GameTimeManager : LogicModuleBase,IGameTimeManager
     private bool _stopStep;
 
     public bool IsStop => !_playing;
+
+    private float _timeSize = 1;
+    public float TimeSize { get => _timeSize; set => _timeSize = value; }
 
     public override void Init()
     {
@@ -59,7 +62,7 @@ public class GameTimeManager : LogicModuleBase,IGameTimeManager
             foreach (var item in _repeatsActions)
             {
                 if (NowTime.Now.TotalMinutes % item.IntervalTime == 0)
-                {                   
+                {
                     _stopStep = (!item.Action(NowTime.Now)) || _stopStep;
                 }
 
@@ -101,9 +104,9 @@ public class GameTimeManager : LogicModuleBase,IGameTimeManager
         }
 
         //如果单纯的被停了
-        if (_playing && QxFramework.Core.QXData.Instance.TimeSize > 0)
+        if (_playing && TimeSize > 0)
         {
-            StepMinute(Time.fixedDeltaTime / QxFramework.Core.QXData.Instance.TimeSize);
+            StepMinute(Time.fixedDeltaTime / TimeSize);
         }
     }
     public override void Update()

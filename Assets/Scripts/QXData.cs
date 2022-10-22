@@ -8,8 +8,6 @@ namespace QxFramework.Core
 {
     public class QXData : MonoSingleton<QXData>
     {
-        public float TimeSize = 1;
-
         #region 游戏数据存取接口
 
         private readonly GameDataContainer _gameDataContainer = new GameDataContainer();

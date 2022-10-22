@@ -105,7 +105,7 @@ public partial class ChildBindTool
         InitSetPropActionMap();
         InitSetPropActionMapEx();
         CollectObject();
-        SetDefualtComponent();
+        SetDefaultComponent();
     }
 
     /// <summary>
@@ -177,7 +177,7 @@ public partial class ChildBindTool
     /// <summary>
     /// 设置默认的绑定组件
     /// </summary>
-    private void SetDefualtComponent()
+    private void SetDefaultComponent()
     {
         var vt = _userObject.GetType();
         var fields = vt.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);

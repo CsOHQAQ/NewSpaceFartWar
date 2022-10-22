@@ -54,6 +54,7 @@ namespace ERAnimation
             }
         }
 
+        [SerializeField]
         private List<ERAnimationState> states = new List<ERAnimationState>();
         public List<ERAnimationState> States
         {

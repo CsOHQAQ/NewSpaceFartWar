@@ -11,46 +11,45 @@ public class PackBase : UIBase
     {
         base.OnDisplay(args);
         cargo = args as CargoData[];
-        CollectObject();
         GameMgr.Get<IItemManager>().RefreshAllCargoUI();
         RgstBtn();
     }
     void RgstBtn()
     {
-        if (_gos.ContainsKey("GetAllButton"))
+        if (Find("GetAllButton") != null)
         {
-            _gos["GetAllButton"].GetComponent<Button>().onClick.RemoveAllListeners();
-            _gos["GetAllButton"].GetComponent<Button>().onClick.AddListener(() => {
-                AudioControl.Instance.PlaySound("Tik");
-                for(int i = 0; i < 5; i++)
-                {
-                    GameMgr.Get<IItemManager>().TakeAllItemFrom(cargo);
-                }
-                GameMgr.Get<IItemManager>().RefreshAllCargoUI();
+            Get<Button>("GetAllButton").onClick.SetListener(() => {
+            AudioControl.Instance.PlaySound("Tik");
+            for (int i = 0; i < 5; i++)
+            {
+                GameMgr.Get<IItemManager>().TakeAllItemFrom(cargo);
+            }
+            GameMgr.Get<IItemManager>().RefreshAllCargoUI();
             });
         }
-        if (_gos.ContainsKey("PutAllButton"))
+
+        if (Find("PutAllButton") != null)
         {
-            _gos["PutAllButton"].GetComponent<Button>().onClick.RemoveAllListeners();
-            _gos["PutAllButton"].GetComponent<Button>().onClick.AddListener(() => {
-                AudioControl.Instance.PlaySound("Tik");
-                GameMgr.Get<IItemManager>().putAllItemTo(cargo);
-                GameMgr.Get<IItemManager>().RefreshAllCargoUI();
+            Get<Button>("PutAllButton").onClick.SetListener(() => {
+            AudioControl.Instance.PlaySound("Tik");
+            GameMgr.Get<IItemManager>().putAllItemTo(cargo);
+            GameMgr.Get<IItemManager>().RefreshAllCargoUI();
             });
         }
-        if (_gos.ContainsKey("ResolveButton"))
+
+        if (Find("ResolveButton") != null)
         {
-            _gos["ResolveButton"].GetComponent<Button>().onClick.RemoveAllListeners();
-            _gos["ResolveButton"].GetComponent<Button>().onClick.AddListener(() => {
+            Get<Button>("ResolveButton").onClick.SetListener(() =>
+            {
                 AudioControl.Instance.PlaySound("Tik");
                 GameMgr.Get<IItemManager>().ResolvePackage(cargo[0]);
                 GameMgr.Get<IItemManager>().RefreshAllCargoUI();
             });
         }
-        if (_gos.ContainsKey("CloseBtn"))
+        if (Find("CloseBtn") != null)
         {
-            _gos["CloseBtn"].GetComponent<Button>().onClick.RemoveAllListeners();
-            _gos["CloseBtn"].GetComponent<Button>().onClick.AddListener(() => {
+            Get<Button>("CloseBtn").onClick.SetListener(() =>
+            {
                 AudioControl.Instance.PlaySound("Tik");
                 UIManager.Instance.Close(this);
             });
@@ -58,21 +57,21 @@ public class PackBase : UIBase
     }
     public void RefreshUI()
     {
-        if (cargo[0].MaxBattery < _gos["ItemList"].transform.childCount)
+        if (cargo[0].MaxBattery < Get<Transform>("ItemList").childCount)
         {
-            for (int i = cargo[0].MaxBattery; i < _gos["ItemList"].transform.childCount; i++)
+            for (int i = cargo[0].MaxBattery; i < Get<Transform>("ItemList").childCount; i++)
             {
-                Destroy(_gos["ItemList"].transform.GetChild(i).gameObject);
+                Destroy(Get<Transform>("ItemList").GetChild(i).gameObject);
             }
         }
-        for (int j = _gos["ItemList"].transform.childCount; j < cargo[0].MaxBattery; j++)
+        for (int j = Get<Transform>("ItemList").childCount; j < cargo[0].MaxBattery; j++)
         {
-            GameObject go = ResourceManager.Instance.Instantiate("Prefabs/UI/ItemUIItem", _gos["ItemList"].transform);
+            GameObject go = ResourceManager.Instance.Instantiate("Prefabs/UI/ItemUIItem", Get<Transform>("ItemList"));
             go.name = "ItemUIItem" + j.ToString();
         }
-        for (int i = 0; i < _gos["ItemList"].transform.childCount; i++)
+        for (int i = 0; i < Get<Transform>("ItemList").childCount; i++)
         {
-            GameObject go = _gos["ItemList"].transform.GetChild(i).gameObject;
+            GameObject go = Get<Transform>("ItemList").GetChild(i).gameObject;
             go.GetComponentInChildren<DragOnPic>().cargo = cargo[0];
             if(cargo.Length > 1)
             {
@@ -96,9 +95,9 @@ public class PackBase : UIBase
     }
     private void Update()
     {
-        if (_gos.ContainsKey("MoneyText"))
+        if (Find("MoneyText") != null)
         {
-            _gos["MoneyText"].GetComponent<Text>().text = "信用点："+GameMgr.Get<IItemManager>().GetPlayerItemData().PlayerMoney;
+            Get<Text>("MoneyText").text = "信用点：" + GameMgr.Get<IItemManager>().GetPlayerItemData().PlayerMoney;
         }
     }
     private void OnDisable()

@@ -9,40 +9,39 @@ public class TimeTestUI : UIBase
     public override void OnDisplay(object args)
     {
         base.OnDisplay(args);
-        CollectObject();
         Rgst();
     }
     void Rgst()
     {
         GameMgr.Get<IGameTimeManager>().RegisterTimeRepeat(RegistAction, GameDateTime.ByMinutes(RepeatTime));
 
-        _gos["StepBtn"].GetComponent<Button>().onClick.RemoveAllListeners();
-        _gos["StepBtn"].GetComponent<Button>().onClick.AddListener(() => {
+        Get<Button>("StepBtn").onClick.SetListener(() => {
             GameMgr.Get<IGameTimeManager>().StepMinute(60);
         });
 
-        _gos["SpeedUpBtn"].GetComponent<Button>().onClick.RemoveAllListeners();
-        _gos["SpeedUpBtn"].GetComponent<Button>().onClick.AddListener(() => {
-            QxFramework.Core.QXData.Instance.TimeSize *= 0.75f; 
+        Get<Button>("SpeedUpBtn").onClick.SetListener(() => {
+            GameMgr.Get<IGameTimeManager>().TimeSize *= 0.75f;
         });
-        _gos["SpeedDownBtn"].GetComponent<Button>().onClick.RemoveAllListeners();
-        _gos["SpeedDownBtn"].GetComponent<Button>().onClick.AddListener(() => {
-            QxFramework.Core.QXData.Instance.TimeSize *= 1.25f;
+
+        Get<Button>("SpeedDownBtn").onClick.SetListener(() => {
+            GameMgr.Get<IGameTimeManager>().TimeSize *= 1.25f;
         });
-        _gos["PauseBtn"].GetComponent<Button>().onClick.RemoveAllListeners();
-        _gos["PauseBtn"].GetComponent<Button>().onClick.AddListener(() => {
+
+        Get<Button>("PauseBtn").onClick.SetListener(() => {
             if (GameMgr.Get<IGameTimeManager>().IsPlaying())
-            { GameMgr.Get<IGameTimeManager>().Pause(); }
+            {
+                GameMgr.Get<IGameTimeManager>().Pause();
+            }
             else
             {
-                QxFramework.Core.QXData.Instance.TimeSize = 1;
+                GameMgr.Get<IGameTimeManager>().TimeSize = 1;
                 GameMgr.Get<IGameTimeManager>().DoStart();
             }
         });
     }
     private void Update()
     {
-        _gos["TimeText"].GetComponent<Text>().text = GameMgr.Get<IGameTimeManager>().GetNow().ToDurationString();
+        Get<Text>("TimeText").text = GameMgr.Get<IGameTimeManager>().GetNow().ToDurationString();
     }
     bool RegistAction(GameDateTime gameDateTime)
     {

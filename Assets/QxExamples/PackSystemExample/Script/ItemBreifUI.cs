@@ -6,12 +6,11 @@ public class ItemBreifUI : UIBase
     public override void OnDisplay(object args)
     {
         base.OnDisplay(args);
-        CollectObject();
         ShowWord(args as string[]);
     }
     private void ShowWord(string[] Words)
     {
-        _gos["TitleText"].GetComponent<Text>().text = Words[0];
-        _gos["ContentText"].GetComponent<Text>().text = Words[1];
+        Get<Text>("TitleText").text = Words[0];
+        Get<Text>("ContentText").text = Words[1];
     }
 }

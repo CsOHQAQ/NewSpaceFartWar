@@ -6,26 +6,25 @@ public class PackTestUI : UIBase
     public override void OnDisplay(object args)
     {
         base.OnDisplay(args);
-        CollectObject();
         RgstBtn();
     }
     void RgstBtn()
     {
-        _gos["PackBtn"].GetComponent<Button>().onClick.RemoveAllListeners();
-        _gos["PackBtn"].GetComponent<Button>().onClick.AddListener(() => {
+        Get<Button>("PackBtn").onClick.RemoveAllListeners();
+        Get<Button>("PackBtn").onClick.AddListener(() => {
             CloseAllPack();
             UIManager.Instance.Open("Cargo_BaseUI", args: new CargoData[] { GameMgr.Get<IItemManager>().GetPlayerItemData().PlayerCargo });
             GameMgr.Get<IItemManager>().RefreshAllCargoUI();
         });
-        _gos["GroundPackBtn"].GetComponent<Button>().onClick.RemoveAllListeners();
-        _gos["GroundPackBtn"].GetComponent<Button>().onClick.AddListener(() => {
+        Get<Button>("GroundPackBtn").onClick.RemoveAllListeners();
+        Get<Button>("GroundPackBtn").onClick.AddListener(() => {
             CloseAllPack();
             UIManager.Instance.Open("Cargo_BaseUI", args: new CargoData[] { GameMgr.Get<IItemManager>().GetPlayerItemData().PlayerCargo, GameMgr.Get<IItemManager>().GetPlayerItemData().GroundCargo });
             UIManager.Instance.Open("Cargo_GroundUI", args: new CargoData[] { GameMgr.Get<IItemManager>().GetPlayerItemData().GroundCargo, GameMgr.Get<IItemManager>().GetPlayerItemData().PlayerCargo });
             GameMgr.Get<IItemManager>().RefreshAllCargoUI();
         });
-        _gos["ShopBtn"].GetComponent<Button>().onClick.RemoveAllListeners();
-        _gos["ShopBtn"].GetComponent<Button>().onClick.AddListener(() => {
+        Get<Button>("ShopBtn").onClick.RemoveAllListeners();
+        Get<Button>("ShopBtn").onClick.AddListener(() => {
             CloseAllPack();
             UIManager.Instance.Open("Cargo_BaseUI", args: new CargoData[] { GameMgr.Get<IItemManager>().GetPlayerItemData().PlayerCargo, GameMgr.Get<IItemManager>().GetPlayerItemData().ShopCargo });
             UIManager.Instance.Open("Cargo_ShopUI", args: new CargoData[] { GameMgr.Get<IItemManager>().GetPlayerItemData().ShopCargo, GameMgr.Get<IItemManager>().GetPlayerItemData().PlayerCargo });

@@ -132,7 +132,6 @@ public class DialogWindowUI : UIBase
 
     private void Awake()
     {
-        CollectObject();
         _onlyTextGroup = Get<Transform>("OnlyText").gameObject;
         _onlyTextTextText = Get<Text>("OnlyTextText");
         _titleText = Get<Text>("TitleText");

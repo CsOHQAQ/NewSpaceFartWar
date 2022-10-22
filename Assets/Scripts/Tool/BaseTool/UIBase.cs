@@ -9,9 +9,6 @@ namespace QxFramework.Core
     /// </summary>
     public abstract class UIBase : MonoBehaviour
     {
-        //用于存储和快速查找子物体
-        public Dictionary<string, GameObject> _gos => _childBindTool.Gos;
-
         private ChildBindTool _childBindTool;
 
         /// <summary>
@@ -51,18 +48,6 @@ namespace QxFramework.Core
             }
         }
 
-        /// <summary>
-        /// 建立一个包含所有子物体的字典
-        /// </summary>
-        public void CollectObject()
-        {
-            if (_childBindTool == null)
-            {
-                _childBindTool = new ChildBindTool(this, transform);
-            }
-            _childBindTool.CollectObject();
-        }
-
        /// <summary>
        /// 注册消息
        /// </summary>
@@ -87,7 +72,7 @@ namespace QxFramework.Core
         }
 
         /// <summary>
-        /// 一个快速获取的函组件数，以物体名为Key，相同值则直接覆盖
+        /// 一个快速获取组件的函数，以物体名为Key，相同值则直接覆盖
         /// </summary>
         /// <typeparam name="T">组件</typeparam>
         /// <param name="name">物体名。</param>
@@ -100,6 +85,30 @@ namespace QxFramework.Core
                 _childBindTool = new ChildBindTool(this, transform);
             }
             return _childBindTool.Get<T>(name);
+        }
+
+        /// <summary>
+        /// 一个快速获取游戏物体的函数，以物体名为Key，相同值则直接覆盖
+        /// </summary>
+        /// <param name="name">物体名。</param>
+        /// <returns>游戏物体。没有找到则返回null。</returns>
+        public GameObject Find(string name)
+        {
+            if (_childBindTool == null)
+            {
+                _childBindTool = new ChildBindTool(this, transform);
+            }
+
+            if (!_childBindTool.Gos.ContainsKey(name))
+            {
+                _childBindTool.CollectObject();
+            }
+            if (!_childBindTool.Gos.ContainsKey(name))
+            {
+                return null;
+            }
+
+            return _childBindTool.Gos[name];
         }
 
         /// <summary>
@@ -134,14 +143,45 @@ namespace QxFramework.Core
             {
                 _childBindTool = new ChildBindTool(this, transform);
             }
-            else
-            {
-                CollectObject();
-            }
          
             OnDisplay(args);
             OnRegisterHandler();
             _childBindTool.CommitValue();
+        }
+
+        /// <summary>
+        /// 快速构建多个相同元素的UI。
+        /// </summary>
+        /// <typeparam name="T">遍历的集合的元素的类型</typeparam>
+        /// <param name="parent">多个元素的父物体。该父物体下的第一个物体作为复制的对象。</param>
+        /// <param name="collection">要遍历的集合。通过遍历该集合创建与之对应的子物体。</param>
+        /// <param name="childAction">每个子物体只要执行的操作。在这里将集合的数据反映到UI上。</param>
+        /// <param name="whiteList">每次构建会删除除了第一个物体外的所有子物体。如果有不想删除的对象可以通过这个白名单指定。</param>
+        protected void BuildMultipleItem<T>(Transform parent, IEnumerable<T> collection, Action<GameObject, T> childAction, params string[] whiteList)
+        {
+            for (int i = 1; i < parent.childCount; i++)
+            {
+                bool flag = true;
+                foreach (string item in whiteList)
+                {
+                    if (parent.GetChild(i).gameObject.name == item)
+                    {
+                        flag = false;
+                    }
+                }
+                if (flag)
+                {
+                    Destroy(parent.GetChild(i).gameObject);
+                }
+            }
+            Transform child = parent.GetChild(0);
+            child.gameObject.SetActive(false);
+            foreach (T item in collection)
+            {
+                GameObject go = Instantiate(child.gameObject, parent);
+                go.SetActive(true);
+                childAction.Invoke(go, item);
+            }
         }
     }
 }

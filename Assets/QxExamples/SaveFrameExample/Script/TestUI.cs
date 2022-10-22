@@ -9,7 +9,6 @@ namespace SaveFramework
     {
         private void Awake()
         {
-            CollectObject();
             Get<Button>("ShowData").onClick.SetListener(Display);
             Get<Button>("SaveToMemory").onClick.SetListener(SaveToMemory);
             Get<Button>("SaveToDisk").onClick.SetListener(Save);

@@ -9,19 +9,9 @@ namespace QxFramework.Core
     public class Submodule 
     {
         /// <summary>
-        /// 父对象
-        /// </summary>
-        public Submodule ModuleParent;
-
-        /// <summary>
         /// 关联流程
         /// </summary>
         public ProcedureBase ProcedureRoot;
-
-        /// <summary>
-        /// 子对象
-        /// </summary>
-        public List<Submodule> Children = new List<Submodule>();
 
         public List<UIBase> OpenUIs = new List<UIBase>();
 
@@ -31,21 +21,6 @@ namespace QxFramework.Core
         /// <param name="procedureRoot"></param>
         public void SetRootProcedure(ProcedureBase procedureRoot)
         {
-            ProcedureRoot = procedureRoot;
-        }
-
-        /// <summary>
-        /// 设置Root
-        /// </summary>
-        /// <param name="procedureRoot"></param>
-        /// <param name="subcomponentRoot"></param>
-        private void SetRoot(ProcedureBase procedureRoot, Submodule submoduleParent = null)
-        {
-            ModuleParent = submoduleParent;
-            if (submoduleParent == null)
-            {
-                submoduleParent = this;
-            }
             ProcedureRoot = procedureRoot;
         }
 
@@ -62,8 +37,6 @@ namespace QxFramework.Core
             OpenUIs.UniqueAdd(uibase);
             return uibase;
         }
-
-
 
         /// <summary>
         ///  关闭指定名称的UI，是从后往前查找。
@@ -88,40 +61,19 @@ namespace QxFramework.Core
             }
         }
 
-        /// <summary>
-        /// 添加子对象
-        /// </summary>
-        /// <param name="sub"></param>
-        public void AddChilren(Submodule sub)
-        {
-            sub.SetRoot(sub.ProcedureRoot, this);
-        }
-
         public void Init()
         {
             OnInit();
-            for (int i = 0; i < Children.Count; i++)
-            {
-                Children[i].Init();
-            }
         }
 
         public void Update()
         {
             OnUpdate();
-            for (int i = 0; i < Children.Count; i++)
-            {
-                Children[i].Update();
-            }
         }
 
         public void FixedUpdate()
         {
             OnFixedUpdate();
-            for (int i = 0; i < Children.Count; i++)
-            {
-                Children[i].FixedUpdate();
-            }
         }
 
         /// <summary>
@@ -129,26 +81,9 @@ namespace QxFramework.Core
         /// </summary>
         public void Destory()
         {
-            for (int i = 0; i < Children.Count; i++)
-            {
-                Children[i].Destory();
-            }
             OnDestroy();
             MessageManager.Instance.RemoveAbout(this);
             CloseAllUI();
-        }
-
-        /// <summary>
-        /// 销毁某个子对象
-        /// </summary>
-        /// <param name="submodule"></param>
-        public void DestoryChidren(Submodule submodule)
-        {
-            if (Children.Contains(submodule))
-            {
-                submodule.Destory();
-                Children.Remove(submodule);
-            }
         }
 
         protected virtual void OnInit()

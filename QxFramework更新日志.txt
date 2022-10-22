@@ -6,3 +6,10 @@
 *去除了Launcher的第二流程设定
 *加入LevelManager脚本
 *修复了EventEditor会修改全局字体的Bug
+
+#2022.10.22
+*去除了UIBase的_gos方法，要获取某一GameObject请改用Find方法。由于不再需要手动物体，CollectObject方法也被删除。
+*优化使用例。将QXData和其他地方解耦。
+*去除了可以给Submodule加Submodule的特性。
+*工具里加入了ERAnimation，一个动画事件编辑器。
+*加入了QxFramework使用指南。
