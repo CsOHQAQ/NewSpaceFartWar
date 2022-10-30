@@ -8,7 +8,8 @@ namespace QxFramework.Core
     /// </summary>
     public abstract class ProcedureBase
     {
-        private List<Submodule> Submodules = new List<Submodule>();
+        private List<Submodule> _submodules = new List<Submodule>();
+        public Submodule[] Submodules => _submodules.ToArray();
 
         /// <summary>
         /// 跳转流程
@@ -31,7 +32,7 @@ namespace QxFramework.Core
         protected void AddSubmodule(Submodule submodule)
         {
             submodule.SetRootProcedure(this);
-            Submodules.Add(submodule);
+            _submodules.Add(submodule);
             submodule.Init();
         }
         
@@ -53,7 +54,7 @@ namespace QxFramework.Core
         /// </summary>
         public void Update(float elapseSeconds)
         {
-            foreach (var m in Submodules)
+            foreach (var m in _submodules)
             {
                 m.Update();
             }
@@ -65,7 +66,7 @@ namespace QxFramework.Core
         /// </summary>
         public void FixedUpdate(float elapseSeconds)
         {
-            foreach (var m in Submodules)
+            foreach (var m in _submodules)
             {
                 m.FixedUpdate();
             }
@@ -77,11 +78,11 @@ namespace QxFramework.Core
         /// </summary>
         public void Leave()
         {
-            foreach (var m in Submodules)
+            foreach (var m in _submodules)
             {
                 m.Destory();
             }
-            Submodules.Clear();
+            _submodules.Clear();
             OnLeave();
         }
 

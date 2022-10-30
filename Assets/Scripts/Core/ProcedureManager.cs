@@ -158,5 +158,37 @@ namespace QxFramework.Core
                 pair.Value.Destroy();
             }
         }
+
+        public T GetModule<T>() where T : Submodule
+        {
+            if (Current != null)
+            {
+                foreach (var module in Current.Submodules)
+                {
+                    if (module is T t)
+                    {
+                        return t;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public bool TryGetModule<T>(out T module) where T : Submodule
+        {
+            if (Current != null)
+            {
+                foreach (var submodule in Current.Submodules)
+                {
+                    if (submodule is T t)
+                    {
+                        module = t;
+                        return true;
+                    }
+                }
+            }
+            module = null;
+            return false;
+        }
     }
 }
