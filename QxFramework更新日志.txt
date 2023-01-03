@@ -13,3 +13,6 @@
 *去除了可以给Submodule加Submodule的特性。
 *工具里加入了ERAnimation，一个动画事件编辑器。
 *加入了QxFramework使用指南。
+
+#2023.1.3
+*更新QxFramework使用指南。

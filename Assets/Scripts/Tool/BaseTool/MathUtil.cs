@@ -8,11 +8,10 @@ public static class MathUtil
     /// 二分查找While循环实现
     /// </summary>
     /// <param name="list">数组</param>
-    /// <param name="low">开始索引</param>
-    /// <param name="high">结束索引</param>
-    /// <param name="comp">要查找的对象</param>
+    /// <param name="target">要查找的对象</param>
+    /// <param name="comp">查找依据</param>
     /// <returns>返回对象</returns>
-    public static T BinarySearch<T, T2>(List<T> list, T2 target, Func<T2, T, int> comp)
+    public static T BinarySearch<T, T2>(this List<T> list, T2 target, Func<T2, T, int> comp)
     {
         int low, high;
         low = 0;

@@ -36,7 +36,7 @@ QxFramework引导教程的面向对象是有一定Unity基础，但从来没有�
 > + Enter()：进入该流程被调用的方法。
 > + Update/FixedUpdate()：每帧/固定帧被调用的方法。
 > + Leave()：离开该流程时被调用的方法。
-> + Destroy()：程序销毁时被调用的方法。
+> + Destory()：程序销毁时被调用的方法。
 
 可override方法：
 
@@ -44,11 +44,11 @@ QxFramework引导教程的面向对象是有一定Unity基础，但从来没有�
 > + <u>OnEnter(object args)</u>：被Enter调用，进入流程时执行。（注意看，这个新的参数叫args，他之后才会被讲到）
 > + OnUpdate/OnFixedUpdate()：被Update/FixedUpdate()调用，每帧/固定帧执行。
 > + <u>OnLeave()</u>：被Leave()调用，离开流程时执行。
-> + OnDestroy()：被Destroy()调用，程序销毁时执行。
+> + OnDestory()：被Destory()调用，程序销毁时执行。
 
 我们创建一个名为HelloQXProcedure的流程，将HelloQXProcedure填入Launcher的StartProcedure，便将HelloQXProcedure设置为了开始流程。
 
-在HelloQXProcedure中使用override覆写OnInit方法，添加一个Debug.Log，
+在HelloQXProcedure中使用override覆写OnInit方法，添加一个Debug.log，
 
 >```
 >public class HelloQXProcedure : ProcedureBase
@@ -79,13 +79,21 @@ PS：<u>当游戏存在多个流程的时候，游戏开始时会先执行所有
 
 属性：
 
+> + Submodule ModuleParent：父模块
 > + ProcedureBase ProcedureRoot：与此模块关联的流程
+> +  List<Submodule> Children：从属于该子模块的子模块数组
 > + List<UIBase> openUIs：当前模块打开的UI
 
 可调用方法：
 
+> + SetRootProcedure(ProcedureBase)：设置子模块所属的流程。
 > + <u>OpenUI(string, string, object)</u>：调用UIManager打开一个UI（参数分别对应：需要打开的UIPrefab名称，打开后UI的gameobject名称，额外参数）。
-> + <u>CloseUI((string uiName, string objName),CloseAllUI()</u>：关闭UI相关方法。
+> + <u>CloseUI((string uiName, string objName)：,CloseAllUI()</u>：关闭UI相关方法。
+> + <u>AddChilren(Submodule sub)</u>：为该子模块添加新的子模块。
+> + DestoryChidren(Submodule submodule)：消除该子模块的某个指定的所属子模块。
+> + Init()：被ProcedureBase.AddSubmodule调用，该子模块被添加时自动执行的初始化方法。
+> + Update/FixedUpdate() ：每帧/固定帧执行的方法。
+> + Destroy()：销毁时触发的方法。
 
 可override方法：
 
@@ -100,13 +108,17 @@ PS：<u>当游戏存在多个流程的时候，游戏开始时会先执行所有
 > ```
 > public class HelloQXSubmodule : Submodule
 > {
->    	protected override void OnInit()
->    	{
->    		base.OnInit();
->    		Debug.Log("HelloworldSubmodule Init");
->    	}
+>     protected override void OnInit()
+>     {
+>         base.OnInit();
+>         Debug.Log("HelloworldSubmodule Init");
+>     }
 > }
 > ```
+
+~~（这里有BUG，AddChilren不会将子模块正常放入Children列表）~~
+
+（不过本来子模块就用不完，建议是不要子模块套子模块）
 
 ### 4：流程管理器(ProcedureManager)跳转流程
 
@@ -168,15 +180,6 @@ PS：<u>当游戏存在多个流程的时候，游戏开始时会先执行所有
 
 需要注意的是，由于读取参数的方法使用了强制转换的方法，在使用时请一定要确保每次调用ChangeTo方法进入同一个流程时，传入的参数为同一个规定好的类型，否则会出现空指针报错。
 
-这里可以有个更高级的写法：
-
-> ```
-> if (args is string _stringArgs)
-> {
-> 	//这一句话直接判断了类型并进行了类型转换，_stringArgs就是转换后的变量
-> }
-> ```
-
 ### 5：从标题界面引入UI系统(UIbase与UIManager)
 
 每个游戏，不管是线性叙事还是开放世界探索，是叫人肾上腺素飙升的动作游戏还是吓人一身冷汗的恐怖解密，他们几乎都有一个共同点：都有一个标题界面。
@@ -187,7 +190,7 @@ PS：<u>当游戏存在多个流程的时候，游戏开始时会先执行所有
 
 #### A. 创建一个符合格式的Canvas(UIManager)
 
-新建一个Canvas，并在Canvas上挂载UIManager。同时，在该Canvas下创建若干个子物体作为UI的不同渲染层级，子物体的名字没有硬性要求，但由于Hierarchy面板中更靠下的层级的UI会渲染在上层，所以为了便于开发，请将子物体按顺序编号（如Layer0，Layer1……）。
+新建一个Canvas，并在Canvas上挂载UIManager。同时，在该Canvas下创建若干个子物体作为UI的不同渲染层级，子物体的名字没有硬性要求，但由于Hierarchy面板中更靠下的层级会渲染在上层，所以为了便于开发，请将子物体按顺序编号（如Layer0，Layer1……）。
 
 注意，由于UIManager处于单例状态（即整个游戏中只会存在单个UIManager），请不要在同一个场景中挂载多个UIManager。
 
@@ -221,15 +224,17 @@ UIBase类维护以下常用的属性与方法
 
 属性：
 
+> + Dictionary<string,GameObject> _gos：提供一个快速查找子物体的字典，可以使用子物体的名字快速找到对应的子物体。(注：此方法将在新版本的QX框架中被移除)
 > + int UILayer：生成UI的层级，默认层级为2。
 
 可调用方法：
 
 > + Get<T>(string)：快速获取组件，T为泛型类型，需要获取什么就填什么，string为该UI预制体下的某个子物体的名称。
-> + Find(string)：通过名字获取一个GameObject。如果有重名则返回最后的那个。
+> + CollectObject()：建立包含该UI所有子物体的字典（初始化_gos），以名字字符串为键，对应gameobject为值。
+> + DoDisplay(Object args)：当前UI显示时自动执行的方法。
+> + DoClose()：当前UI被关闭时自动执行的方法。
 > + RegisterDataUpdate<T>(Action<GameDataBase>,string)：为某一个游戏数据注册委托，使得这个游戏数据在更新时能够被当前UI处理。
-> + RegisterMessage<T>(T, EventHandler<EventArgs>)：为某一个游戏事件注册委托，使得这个游戏事件出现时能够被UI所处理。
-> + BuildMultipleItem<T>(Transform, IEnumerable<T>, Action<GameObject, T>, params string[])：快速构建多个相同元素的UI。
+> + RegisterMessage<T>(T,EventHandler<EventArgs>)：为某一个游戏事件注册委托，使得这个游戏事件出现时能够被UI所处理。
 
 可override方法：
 
@@ -237,7 +242,7 @@ UIBase类维护以下常用的属性与方法
 > + OnClose()：被DoClose()方法调用，UI关闭时自动执行。
 > + OnRegisterHandler()：被DoDisplay(Object args)调用，注册消息处理方法时执行。
 
-需要注意的地方是UI的Layer问题。通过UIManager打开UI时，可以看到可以指定UI的层级，但实际上，指定了通常不会生效。这是因为在UIBase本身继承了一个layer的属性，这个的优先级是最高的。只有这个layer是-1的时候，UIManager的指定在某一层级打开UI的功能才有效。
+需要注意的地方是，由于历史原因，UI生成的默认layer为2，即默认生成为UIManager下的第三个子物体（0，1，2），所以初次尝试未能成功生成UI时，不妨检查一下是不是此原因。
 
 做完这些操作，回到HelloQXSubmodule，在OnInit方法中使用OpenUI(string, string, object)方法，虽然看上去需要三个参数，但在较为简单的情况下，后两个参数可以缺省。因此这里可以只用填入UIPrefab的名称用以查找需要实例化的UI。调用方法OpenUI("HelloQXUI")，便可以实例化相应的UI。
 
@@ -286,6 +291,12 @@ UIBase类维护以下常用的属性与方法
 OnCloseButton与OnSubAction都绑定了方法，则最后只会执行OnSubAction所绑定的方法；如果语句交换顺序，则只会执行OnCloseButton所绑定的方法。
 
 在应用过程中，我们一般使用此工具来快速为按钮绑定需要执行的方法。当然，为了实现相类似的方法，我们也可以使用Unity中的SetListener方法，但这里不再详细说明。
+
+#### D.UIBase基础方法与_gos字典的应用例
+
+**修正：在新版本的QX框架中，_gos字典被暂停使用，有需要通过名称获取游戏物体请统一使用Get<T>(string)方法**
+
+回到OnDisplay方法，一般的习惯是首先在这里调用一次UIBase的CollectObject()方法，用来初始化_gos字典。~~当然，就算忘了写，框架内部会自动触发，如果你完全相信框架，不写也可以。~~添加这一段可以增强代码的健壮性。
 
 可以在CloseButton()方法中，为之前创建的closeBtn添加不同的功能。首先为方法添加常用的流程跳转功能
 
@@ -838,7 +849,7 @@ TableAgent类维护以下<u>常用</u>的属性与方法：
 > + public string GetString(string name, string key1, string key2)：根据表格名称，纵坐标值和横坐标值查找表格中的某项元素，返回字符串类型。
 > + public float GetFloat(string name, string key1, string key2)：根据表格名称，纵坐标值和横坐标值查找表格中的某项元素，返回浮点数类型。（若不能转换成浮点数则会抛出错误）
 > + public int GetInt(string name, string key1, string key2)：根据表格名称，纵坐标值和横坐标值查找表格中的某项元素，返回整型类型。（若不能转换成整型数则会抛出错误）
-> +  public string[] GetStrings(string name, string key1, string key2)：根据表格名称，纵坐标值和横坐标值查找表格中的某项元素，返回一个由默认分隔符分隔开的字符串数组。(如读取到的元素为“1|2|3|”，则数组读取到的元素分别为“1”，“2”，“3”)
+> +  public string[] GetStrings(string name, string key1, string key2)：根据表格名称，纵坐标值和横坐标值查找表格中的某项元素，返回一个由默认分隔符分隔开的字符串数组。(如读取到的元素为“1|2|3”，则数组读取到的元素分别为“1”，“2”，“3”)
 > + public int GetDicCount(string name)：根据表格名称，查找当前表格的纵向长度。
 > + public List<string> CollectKey1(string name)：根据表格名称，返回一个包含所有纵坐标(字符串类型)的列表。
 > + public List<string> CollectKey2(string name)：根据表格名称，返回一个包含所有横坐标(字符串类型)的列表。
@@ -847,7 +858,7 @@ QXData类中的SetTableAgent()方法会将固定文件夹下的所有CSV文件�
 
 #### A.从TableItemKey结构体，谈谈如何读取CSV内容
 
-如果我们使用Excel打开一个CSV文件，会发现它与普通的表格十分相似，只是普通的表格可以包含多个工作表(Sheet)，而CSV只能包含一个。而我们用记事本打开，会发现它是一个将表格中的各个元素用逗号分隔开的文本文件（所以在配置CSV文件的时候，请一定要慎用逗号，最好不用），其结构类似于一个二维的字符串数列。
+如果我们使用Excle打开一个CSV文件，会发现它与普通的表格十分相似，只是普通的表格可以包含多个工作表(Sheet)，而CSV只能包含一个。而我们用记事本打开，会发现它是一个将表格中的各个元素用逗号分隔开的文本文件（所以在配置CSV文件的时候，请一定要慎用逗号，最好不用），其结构类似于一个二维的字符串数列。
 
 而TableItemKey结构体
 
@@ -875,7 +886,7 @@ QXData类中的SetTableAgent()方法会将固定文件夹下的所有CSV文件�
 | key1_1    | Item_1_1 | Item_1_2 |
 | key1_2    | Item_2_1 | Item_2_2 |
 
-其中Key1和Key2都是自定义的，并不是固定的数值。
+其中Key1和Key2都是可以自定义的，并不是固定的数值。
 
 同时，由于一个CSV文件其实可以包含多个这种形式的表格，<u>因此表格的名称并不是文件本身的名称，而是最左上角的元素</u>。
 
@@ -894,7 +905,7 @@ QXData类中的SetTableAgent()方法会将固定文件夹下的所有CSV文件�
 
 #### B.配置CSV文件
 
-为了使CSV文件具有更好的可视性，我们通常采用Excle编辑处理而不是头铁用文本处理方式。使用表格的形式能够让我们更好的理解CSV的纵横关系。我们首先新建一个普通的xlsx表格文件，删除其中多余的工作表，并将表格另存为CSV UTF-8(逗号分隔)格式（UTF-8是为了适配表格中的中文内容）。接下来将保存好的CSV文件放入Assets\Resources\Text\Table目录，这里是QX框架读取CSV文件的固定路径。我们以下列表格为CSV范例
+为了使CSV文件具有更好的可视性，我们通常采用Excle编辑处理而不是头铁用文本处理方式。使用表格的形式能够让我们更好的理解CSV的纵横关系。我们首先新建一个普通的xlsx表格文件，删除其中多余的工作表，并将表格另存为CSX UTF-8(逗号分隔)格式（UTF-8是为了适配表格中的中文内容）。接下来将保存好的CSV文件放入与Asset平级的Table文件夹，放在这里的CSV文件通常被称为“外表”，由于与Asset平级，其并不在Unity的Project面板中显示，需要从单独打开。我们以下列表格为CSV范例，新建CSV文件“QX表格”，内容为：
 
 | HelloQXTable | First   | Second  |
 | ------------ | ------- | ------- |
@@ -910,7 +921,7 @@ QXData类中的SetTableAgent()方法会将固定文件夹下的所有CSV文件�
 > }
 > ```
 
-回到Unity面板，在菜单栏中找到GameTool/Build CSV File，对文件进行初始化(更新)。
+回到Unity面板，在菜单栏中找到GameTool/Build CSV File，对文件进行初始化，此时，QX框架会自动解析外表，在Assets\Resources\Text\Table目录下生成名为HelloQXTable的CSV文件（文件名由外表表头决定，而非外表名称决定）。相应的，新生成的表格一般被称为“内表”。生成内表之后，表格便可以被正常读取与使用。若外表中使用了"###"字符串分割表格，则会生成多份内表。
 
 #### C.搭建相关的使用场景
 
