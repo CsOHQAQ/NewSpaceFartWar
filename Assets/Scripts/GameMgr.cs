@@ -25,7 +25,7 @@ public class GameMgr : MonoSingleton<GameMgr>
     /// </summary>
     public void InitModules()
     {
-        _modules.Clear();
+        ClearModule();
         HashSet<Type> modules = new HashSet<Type>();
         foreach (var type in GetType().Assembly.GetTypes())
         {
@@ -57,6 +57,21 @@ public class GameMgr : MonoSingleton<GameMgr>
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// 清除所有模块。
+    /// 请务必在LogicModuleBase的OnDestroy中管理好对应数据，因为如果模块有引用可能无法被GC，
+    /// 导致存在多个LogicModuleBase的实例，可能导致一些意外的情况。（尤其是使用了MessageManager）
+    /// </summary>
+    public void ClearModule()
+    {
+        foreach (var module in _modules)
+        {
+            module.Module.OnDestroy();
+        }
+        _modules.Clear();
+        GC.Collect();
     }
 
     public static T Get<T>()
