@@ -11,14 +11,12 @@ using UnityEngine;
 public class GameMgr : MonoSingleton<GameMgr>
 {
     [Header("要加载的模块")]
-    public List<ModuleEnum> modulesToLoad = new List<ModuleEnum>();
+    public List<string> modulesToLoad = new List<string>();
 
     /// <summary>
     /// 所有模块列表
     /// </summary>
     private readonly List<ModulePair> _modules = new List<ModulePair>();
-
-    //public static bool Enable;
 
     /// <summary>
     /// 初始化所有模块
@@ -26,35 +24,30 @@ public class GameMgr : MonoSingleton<GameMgr>
     public void InitModules()
     {
         ClearModule();
-        HashSet<Type> modules = new HashSet<Type>();
-        foreach (var type in GetType().Assembly.GetTypes())
+        Assembly assembly = typeof(LogicModuleBase).Assembly;
+        Dictionary<Type, LogicModuleBase> instances = new Dictionary<Type, LogicModuleBase>();
+        foreach (var module in modulesToLoad)
         {
-            if (type.IsSubclassOf(typeof(LogicModuleBase)) && !type.IsAbstract)
+            try
             {
-                modules.Add(type);
-            }
-        }
-        foreach (var type in modules)
-        {
-            if (modulesToLoad.Contains(item => { return item.ToString() == type.Name; }))
-            {
-                foreach (var iface in type.GetInterfaces())
+                string[] strs = module.Split(';');
+                Type iface = assembly.GetType(strs[0]);
+                Type moduleType = assembly.GetType(strs[1]);
+                LogicModuleBase logicModule;
+                if (instances.ContainsKey(moduleType))
                 {
-                    if (iface.Name == "I" + type.Name)
-                    {
-                        LogicModuleBase module = Activator.CreateInstance(type) as LogicModuleBase;
-                        _modules.Add(new ModulePair(iface, module));
-                        try
-                        {
-                            module.Init();
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.LogError(e);
-                        }
-                        break;
-                    }
+                    logicModule = instances[moduleType];
                 }
+                else
+                {
+                    logicModule = Activator.CreateInstance(moduleType) as LogicModuleBase;
+                    instances.Add(moduleType, logicModule);
+                }
+                _modules.Add(new ModulePair(iface, logicModule));
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to load logic module \"{module}\"\n{ex}");
             }
         }
     }
@@ -88,7 +81,6 @@ public class GameMgr : MonoSingleton<GameMgr>
         {
             try
             {
-                pair.Module.Awake();
                 pair.Initialized = true;
             }
             catch (Exception e)
@@ -163,9 +155,9 @@ public class GameMgr : MonoSingleton<GameMgr>
 }
 
 /// <summary>
-/// 模块名要和Enum的名字完全相同才能正常加载
+/// 暂时弃用
 /// </summary>
-public enum ModuleEnum
+/*public enum ModuleEnum
 {
     Unknow = 0,
     MainDataManager,
@@ -173,4 +165,4 @@ public enum ModuleEnum
     ItemManager,
     GameTimeManager,
     Max,
-}
+}*/

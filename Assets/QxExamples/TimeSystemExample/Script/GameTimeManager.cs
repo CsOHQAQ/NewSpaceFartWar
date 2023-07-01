@@ -55,6 +55,7 @@ public class GameTimeManager : LogicModuleBase, IGameTimeManager
         _stopStep = false;
 
         _time += stepTime;
+        bool logged = false;
         while (_time >= 1f && !_stopStep)
         {
             //游戏时间增加
@@ -69,8 +70,12 @@ public class GameTimeManager : LogicModuleBase, IGameTimeManager
                 //是否被打断
                 if (_stopStep)
                 {
-                    Debug.Log("[GameTimer] 打断于" + _time);
-                    break;
+                    if (!logged)
+                    {
+                        Debug.Log("[GameTimer] 打断于" + _time);
+                        logged = true;
+                    }
+                    _time = 1;
                 }
             }
             _time -= 1;

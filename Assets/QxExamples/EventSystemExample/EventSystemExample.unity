@@ -501,7 +501,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56f49d7f6a3c8d74f9972aabc7985d88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modulesToLoad: 02000000
+  modulesToLoad:
+  - IEventManager;EventManager
 --- !u!4 &1473708552
 Transform:
   m_ObjectHideFlags: 0

@@ -1,6 +1,6 @@
 ﻿using QxFramework.Core;
 
-public class LogicModuleBase
+public abstract class LogicModuleBase
 {
     public virtual void Init()
     {
@@ -16,13 +16,10 @@ public class LogicModuleBase
         QXData.Instance.SetModify<T>(data, this, key);
     }
 
-    public virtual void Awake()
-    {
-    }
-
     public virtual void Update()
     {
     }
+
     public virtual void LateUpdate()
     {
     }
