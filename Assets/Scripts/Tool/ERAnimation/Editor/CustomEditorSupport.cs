@@ -1,7 +1,7 @@
 ﻿#if UNITY_EDITOR
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.Experimental.SceneManagement;
+
 using UnityEngine;
 
 namespace ERAnimation
@@ -25,9 +25,9 @@ namespace ERAnimation
                 }
                 else
                 {
-                    if (PrefabStageUtility.GetCurrentPrefabStage() != null)
+                    if (UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null)
                     {
-                        realController = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabStageUtility.GetCurrentPrefabStage().prefabAssetPath).GetComponentInChildren<ERAnimatorController>(true);
+                        realController = AssetDatabase.LoadAssetAtPath<GameObject>(UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage().prefabAssetPath).GetComponentInChildren<ERAnimatorController>(true);
                     }
                     else
                     {

@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.Animations;
-using UnityEditor.Experimental.SceneManagement;
+
 using UnityEngine;
 
 namespace ERAnimation
@@ -406,9 +406,9 @@ namespace ERAnimation
                         {
                             playbackTime -= time;
                         }
-                        if (PrefabStageUtility.GetCurrentPrefabStage() != null)
+                        if (UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null)
                         {
-                            SampleAnimation(clip, PrefabStageUtility.GetCurrentPrefabStage().prefabContentsRoot.GetComponentInChildren<ERAnimatorController>().Animator.gameObject, playbackTime);
+                            SampleAnimation(clip, UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage().prefabContentsRoot.GetComponentInChildren<ERAnimatorController>().Animator.gameObject, playbackTime);
                         }
                         lastTime = Time.realtimeSinceStartup;
                     }
@@ -641,9 +641,9 @@ namespace ERAnimation
 
                             if (IsPlayable())
                             {
-                                if (PrefabStageUtility.GetCurrentPrefabStage() != null)
+                                if (UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null)
                                 {
-                                    SampleAnimation(clip, PrefabStageUtility.GetCurrentPrefabStage().prefabContentsRoot.GetComponentInChildren<ERAnimatorController>().Animator.gameObject, playbackTime);
+                                    SampleAnimation(clip, UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage().prefabContentsRoot.GetComponentInChildren<ERAnimatorController>().Animator.gameObject, playbackTime);
                                 }
                             }
                         }

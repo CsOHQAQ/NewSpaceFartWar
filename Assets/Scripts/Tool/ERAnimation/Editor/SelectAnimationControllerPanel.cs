@@ -4,7 +4,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.Animations;
-using UnityEditor.Experimental.SceneManagement;
+
 using UnityEngine;
 
 namespace ERAnimation
@@ -82,9 +82,9 @@ namespace ERAnimation
                     }
                     else
                     {
-                        if (PrefabStageUtility.GetCurrentPrefabStage() != null)
+                        if (UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null)
                         {
-                            this.controller = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabStageUtility.GetCurrentPrefabStage().prefabAssetPath).GetComponentInChildren<ERAnimatorController>(true);
+                            this.controller = AssetDatabase.LoadAssetAtPath<GameObject>(UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage().prefabAssetPath).GetComponentInChildren<ERAnimatorController>(true);
                         }
                         else
                         {
