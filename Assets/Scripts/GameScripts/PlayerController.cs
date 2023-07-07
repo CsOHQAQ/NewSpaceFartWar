@@ -26,24 +26,36 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.W))
         {
+            transform.Find("Spaceman").GetComponent<Animator>().SetBool("Speed", true);
             body.AddForce(transform.up * bigFart);
         }
-        if (Input.GetKey(KeyCode.A))
+        else
+        {
+            transform.Find("Spaceman").GetComponent<Animator>().SetBool("Speed", false);
+        }
+
+        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
         {
             TurnTo(false);
+            transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", true);
             Transform trans = transform.Find("Spaceman/FartPos");
             body.AddForceAtPosition(trans.up * rotateFart, trans.position);
         }
-        if (Input.GetKey(KeyCode.D))
+        else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
         {
             TurnTo(true);
+            transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", true);
             Transform trans = transform.Find("Spaceman/FartPos");
             body.AddForceAtPosition(trans.up * rotateFart, trans.position);
+        }
+        else
+        {
+            transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", false);
         }
     }
 
     private void TurnTo(bool right)
     {
-        transform.Find("Spaceman").transform.localScale = new Vector3(right ? 1 : -1, 1, 1);
+        transform.Find("Spaceman").localScale = new Vector3(right ? 1 : -1, 1, 1);
     }
 }
