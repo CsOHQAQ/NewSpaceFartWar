@@ -1,49 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class PlayerController : MonoBehaviour
 {
-    public float bigFart;
-    public float rotateFart;
+    Rigidbody2D rigidbody;
+    Transform fartTransform;
+    Transform grabTransform;
 
-    private Rigidbody2D body;
-
-    private void Start()
+    // Start is called before the first frame update
+    void Start()
     {
-        body = GetComponent<Rigidbody2D>();
+        rigidbody = GetComponent<Rigidbody2D>();
+        fartTransform = transform.Find("fartTransform");
+        grabTransform = transform.Find("grabTransform");
+
     }
 
-    private void Update()
+    // Update is called once per frame
+    void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            body.velocity = Vector3.zero; ;
-            body.angularVelocity = 0;
-        }
+        Move();
     }
-
-    private void FixedUpdate()
+    public void Move()
     {
-        if (Input.GetKey(KeyCode.W))
-        {
-            body.AddForce(transform.up * bigFart);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            TurnTo(false);
-            Transform trans = transform.Find("Spaceman/FartPos");
-            body.AddForceAtPosition(trans.up * rotateFart, trans.position);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            TurnTo(true);
-            Transform trans = transform.Find("Spaceman/FartPos");
-            body.AddForceAtPosition(trans.up * rotateFart, trans.position);
-        }
-    }
 
-    private void TurnTo(bool right)
-    {
-        transform.Find("Spaceman").transform.localScale = new Vector3(right ? 1 : -1, 1, 1);
     }
 }
