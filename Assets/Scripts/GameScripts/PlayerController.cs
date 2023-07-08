@@ -44,11 +44,6 @@ public class PlayerController : MonoBehaviour
             heavyParticle.HeavyEmission();
         }
 
-        if (player.GetButtonDown("LightLeft"))
-        {
-            TurnTo(!isFacingRight);
-        }
-
         if (touching)
         {
             if (player.GetButtonDown("Touch"))
@@ -81,29 +76,30 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        /*
         if (player.GetButton("LightLeft") && !player.GetButton("LightRight"))
         {
-            TurnTo(false);
+            //TurnTo(false);
             transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", true);
-            Transform trans = transform.Find("Spaceman/FartPos");
-            body.AddForceAtPosition(trans.up * rotateFart, trans.position);
-            fartParticleController.LightEmission();
+            //Transform trans = transform.Find("Spaceman/FartPos");
+            //body.AddForceAtPosition(trans.up * rotateFart, trans.position);
+            body.AddTorque(-rotateFart);
+            lightParticle.LightEmission();
         }
         else if (!player.GetButton("LightLeft") && player.GetButton("LightRight"))
         {
-            TurnTo(true);
+            //TurnTo(true);
             transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", true);
-            Transform trans = transform.Find("Spaceman/FartPos");
-            body.AddForceAtPosition(trans.up * rotateFart, trans.position);
-
-            fartParticleController.LightEmission();
+            //Transform trans = transform.Find("Spaceman/FartPos");
+            //body.AddForceAtPosition(trans.up * rotateFart, trans.position);
+            body.AddTorque(rotateFart);
+            lightParticle.LightEmission();
         }
         else
         {
             transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", false);
-        }*/
-        if (player.GetButton("LightRight"))
+            lightParticle.EndLightEmission();
+        }
+        /*if (player.GetButton("LightRight"))
         {
             transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", true);
             //Transform trans = transform.Find("Spaceman/FartPos");
@@ -116,7 +112,7 @@ public class PlayerController : MonoBehaviour
             transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", false);
 
 			lightParticle.EndLightEmission();
-        }
+        }*/
     }
 
     private void TurnTo(bool right)
@@ -138,7 +134,7 @@ public class PlayerController : MonoBehaviour
     public bool TryTouch()
     {
         Transform trans = transform.Find("Spaceman/TouchPos");
-        RaycastHit2D[] raycasts = Physics2D.RaycastAll(trans.position, trans.up * touchDis);
+        RaycastHit2D[] raycasts = Physics2D.RaycastAll(trans.position, trans.up, touchDis);
         foreach (var ray in raycasts)
         {
             if (ray.rigidbody != null && ray.rigidbody != body)

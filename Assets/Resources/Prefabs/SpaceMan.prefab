@@ -274,7 +274,7 @@ MonoBehaviour:
   playerIndex: 0
   bigFart: 10
   animationCounter: 0.6
-  rotateFart: -3
+  rotateFart: -5
   maxHP: 0
   touchDis: 1.5
 --- !u!60 &6092374437610706294
