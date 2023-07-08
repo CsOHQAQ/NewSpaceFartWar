@@ -688,6 +688,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5035226524212103912, guid: 7fbc9b69d1ae0dc478b46ff898405ce6,
         type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5035226524212103912, guid: 7fbc9b69d1ae0dc478b46ff898405ce6,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5035226524212103912, guid: 7fbc9b69d1ae0dc478b46ff898405ce6,
+        type: 3}
       propertyPath: ShapeModule.angle
       value: 16.12216
       objectReference: {fileID: 0}
