@@ -44,12 +44,12 @@ Material:
     - _Angle: 360
     - _AngleOffset: 0
     - _ShadowDepth: -0.5
-    - _ShadowIntensity: 1
+    - _ShadowIntensity: 0.5
     m_Colors:
     - _Center: {r: 0.5, g: 0.5, b: 0, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 0}
-    - _LightOffset: {r: 0.049549174, g: 0.006645847, b: 0, a: 0}
+    - _Color: {r: 2, g: 2, b: 2, a: 0}
+    - _LightOffset: {r: 0.16614461, g: 0.11128688, b: 0, a: 0}
     - _Offset: {r: -0.18616652, g: -0.06764111, b: -0.02768941, a: 0}
-    - _ShadowOffset: {r: -0.049549174, g: -0.006645847, b: 0, a: 0}
+    - _ShadowOffset: {r: -0.16614461, g: -0.11128688, b: 0, a: 0}
     - _TilingAndOffset: {r: 0.00074308284, g: 0.028520862, b: 0.99851376, a: 0.97073597}
   m_BuildTextureStacks: []
