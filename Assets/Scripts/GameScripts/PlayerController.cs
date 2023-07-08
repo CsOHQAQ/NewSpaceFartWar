@@ -16,12 +16,16 @@ public class PlayerController : MonoBehaviour
     public float bigFart;
     public float animationCounter;
     public float rotateFart;
-    public float maxHP;
+    public float maxHP=100;
+    public float maxAirAmount=100;
     public float touchDis;
     public float pushForce;
     public float threshold;
 
     private float hp;
+    private float airAmount;
+    private float airRecoverSpeed;
+
 
     private FartParticleController lightParticle;
     private FartParticleController heavyParticle;
