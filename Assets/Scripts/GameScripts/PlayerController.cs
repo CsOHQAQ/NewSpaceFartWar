@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
         None,
         Pull,
         Touch,
+        Throw,
     }
 
     public int playerIndex;
@@ -156,6 +157,8 @@ public class PlayerController : MonoBehaviour
                     }
                     else if (player.GetButtonDown("Push"))
                     {
+
+                        MessageManager.Instance.Get<TouchState>().DispatchMessage(TouchState.Throw, this, new UIArgs<Rigidbody2D>(touchingBody));
                         animator.SetTrigger("Throw");
                         springJoint.enabled = false;
                         distanceJoint.enabled = false;

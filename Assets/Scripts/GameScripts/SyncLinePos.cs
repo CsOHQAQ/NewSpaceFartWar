@@ -28,6 +28,14 @@ public class SyncLinePos : MonoBehaviour
 
     private void Update()
     {
+        if (start==null || end == null)
+        {
+            return;
+        }
+        if (start.gameObject.activeInHierarchy == false || end.gameObject.activeInHierarchy == false)
+        {
+            return;
+        }
         SyncPos();
     }
 
