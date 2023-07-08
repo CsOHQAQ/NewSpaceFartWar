@@ -428,11 +428,6 @@ PrefabInstance:
       propertyPath: playerIndex
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8000170980119056610, guid: 740753f512a52d2459e6b6ce400028a5,
-        type: 3}
-      propertyPath: m_Distance
-      value: 2.7958004
-      objectReference: {fileID: 0}
     - target: {fileID: 8748318886377322135, guid: 740753f512a52d2459e6b6ce400028a5,
         type: 3}
       propertyPath: lightSource

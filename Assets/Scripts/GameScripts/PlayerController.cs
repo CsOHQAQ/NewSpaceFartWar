@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
+using QxFramework.Core;
 
 public class PlayerController : MonoBehaviour
 {
@@ -85,6 +86,26 @@ public class PlayerController : MonoBehaviour
                             touchState = TouchState.Pull;
                             break;
                         }
+                    }
+                    if (touchState == TouchState.Pull)
+                    {
+                        GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Effect/Line2");
+                        go.transform.position = new Vector3();
+                        LineRenderer line = go.GetComponent<LineRenderer>();
+                        line.positionCount = 2;
+                        go.GetComponent<SyncLinePos>().SetPos(trans, trans.position, touchingBody.transform, touchingPos);
+                        go = ResourceManager.Instance.Instantiate("Prefabs/Effect/TouchEffect");
+                        go.transform.position = touchingPos;
+                        go.transform.eulerAngles = new Vector3(0, 0, 180 + transform.eulerAngles.z);
+                    }
+                    else
+                    {
+                        GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Effect/Line1");
+                        go.transform.SetParent(transform);
+                        go.transform.position = new Vector3();
+                        LineRenderer line = go.GetComponent<LineRenderer>();
+                        line.positionCount = 2;
+                        go.GetComponent<SyncLinePos>().SetPos(trans, trans.position, trans, trans.position + (trans.up * touchDis));
                     }
                 }
                 break;
