@@ -20,17 +20,19 @@ public class PlayerController : MonoBehaviour
     public float rotateFart;
     public float maxHP=100;
     public float maxAirAmount=100;
+    public float airRecoverSpeed;
+    public float airRecoverCounter;
+    public float heavyAirConsume;
+    public float lightAirConsumeSpeed;
     public float touchDis;
     public float pushForce;
     public float throwForce;
     public float threshold;
 
+    public bool isDead = false;
+
     private float hp;
     private float airAmount;
-    private float airRecoverSpeed;
-
-    private SlideBarUI healthSlide;
-    private SlideBarUI airSlide;
 
     private FartParticleController lightParticle;
     private FartParticleController heavyParticle;
@@ -39,6 +41,7 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private float counter;
     private float touchCounter;
+    private float airCounter;
     private Rigidbody2D touchingBody;
     private SpringJoint2D springJoint;
     private DistanceJoint2D distanceJoint;
@@ -65,10 +68,13 @@ public class PlayerController : MonoBehaviour
     {
         if (player.GetButtonDown("Heavy") && counter <= 0)
         {
-            animator.SetTrigger("Fart");
-            counter = animationCounter;
-            body.AddForce(transform.localScale.x * transform.right * bigFart, ForceMode2D.Impulse);
-            heavyParticle.HeavyEmission();
+            if (UseAir(heavyAirConsume))
+            {
+                animator.SetTrigger("Fart");
+                counter = animationCounter;
+                body.AddForce(transform.localScale.x * transform.right * bigFart, ForceMode2D.Impulse);
+                heavyParticle.HeavyEmission();
+            }
         }
 
         switch (touchState)
@@ -168,7 +174,7 @@ public class PlayerController : MonoBehaviour
                         }
                         else
                         {
-                            touchingBody.AddForceAtPosition(transform.localScale.x * transform.right.normalized * throwForce, touchingBody.centerOfMass, ForceMode2D.Impulse);
+                            touchingBody.AddForce(transform.localScale.x * transform.right.normalized * throwForce, ForceMode2D.Impulse);
                             body.AddForce(-transform.localScale.x * transform.right.normalized * throwForce, ForceMode2D.Impulse);
                         }
                         touchingBody = null;
@@ -181,20 +187,28 @@ public class PlayerController : MonoBehaviour
         if (counter > 0)
         {
             counter -= Time.deltaTime;
-            //animator.SetBool("Speed", true);
+        }
+
+        if (airCounter > 0)
+        {
+            airCounter -= Time.deltaTime;
         }
         else
         {
-            //animator.SetBool("Speed", false);
+            airAmount += Time.deltaTime * airRecoverSpeed;
+            if (airAmount > maxAirAmount)
+            {
+                airAmount = maxAirAmount;
+            }
         }
 
-        MessageManager.Instance.Get<PlayerMessage>().DispatchMessage(PlayerMessage.UIRefresh, this, new UIArgs<float>(hp/maxHP));//发送的两个参数分别为血量百分比和空气槽百分比
-
+        MessageManager.Instance.Get<PlayerMessage>().DispatchMessage(PlayerMessage.UIRefresh, this, new UIArgs<float>(hp / maxHP));
+        MessageManager.Instance.Get<PlayerMessage>().DispatchMessage(PlayerMessage.FartAmount, this, new UIArgs<float>(airAmount / maxAirAmount));
     }
 
     private void FixedUpdate()
     {
-        if (player.GetButton("LightLeft") && !player.GetButton("LightRight"))
+        if (player.GetButton("LightLeft") && !player.GetButton("LightRight") && UseAir(lightAirConsumeSpeed * Time.fixedDeltaTime))
         {
             animator.SetBool("RotateForward", true);
             animator.SetBool("RotateBackward", false);
@@ -209,7 +223,7 @@ public class PlayerController : MonoBehaviour
             }
             lightParticle.LightEmission();
         }
-        else if (!player.GetButton("LightLeft") && player.GetButton("LightRight"))
+        else if (!player.GetButton("LightLeft") && player.GetButton("LightRight") && UseAir(lightAirConsumeSpeed * Time.fixedDeltaTime))
         {
             animator.SetBool("RotateBackward", true);
             animator.SetBool("RotateForward", false);
@@ -231,19 +245,37 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public bool UseAir(float amount)
+    {
+        if (airAmount >= amount)
+        {
+            airAmount -= amount;
+            airCounter = airRecoverCounter;
+            return true;
+        }
+        return false;
+    }
+
     public void Hurt(float damage)
     {
         hp -= damage;
-        //发消息更新UI
         if (hp < 0)
         {
-            //死亡
+            Die();
         }
+    }
+
+    public void Die()
+    {
+        hp = 0;
+        isDead = true;
+        MessageManager.Instance.Get<PlayerMessage>().DispatchMessage(PlayerMessage.Die, this);
     }
 }
 
 public enum PlayerMessage
 {
     UIRefresh,
-
+    FartAmount,
+    Die
 }
