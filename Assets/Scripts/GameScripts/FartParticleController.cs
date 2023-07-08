@@ -38,7 +38,8 @@ public class FartParticleController : MonoBehaviour
 
     public void LightEmission()
     {
-        particle.Play();
+        if(!particle.isEmitting)
+            particle.Play();
     }
     public void EndLightEmission()
     {
