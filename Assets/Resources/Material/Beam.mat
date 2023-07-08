@@ -7,12 +7,12 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HighlightEdge
-  m_Shader: {fileID: -6465566751694194690, guid: 99f8fd190f8b1954080ff3c9a4594ca1,
+  m_Name: Beam
+  m_Shader: {fileID: -6465566751694194690, guid: 2442131ce6c7c144a80eb16cd04d8b45,
     type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords:
-  - ETC1_EXTERNAL_ALPHA
+  m_ValidKeywords:
+  - _DIRECTION
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -23,7 +23,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 83520248c63ffff4fbd151df08a70010, type: 3}
+        m_Texture: {fileID: 2800000, guid: 84bc948f5c3f1a94a92d5aedb88f2084, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -40,16 +40,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Vector1_C7F869F5: 0.1
-    - _Angle: 360
-    - _AngleOffset: 0
-    - _ShadowDepth: -0.5
-    - _ShadowIntensity: 0.5
+    - _DIRECTION: 1
+    - _InvFade: 1.57
+    - _Speed: 1
+    - _Width: 0
     m_Colors:
-    - _Center: {r: 0.5, g: 0.5, b: 0, a: 0}
-    - _Color: {r: 2, g: 2, b: 2, a: 0}
-    - _LightOffset: {r: 0.16581656, g: 0.111775115, b: 0, a: 0}
-    - _Offset: {r: -0.18616652, g: -0.06764111, b: -0.02768941, a: 0}
-    - _ShadowOffset: {r: -0.16581656, g: -0.111775115, b: 0, a: 0}
-    - _TilingAndOffset: {r: 0.00074308284, g: 0.028520862, b: 0.99851376, a: 0.97073597}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Range: {r: -2, g: 4, b: 0, a: 0}
+    - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
   m_BuildTextureStacks: []

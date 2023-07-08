@@ -279,7 +279,7 @@ MonoBehaviour:
   maxHP: 0
   touchDis: 5
   pushForce: 10
-  threshold: 1
+  threshold: 2
 --- !u!60 &6092374437610706294
 PolygonCollider2D:
   m_ObjectHideFlags: 0
