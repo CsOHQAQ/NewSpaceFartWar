@@ -7,18 +7,18 @@ public class FartParticleController : MonoBehaviour
     public float fartLastingTime = 5f;
     public float fartDMGSec = 4f;
 
-    private ParticleSystem particleSystem;
+    private ParticleSystem particleSys;
     // Start is called before the first frame update
     void Start()
     {
-        particleSystem = GetComponent<ParticleSystem>();
+        particleSys = GetComponent<ParticleSystem>();
     }
 
     private void OnParticleTrigger()
     {
         List<ParticleSystem.Particle> insideP=new List<ParticleSystem.Particle>();
         ParticleSystem.ColliderData collider=new ParticleSystem.ColliderData();
-        int numInside= particleSystem.GetTriggerParticles(ParticleSystemTriggerEventType.Inside,insideP,out collider);
+        int numInside= particleSys.GetTriggerParticles(ParticleSystemTriggerEventType.Inside,insideP,out collider);
         for(int i=0;i<numInside;i++)
         {
             ParticleSystem.Particle p = insideP[i];
@@ -44,16 +44,16 @@ public class FartParticleController : MonoBehaviour
 
     public void LightEmission()
     {
-        if(!particleSystem.isEmitting)
-            particleSystem.Play();
+        if(!particleSys.isEmitting)
+            particleSys.Play();
     }
     public void EndLightEmission()
     {
-        particleSystem.Stop();
+        particleSys.Stop();
     }
     public void HeavyEmission()
     {
-        particleSystem.Emit(10);
+        particleSys.Emit(10);
     }
 
 }
