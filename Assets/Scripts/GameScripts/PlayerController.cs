@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
         if (player.GetButtonDown("Heavy") && counter <= 0)
         {
             counter = animationCounter;
-            body.AddForce(transform.right * bigFart, ForceMode2D.Impulse);
+            body.AddForce(transform.localScale.x * transform.right * bigFart, ForceMode2D.Impulse);
             heavyParticle.HeavyEmission();
         }
 
@@ -117,8 +117,8 @@ public class PlayerController : MonoBehaviour
                     {
                         springJoint.enabled = false;
                         distanceJoint.enabled = false;
-                        touchingBody.AddForceAtPosition(transform.right * pushForce, touchingPos, ForceMode2D.Impulse);
-                        body.AddForce(-transform.right * pushForce, ForceMode2D.Impulse);
+                        touchingBody.AddForceAtPosition(transform.localScale.x * transform.right * pushForce, touchingPos, ForceMode2D.Impulse);
+                        body.AddForce(-transform.localScale.x * transform.right * pushForce, ForceMode2D.Impulse);
                         touchingBody = null;
                         touchState = TouchState.None;
                     }
