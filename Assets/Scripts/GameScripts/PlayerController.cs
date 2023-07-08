@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
 
     private float hp;
 
+    private FartParticleController lightParticle;
+    private FartParticleController heavyParticle;
     private Player player;
     private Rigidbody2D body;
     private float counter;
@@ -21,6 +23,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        lightParticle = transform.Find("LightFartParticle").GetComponent<FartParticleController>();
+        heavyParticle = transform.Find("HeavyFartParticle").GetComponent<FartParticleController>();
         body = GetComponent<Rigidbody2D>();
         GetComponent<SpringJoint2D>().enabled = false;
         player = ReInput.players.GetPlayer(playerIndex);
@@ -33,6 +37,7 @@ public class PlayerController : MonoBehaviour
         {
             counter = animationCounter;
             body.AddForce(transform.up * bigFart, ForceMode2D.Impulse);
+            fartParticleController.HeavyEmission();
         }
 
         if (touching)
@@ -73,6 +78,7 @@ public class PlayerController : MonoBehaviour
             transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", true);
             Transform trans = transform.Find("Spaceman/FartPos");
             body.AddForceAtPosition(trans.up * rotateFart, trans.position);
+            fartParticleController.LightEmission();
         }
         else if (!player.GetButton("LightLeft") && player.GetButton("LightRight"))
         {
@@ -80,10 +86,13 @@ public class PlayerController : MonoBehaviour
             transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", true);
             Transform trans = transform.Find("Spaceman/FartPos");
             body.AddForceAtPosition(trans.up * rotateFart, trans.position);
+
+            fartParticleController.LightEmission();
         }
         else
         {
             transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", false);
+            fartParticleController.EndLightEmission();
         }
     }
 
