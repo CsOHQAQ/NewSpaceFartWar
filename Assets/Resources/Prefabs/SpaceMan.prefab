@@ -215,6 +215,7 @@ GameObject:
   - component: {fileID: 6838250315792460221}
   - component: {fileID: 6092374437610706294}
   - component: {fileID: -2892109591088834607}
+  - component: {fileID: 8000170980119056610}
   m_Layer: 0
   m_Name: SpaceMan
   m_TagString: Untagged
@@ -274,9 +275,10 @@ MonoBehaviour:
   playerIndex: 0
   bigFart: 10
   animationCounter: 0.6
-  rotateFart: -5
+  rotateFart: 4
   maxHP: 0
-  touchDis: 1.5
+  touchDis: 2
+  pushForce: 10
 --- !u!60 &6092374437610706294
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -338,6 +340,26 @@ DistanceJoint2D:
   m_AutoConfigureDistance: 0
   m_Distance: 0.005
   m_MaxDistanceOnly: 0
+--- !u!231 &8000170980119056610
+SpringJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6666551939919964343}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 0, y: 0}
+  m_AutoConfigureDistance: 1
+  m_Distance: 1
+  m_DampingRatio: 0
+  m_Frequency: 1
 --- !u!1 &7171077395021509815
 GameObject:
   m_ObjectHideFlags: 0
