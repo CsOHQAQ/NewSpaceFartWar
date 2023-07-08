@@ -183,9 +183,9 @@ GameObject:
   - component: {fileID: 4768982745140205529}
   - component: {fileID: 6182398027720335549}
   - component: {fileID: 6838250315792460221}
-  - component: {fileID: 6092374437610706294}
   - component: {fileID: -2892109591088834607}
   - component: {fileID: 8000170980119056610}
+  - component: {fileID: 8485048472492638048}
   m_Layer: 0
   m_Name: SpaceMan
   m_TagString: Untagged
@@ -226,7 +226,7 @@ Rigidbody2D:
   m_LinearDrag: 1
   m_AngularDrag: 0.2
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 625bb593cc23c914291c57da8c2d19b2, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -248,51 +248,11 @@ MonoBehaviour:
   animationCounter: 0.6
   rotateFart: 4
   maxHP: 0
+  maxAirAmount: 100
   touchDis: 5
-  pushForce: 5
+  pushForce: 8
+  throwForce: 3
   threshold: 2
---- !u!60 &6092374437610706294
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6666551939919964343}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.42936757, y: -0.66610265}
-      - {x: 0.31201094, y: -0.18137139}
-      - {x: 0.39091602, y: 0.23354095}
-      - {x: 0.48061633, y: 0.66452247}
-      - {x: 0.38780338, y: 0.74958193}
-      - {x: 0.32702875, y: 1.16033}
-      - {x: 0.037460953, y: 1.2479045}
-      - {x: -0.08333536, y: 1.2014008}
-      - {x: -0.18965878, y: 1.0248752}
-      - {x: -0.41216385, y: 0.9801689}
-      - {x: -0.52576494, y: 0.5260449}
-      - {x: -0.5414311, y: 0.10640451}
-      - {x: -0.44249588, y: -0.3827043}
-      - {x: -0.39676926, y: -0.6703979}
-      - {x: -0.5191257, y: -1.1809226}
-      - {x: -0.28762305, y: -1.5013334}
-      - {x: 0.36172915, y: -0.9726265}
 --- !u!232 &-2892109591088834607
 DistanceJoint2D:
   m_ObjectHideFlags: 0
@@ -332,6 +292,22 @@ SpringJoint2D:
   m_Distance: 0.005
   m_DampingRatio: 0
   m_Frequency: 1
+--- !u!70 &8485048472492638048
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6666551939919964343}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.06}
+  m_Size: {x: 0.83, y: 2.23}
+  m_Direction: 0
 --- !u!1 &7171077395021509815
 GameObject:
   m_ObjectHideFlags: 0

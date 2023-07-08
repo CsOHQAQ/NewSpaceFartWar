@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public float maxAirAmount=100;
     public float touchDis;
     public float pushForce;
+    public float throwForce;
     public float threshold;
 
     private float hp;
@@ -35,6 +36,7 @@ public class PlayerController : MonoBehaviour
     private FartParticleController heavyParticle;
     private Player player;
     private Rigidbody2D body;
+    private Animator animator;
     private float counter;
     private float touchCounter;
     private Rigidbody2D touchingBody;
@@ -56,15 +58,14 @@ public class PlayerController : MonoBehaviour
         touchState = TouchState.None;
         hp = maxHP;
         airAmount = maxAirAmount;
-
-
-
+        animator = transform.Find("Spaceman").GetComponent<Animator>();
     }
 
     private void Update()
     {
         if (player.GetButtonDown("Heavy") && counter <= 0)
         {
+            animator.SetTrigger("Fart");
             counter = animationCounter;
             body.AddForce(transform.localScale.x * transform.right * bigFart, ForceMode2D.Impulse);
             heavyParticle.HeavyEmission();
@@ -75,6 +76,7 @@ public class PlayerController : MonoBehaviour
             case TouchState.None:
                 if (player.GetButtonDown("Touch"))
                 {
+                    animator.SetTrigger("Catch");
                     Transform trans = transform.Find("Spaceman/TouchPos");
                     RaycastHit2D[] raycasts = Physics2D.RaycastAll(trans.position, trans.up, touchDis);
                     foreach (var ray in raycasts)
@@ -129,12 +131,14 @@ public class PlayerController : MonoBehaviour
                 }
                 if (touchCounter < 0 || Vector2.Distance(touchingPos, transform.TransformPoint(body.centerOfMass)) < threshold)
                 {
+                    animator.SetTrigger("Touch");
                     springJoint.enabled = false;
                     distanceJoint.enabled = true;
                     touchState = TouchState.Touch;
                 }
                 if (player.GetButtonDown("Touch"))
                 {
+                    animator.SetTrigger("Stop");
                     springJoint.enabled = false;
                     distanceJoint.enabled = false;
                     touchingBody = null;
@@ -146,6 +150,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (player.GetButtonDown("Touch"))
                     {
+                        animator.SetTrigger("Stop");
                         springJoint.enabled = false;
                         distanceJoint.enabled = false;
                         touchingBody = null;
@@ -153,10 +158,19 @@ public class PlayerController : MonoBehaviour
                     }
                     else if (player.GetButtonDown("Push"))
                     {
+                        animator.SetTrigger("Throw");
                         springJoint.enabled = false;
                         distanceJoint.enabled = false;
-                        touchingBody.AddForceAtPosition(transform.localScale.x * transform.right.normalized * pushForce, touchingBody.centerOfMass, ForceMode2D.Impulse);
-                        body.AddForce(-transform.localScale.x * transform.right.normalized * pushForce, ForceMode2D.Impulse);
+                        if (touchingBody != null && touchingBody.mass > body.mass * 1.1f)
+                        {
+                            touchingBody.AddForceAtPosition(transform.localScale.x * transform.right.normalized * pushForce, touchingBody.centerOfMass, ForceMode2D.Impulse);
+                            body.AddForce(-transform.localScale.x * transform.right.normalized * pushForce, ForceMode2D.Impulse);
+                        }
+                        else
+                        {
+                            touchingBody.AddForceAtPosition(transform.localScale.x * transform.right.normalized * throwForce, touchingBody.centerOfMass, ForceMode2D.Impulse);
+                            body.AddForce(-transform.localScale.x * transform.right.normalized * throwForce, ForceMode2D.Impulse);
+                        }
                         touchingBody = null;
                         touchState = TouchState.None;
                     }
@@ -167,11 +181,11 @@ public class PlayerController : MonoBehaviour
         if (counter > 0)
         {
             counter -= Time.deltaTime;
-            transform.Find("Spaceman").GetComponent<Animator>().SetBool("Speed", true);
+            //animator.SetBool("Speed", true);
         }
         else
         {
-            transform.Find("Spaceman").GetComponent<Animator>().SetBool("Speed", false);
+            //animator.SetBool("Speed", false);
         }
 
         MessageManager.Instance.Get<PlayerMessage>().DispatchMessage(PlayerMessage.UIRefresh, this, new UIArgs<float>(hp/maxHP));//发送的两个参数分别为血量百分比和空气槽百分比
@@ -182,20 +196,23 @@ public class PlayerController : MonoBehaviour
     {
         if (player.GetButton("LightLeft") && !player.GetButton("LightRight"))
         {
-            transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", true);
-            if (touchingBody != null && touchingBody.mass > body.mass)
+            animator.SetBool("RotateForward", true);
+            animator.SetBool("RotateBackward", false);
+            if (touchingBody != null && touchingBody.mass > body.mass * 1.1f)
             {
                 body.AddRelativeForce(-Vector2.up * rotateFart);
             }
             else
             {
+                
                 body.AddTorque(rotateFart);
             }
             lightParticle.LightEmission();
         }
         else if (!player.GetButton("LightLeft") && player.GetButton("LightRight"))
         {
-            transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", true);
+            animator.SetBool("RotateBackward", true);
+            animator.SetBool("RotateForward", false);
             if (touchingBody != null && touchingBody.mass > body.mass)
             {
                 body.AddRelativeForce(Vector2.up * rotateFart);
@@ -208,7 +225,8 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", false);
+            animator.SetBool("RotateBackward", false);
+            animator.SetBool("RotateForward", false);
             lightParticle.EndLightEmission();
         }
     }
