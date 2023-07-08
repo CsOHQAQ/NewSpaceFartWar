@@ -20,15 +20,19 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D body;
     private float counter;
     private bool touching;
+    private bool isFacingRight;
+    private AnchoredJoint2D springJoint2D;
 
     private void Start()
     {
-        lightParticle = transform.Find("LightFartParticle").GetComponent<FartParticleController>();
-        heavyParticle = transform.Find("HeavyFartParticle").GetComponent<FartParticleController>();
+        springJoint2D = GetComponent<AnchoredJoint2D>();
+		lightParticle = transform.Find("Spaceman/FartPos/LightFartParticle").GetComponent<FartParticleController>();
+        heavyParticle = transform.Find("Spaceman/FartPos/HeavyFartParticle").GetComponent<FartParticleController>();
         body = GetComponent<Rigidbody2D>();
-        GetComponent<SpringJoint2D>().enabled = false;
+        springJoint2D.enabled = false;
         player = ReInput.players.GetPlayer(playerIndex);
         hp = maxHP;
+        isFacingRight = true;
     }
 
     private void Update()
@@ -37,15 +41,20 @@ public class PlayerController : MonoBehaviour
         {
             counter = animationCounter;
             body.AddForce(transform.up * bigFart, ForceMode2D.Impulse);
-            fartParticleController.HeavyEmission();
+            heavyParticle.HeavyEmission();
+        }
+
+        if (player.GetButtonDown("LightLeft"))
+        {
+            TurnTo(!isFacingRight);
         }
 
         if (touching)
         {
             if (player.GetButtonDown("Touch"))
             {
-                SpringJoint2D springJoint2D = GetComponent<SpringJoint2D>();
                 springJoint2D.enabled = false;
+                touching = false;
             }
         }
         else
@@ -72,6 +81,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        /*
         if (player.GetButton("LightLeft") && !player.GetButton("LightRight"))
         {
             TurnTo(false);
@@ -92,12 +102,26 @@ public class PlayerController : MonoBehaviour
         else
         {
             transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", false);
-            fartParticleController.EndLightEmission();
+        }*/
+        if (player.GetButton("LightRight"))
+        {
+            transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", true);
+            //Transform trans = transform.Find("Spaceman/FartPos");
+            //body.AddForceAtPosition(trans.up * rotateFart, trans.position);
+            body.AddTorque(isFacingRight ? -rotateFart : rotateFart);
+			lightParticle.LightEmission();
+        }
+        else
+        {
+            transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", false);
+
+			lightParticle.EndLightEmission();
         }
     }
 
     private void TurnTo(bool right)
     {
+        isFacingRight = right;
         transform.Find("Spaceman").localScale = new Vector3(right ? 1 : -1, 1, 1);
     }
 
@@ -119,7 +143,6 @@ public class PlayerController : MonoBehaviour
         {
             if (ray.rigidbody != null && ray.rigidbody != body)
             {
-                SpringJoint2D springJoint2D = GetComponent<SpringJoint2D>();
                 springJoint2D.enabled = true;
                 springJoint2D.enableCollision = true;
                 springJoint2D.anchor = body.centerOfMass;
