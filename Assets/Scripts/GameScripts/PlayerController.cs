@@ -5,12 +5,20 @@ using Rewired;
 
 public class PlayerController : MonoBehaviour
 {
+    public enum TouchState
+    {
+        None,
+        Pull,
+        Touch,
+    }
+
     public int playerIndex;
     public float bigFart;
     public float animationCounter;
     public float rotateFart;
     public float maxHP;
     public float touchDis;
+    public float pushForce;
 
     private float hp;
 
@@ -19,20 +27,24 @@ public class PlayerController : MonoBehaviour
     private Player player;
     private Rigidbody2D body;
     private float counter;
-    private bool touching;
-    private bool isFacingRight;
-    private AnchoredJoint2D springJoint2D;
+    private Rigidbody2D touchingBody;
+    private SpringJoint2D springJoint;
+    private DistanceJoint2D distanceJoint;
+    private Vector3 touchingPos;
+    private TouchState touchState;
 
     private void Start()
     {
-        springJoint2D = GetComponent<AnchoredJoint2D>();
+        springJoint = GetComponent<SpringJoint2D>();
+        distanceJoint = GetComponent<DistanceJoint2D>();
 		lightParticle = transform.Find("Spaceman/FartPos/LightFartParticle").GetComponent<FartParticleController>();
         heavyParticle = transform.Find("Spaceman/FartPos/HeavyFartParticle").GetComponent<FartParticleController>();
         body = GetComponent<Rigidbody2D>();
-        springJoint2D.enabled = false;
+        springJoint.enabled = false;
+        distanceJoint.enabled = false;
         player = ReInput.players.GetPlayer(playerIndex);
+        touchState = TouchState.None;
         hp = maxHP;
-        isFacingRight = true;
     }
 
     private void Update()
@@ -40,26 +52,30 @@ public class PlayerController : MonoBehaviour
         if (player.GetButtonDown("Heavy") && counter <= 0)
         {
             counter = animationCounter;
-            body.AddForce(transform.up * bigFart, ForceMode2D.Impulse);
+            body.AddForce(transform.right * bigFart, ForceMode2D.Impulse);
             heavyParticle.HeavyEmission();
         }
 
-        if (touching)
+        if (touchingBody != null)
         {
             if (player.GetButtonDown("Touch"))
             {
-                springJoint2D.enabled = false;
-                touching = false;
+                springJoint.enabled = false;
+                touchingBody = null;
+            }
+            else if (player.GetButtonDown("Push"))
+            {
+                springJoint.enabled = false;
+                touchingBody.AddForceAtPosition(transform.right * pushForce, touchingPos, ForceMode2D.Impulse);
+                body.AddForce(-transform.right * pushForce, ForceMode2D.Impulse);
+                touchingBody = null;
             }
         }
         else
         {
             if (player.GetButtonDown("Touch"))
             {
-                if (TryTouch())
-                {
-                    touching = true;
-                }
+                TryTouch();
             }
         }
 
@@ -78,20 +94,28 @@ public class PlayerController : MonoBehaviour
     {
         if (player.GetButton("LightLeft") && !player.GetButton("LightRight"))
         {
-            //TurnTo(false);
             transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", true);
-            //Transform trans = transform.Find("Spaceman/FartPos");
-            //body.AddForceAtPosition(trans.up * rotateFart, trans.position);
-            body.AddTorque(-rotateFart);
+            if (touchingBody != null && touchingBody.mass > body.mass)
+            {
+                body.AddRelativeForce(-Vector2.up * rotateFart);
+            }
+            else
+            {
+                body.AddTorque(rotateFart);
+            }
             lightParticle.LightEmission();
         }
         else if (!player.GetButton("LightLeft") && player.GetButton("LightRight"))
         {
-            //TurnTo(true);
             transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", true);
-            //Transform trans = transform.Find("Spaceman/FartPos");
-            //body.AddForceAtPosition(trans.up * rotateFart, trans.position);
-            body.AddTorque(rotateFart);
+            if (touchingBody != null && touchingBody.mass > body.mass)
+            {
+                body.AddRelativeForce(Vector2.up * rotateFart);
+            }
+            else
+            {
+                body.AddTorque(-rotateFart);
+            }
             lightParticle.LightEmission();
         }
         else
@@ -99,27 +123,13 @@ public class PlayerController : MonoBehaviour
             transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", false);
             lightParticle.EndLightEmission();
         }
-        /*if (player.GetButton("LightRight"))
-        {
-            transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", true);
-            //Transform trans = transform.Find("Spaceman/FartPos");
-            //body.AddForceAtPosition(trans.up * rotateFart, trans.position);
-            body.AddTorque(isFacingRight ? -rotateFart : rotateFart);
-			lightParticle.LightEmission();
-        }
-        else
-        {
-            transform.Find("Spaceman").GetComponent<Animator>().SetBool("Rotate", false);
-
-			lightParticle.EndLightEmission();
-        }*/
     }
 
-    private void TurnTo(bool right)
+    /*private void TurnTo(bool right)
     {
         isFacingRight = right;
         transform.Find("Spaceman").localScale = new Vector3(right ? 1 : -1, 1, 1);
-    }
+    }*/
 
     public void Hurt(float damage)
     {
@@ -139,11 +149,13 @@ public class PlayerController : MonoBehaviour
         {
             if (ray.rigidbody != null && ray.rigidbody != body)
             {
-                springJoint2D.enabled = true;
-                springJoint2D.enableCollision = true;
-                springJoint2D.anchor = body.centerOfMass;
-                springJoint2D.connectedBody = ray.rigidbody;
-                springJoint2D.connectedAnchor = ray.rigidbody.transform.InverseTransformPoint(ray.point + (Vector2)trans.up * 0.1f);
+                springJoint.enabled = true;
+                springJoint.enableCollision = true;
+                springJoint.anchor = body.centerOfMass;
+                springJoint.connectedBody = ray.rigidbody;
+                touchingPos = ray.point + (Vector2)trans.up * 0.1f;
+                springJoint.connectedAnchor = ray.rigidbody.transform.InverseTransformPoint(touchingPos);
+                touchingBody = ray.rigidbody;
                 return true;
             }
         }
