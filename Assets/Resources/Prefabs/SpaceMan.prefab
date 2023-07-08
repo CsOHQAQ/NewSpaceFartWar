@@ -245,6 +245,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerIndex: 0
   bigFart: 10
+  bigFartAttack: 6
   animationCounter: 0.6
   rotateFart: 4
   maxHP: 100
@@ -254,6 +255,7 @@ MonoBehaviour:
   heavyAirConsume: 25
   lightAirConsumeSpeed: 20
   touchDis: 5
+  heavyAttackDis: 1.5
   pushForce: 8
   throwForce: 10
   threshold: 2

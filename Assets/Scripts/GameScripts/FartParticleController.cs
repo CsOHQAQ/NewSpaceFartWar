@@ -53,7 +53,7 @@ public class FartParticleController : MonoBehaviour
     }
     public void HeavyEmission()
     {
-        particleSys.Emit(10);
+        particleSys.Emit(15);
     }
 
 }
