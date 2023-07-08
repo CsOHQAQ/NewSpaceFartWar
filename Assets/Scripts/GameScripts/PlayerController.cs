@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
 
     public int playerIndex;
     public float bigFart;
+    public float bigFartAttack;
     public float animationCounter;
     public float rotateFart;
     public float maxHP=100;
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
     public float heavyAirConsume;
     public float lightAirConsumeSpeed;
     public float touchDis;
+    public float heavyAttackDis;
     public float pushForce;
     public float throwForce;
     public float threshold;
@@ -68,13 +70,7 @@ public class PlayerController : MonoBehaviour
     {
         if (player.GetButtonDown("Heavy") && counter <= 0)
         {
-            if (UseAir(heavyAirConsume))
-            {
-                animator.SetTrigger("Fart");
-                counter = animationCounter;
-                body.AddForce(transform.localScale.x * transform.right * bigFart, ForceMode2D.Impulse);
-                heavyParticle.HeavyEmission();
-            }
+            HeavyFart();
         }
 
         switch (touchState)
@@ -156,11 +152,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (player.GetButtonDown("Touch"))
                     {
-                        animator.SetTrigger("Stop");
-                        springJoint.enabled = false;
-                        distanceJoint.enabled = false;
-                        touchingBody = null;
-                        touchState = TouchState.None;
+                        Release();
                     }
                     else if (player.GetButtonDown("Push"))
                     {
@@ -174,6 +166,10 @@ public class PlayerController : MonoBehaviour
                         }
                         else
                         {
+                            if (touchingBody.TryGetComponent<PlayerController>(out var com))
+                            {
+                                com.Release();
+                            }
                             touchingBody.AddForce(transform.localScale.x * transform.right.normalized * throwForce, ForceMode2D.Impulse);
                             body.AddForce(-transform.localScale.x * transform.right.normalized * throwForce, ForceMode2D.Impulse);
                         }
@@ -204,6 +200,43 @@ public class PlayerController : MonoBehaviour
 
         MessageManager.Instance.Get<PlayerMessage>().DispatchMessage(PlayerMessage.UIRefresh, this, new UIArgs<float>(hp / maxHP));
         MessageManager.Instance.Get<PlayerMessage>().DispatchMessage(PlayerMessage.FartAmount, this, new UIArgs<float>(airAmount / maxAirAmount));
+    }
+
+    private void HeavyFart()
+    {
+        if (UseAir(heavyAirConsume))
+        {
+            HashSet<Rigidbody2D> rigs = new HashSet<Rigidbody2D>();
+            Transform trans = transform.Find("Spaceman/FartPos");
+            for (float i = 0; i <= 21; i += 10)
+            {
+                RaycastHit2D[] raycasts;
+                raycasts = Physics2D.RaycastAll(trans.position, ((Vector2)trans.up).Rotate(i), heavyAttackDis);
+                foreach (var hit in raycasts)
+                {
+                    if (hit.rigidbody != null && hit.rigidbody != body)
+                    {
+                        rigs.Add(hit.rigidbody);
+                    }
+                }
+                raycasts = Physics2D.RaycastAll(trans.position, ((Vector2)trans.up).Rotate(-i), heavyAttackDis);
+                foreach (var hit in raycasts)
+                {
+                    if (hit.rigidbody != null && hit.rigidbody != body)
+                    {
+                        rigs.Add(hit.rigidbody);
+                    }
+                }
+                foreach (var rig in rigs)
+                {
+                    rig.AddForce(trans.up * bigFartAttack, ForceMode2D.Impulse);
+                }
+            }
+            animator.SetTrigger("Fart");
+            counter = animationCounter;
+            body.AddForce(transform.localScale.x * transform.right * bigFart, ForceMode2D.Impulse);
+            heavyParticle.HeavyEmission();
+        }
     }
 
     private void FixedUpdate()
@@ -270,6 +303,15 @@ public class PlayerController : MonoBehaviour
         hp = 0;
         isDead = true;
         MessageManager.Instance.Get<PlayerMessage>().DispatchMessage(PlayerMessage.Die, this);
+    }
+
+    public void Release()
+    {
+        animator.SetTrigger("Stop");
+        springJoint.enabled = false;
+        distanceJoint.enabled = false;
+        touchingBody = null;
+        touchState = TouchState.None;
     }
 }
 

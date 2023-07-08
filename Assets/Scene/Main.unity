@@ -1178,7 +1178,7 @@ MonoBehaviour:
         _axisRange: 0
         _invert: 0
         _axisContribution: 0
-        _keyboardKeyCode: 115
+        _keyboardKeyCode: 103
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
@@ -1240,7 +1240,7 @@ MonoBehaviour:
         _axisRange: 0
         _invert: 0
         _axisContribution: 0
-        _keyboardKeyCode: 274
+        _keyboardKeyCode: 258
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
@@ -1262,7 +1262,7 @@ MonoBehaviour:
         _axisRange: 0
         _invert: 0
         _axisContribution: 0
-        _keyboardKeyCode: 256
+        _keyboardKeyCode: 257
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
