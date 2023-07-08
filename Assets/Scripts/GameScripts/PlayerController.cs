@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
 using QxFramework.Core;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -17,12 +18,18 @@ public class PlayerController : MonoBehaviour
     public float bigFart;
     public float animationCounter;
     public float rotateFart;
-    public float maxHP;
+    public float maxHP=100;
+    public float maxAirAmount=100;
     public float touchDis;
     public float pushForce;
     public float threshold;
 
     private float hp;
+    private float airAmount;
+    private float airRecoverSpeed;
+
+    private SlideBarUI healthSlide;
+    private SlideBarUI airSlide;
 
     private FartParticleController lightParticle;
     private FartParticleController heavyParticle;
@@ -48,6 +55,10 @@ public class PlayerController : MonoBehaviour
         player = ReInput.players.GetPlayer(playerIndex);
         touchState = TouchState.None;
         hp = maxHP;
+        airAmount = maxAirAmount;
+
+
+
     }
 
     private void Update()
@@ -162,6 +173,9 @@ public class PlayerController : MonoBehaviour
         {
             transform.Find("Spaceman").GetComponent<Animator>().SetBool("Speed", false);
         }
+
+        MessageManager.Instance.Get<PlayerMessage>().DispatchMessage(PlayerMessage.UIRefresh, this, new UIArgs<float>(hp/maxHP));//发送的两个参数分别为血量百分比和空气槽百分比
+
     }
 
     private void FixedUpdate()
@@ -208,4 +222,10 @@ public class PlayerController : MonoBehaviour
             //死亡
         }
     }
+}
+
+public enum PlayerMessage
+{
+    UIRefresh,
+
 }

@@ -7,29 +7,35 @@ public class FartParticleController : MonoBehaviour
     public float fartLastingTime = 5f;
     public float fartDMGSec = 4f;
 
-    private ParticleSystem particle;
+    private ParticleSystem particleSystem;
     // Start is called before the first frame update
     void Start()
     {
-        particle = GetComponent<ParticleSystem>();
+        particleSystem = GetComponent<ParticleSystem>();
     }
 
     private void OnParticleTrigger()
     {
         List<ParticleSystem.Particle> insideP=new List<ParticleSystem.Particle>();
         ParticleSystem.ColliderData collider=new ParticleSystem.ColliderData();
-        int numInside= particle.GetTriggerParticles(ParticleSystemTriggerEventType.Inside,insideP,out collider);
+        int numInside= particleSystem.GetTriggerParticles(ParticleSystemTriggerEventType.Inside,insideP,out collider);
         for(int i=0;i<numInside;i++)
         {
             ParticleSystem.Particle p = insideP[i];
+            if (p.startLifetime - p.remainingLifetime < 0.5f || p.remainingLifetime < 0.5f)
+            {
+                Debug.Log("不在可伤害时间中，跳过伤害判定");
+                continue;
+            }
             if (collider.GetColliderCount(i)>0)
             {
                 for(int j=0;j<collider.GetColliderCount(i);j++)
                 {
                     PlayerController player= collider.GetCollider(i, j).gameObject.GetComponent<PlayerController>();
-                    if (player!= null) ;
+                    Debug.Log($"正在对玩家{player.playerIndex}造成伤害");
+                    if (player!= null)
                     {
-                        player.Hurt(Time.deltaTime*4f);
+                        player.Hurt(Time.deltaTime*0.5f);
                     }
                 }
             }
@@ -38,15 +44,16 @@ public class FartParticleController : MonoBehaviour
 
     public void LightEmission()
     {
-        particle.Play();
+        if(!particleSystem.isEmitting)
+            particleSystem.Play();
     }
     public void EndLightEmission()
     {
-        particle.Stop();
+        particleSystem.Stop();
     }
     public void HeavyEmission()
     {
-        particle.Emit(10);
+        particleSystem.Emit(10);
     }
 
 }

@@ -11,6 +11,10 @@ public class Titlemodule : Submodule {
     {
         QXData.Instance.SetTableAgent();
         GameMgr.Instance.InitModules();
-        LevelManager.Instance.OpenLevel("Game", null);
+        LevelManager.Instance.OpenLevel("Game", LoadCompleted);
+    }
+    private void LoadCompleted(string levelName)
+    {
+        UIManager.Instance.Open("HealthBarUI");
     }
 }
