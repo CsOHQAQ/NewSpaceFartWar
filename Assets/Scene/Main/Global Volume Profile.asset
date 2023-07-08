@@ -54,3 +54,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   components:
   - {fileID: -4785595621260612992}
+  - {fileID: 7479776280938803547}
+--- !u!114 &7479776280938803547
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1ffef9f754328243a0e56e9dba5990e, type: 3}
+  m_Name: Twist
+  m_EditorClassIdentifier: 
+  active: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.1
+  renderTexture:
+    m_OverrideState: 1
+    m_Value: {fileID: 8400000, guid: f3984d36927f66f4aa3719d6866dd630, type: 2}
