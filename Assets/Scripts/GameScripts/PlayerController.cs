@@ -168,7 +168,7 @@ public class PlayerController : MonoBehaviour
             transform.Find("Spaceman").GetComponent<Animator>().SetBool("Speed", false);
         }
 
-        MessageManager.Instance.Get<PlayerMessage>().DispatchMessage(PlayerMessage.UIRefresh, this, new UIArgs<Tuple<float, float>>(new Tuple<float, float>(hp / maxHP, airAmount / maxAirAmount)));//发送的两个参数分别为血量百分比和空气槽百分比
+        MessageManager.Instance.Get<PlayerMessage>().DispatchMessage(PlayerMessage.UIRefresh, this, new UIArgs<float>(hp/maxHP));//发送的两个参数分别为血量百分比和空气槽百分比
 
     }
 
