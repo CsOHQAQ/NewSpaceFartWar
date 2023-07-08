@@ -326,15 +326,15 @@ DistanceJoint2D:
   m_GameObject: {fileID: 6666551939919964343}
   m_Enabled: 0
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
-  m_AutoConfigureDistance: 1
-  m_Distance: 0.5
+  m_AutoConfigureDistance: 0
+  m_Distance: 0.005
   m_MaxDistanceOnly: 0
 --- !u!1 &7171077395021509815
 GameObject:
