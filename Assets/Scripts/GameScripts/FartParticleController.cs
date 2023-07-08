@@ -4,19 +4,16 @@ using UnityEngine;
 
 public class FartParticleController : MonoBehaviour
 {
+    public float fartLastingTime = 5f;
+    public float fartDMGSec = 4f;
+
     private ParticleSystem particle;
-    private ParticleSystem.TriggerModule triggerModule;
     // Start is called before the first frame update
     void Start()
     {
         particle = GetComponent<ParticleSystem>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     private void OnParticleTrigger()
     {
         List<ParticleSystem.Particle> insideP=new List<ParticleSystem.Particle>();
@@ -29,10 +26,28 @@ public class FartParticleController : MonoBehaviour
             {
                 for(int j=0;j<collider.GetColliderCount(i);j++)
                 {
-                    GameObject go= collider.GetCollider(i, j).gameObject;
-                    Debug.Log(go.name);
+                    PlayerController player= collider.GetCollider(i, j).gameObject.GetComponent<PlayerController>();
+                    if (player!= null) ;
+                    {
+                        player.Hurt(Time.deltaTime*4f);
+                    }
                 }
             }
         }
     }
+
+    public void LightEmission()
+    {
+        particle.Play();
+    }
+    public void EndLightEmission()
+    {
+        particle.Stop();
+    }
+    public void HeavyEmission()
+    {
+        particle.Emit(10);
+    }
+
 }
+
