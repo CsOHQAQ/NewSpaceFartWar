@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public float maxHP;
     public float touchDis;
     public float pushForce;
+    public float threshold;
 
     private float hp;
 
@@ -56,27 +57,73 @@ public class PlayerController : MonoBehaviour
             heavyParticle.HeavyEmission();
         }
 
-        if (touchingBody != null)
+        switch (touchState)
         {
-            if (player.GetButtonDown("Touch"))
-            {
-                springJoint.enabled = false;
-                touchingBody = null;
-            }
-            else if (player.GetButtonDown("Push"))
-            {
-                springJoint.enabled = false;
-                touchingBody.AddForceAtPosition(transform.right * pushForce, touchingPos, ForceMode2D.Impulse);
-                body.AddForce(-transform.right * pushForce, ForceMode2D.Impulse);
-                touchingBody = null;
-            }
-        }
-        else
-        {
-            if (player.GetButtonDown("Touch"))
-            {
-                TryTouch();
-            }
+            case TouchState.None:
+                if (player.GetButtonDown("Touch"))
+                {
+                    Transform trans = transform.Find("Spaceman/TouchPos");
+                    RaycastHit2D[] raycasts = Physics2D.RaycastAll(trans.position, trans.up, touchDis);
+                    foreach (var ray in raycasts)
+                    {
+                        if (ray.rigidbody != null && ray.rigidbody != body)
+                        {
+                            touchingPos = ray.point + (Vector2)trans.up * 0.1f;
+                            touchingBody = ray.rigidbody;
+
+                            springJoint.enabled = true;
+                            springJoint.enableCollision = true;
+                            springJoint.anchor = body.centerOfMass;
+                            springJoint.connectedBody = ray.rigidbody;
+                            springJoint.connectedAnchor = ray.rigidbody.transform.InverseTransformPoint(touchingPos);
+
+                            distanceJoint.enabled = false;
+                            distanceJoint.enableCollision = true;
+                            distanceJoint.anchor = body.centerOfMass;
+                            distanceJoint.connectedBody = ray.rigidbody;
+                            distanceJoint.connectedAnchor = ray.rigidbody.transform.InverseTransformPoint(touchingPos);
+                            touchState = TouchState.Pull;
+                            break;
+                        }
+                    }
+                }
+                break;
+            case TouchState.Pull:
+                if (Vector2.Distance(touchingPos, transform.TransformPoint(body.centerOfMass)) < threshold)
+                {
+                    springJoint.enabled = false;
+                    distanceJoint.enabled = true;
+                    touchState = TouchState.Touch;
+                }
+                if (player.GetButtonDown("Touch"))
+                {
+                    springJoint.enabled = false;
+                    distanceJoint.enabled = false;
+                    touchingBody = null;
+                    touchState = TouchState.None;
+                }
+                break;
+            case TouchState.Touch:
+                if (touchingBody != null)
+                {
+                    if (player.GetButtonDown("Touch"))
+                    {
+                        springJoint.enabled = false;
+                        distanceJoint.enabled = false;
+                        touchingBody = null;
+                        touchState = TouchState.None;
+                    }
+                    else if (player.GetButtonDown("Push"))
+                    {
+                        springJoint.enabled = false;
+                        distanceJoint.enabled = false;
+                        touchingBody.AddForceAtPosition(transform.right * pushForce, touchingPos, ForceMode2D.Impulse);
+                        body.AddForce(-transform.right * pushForce, ForceMode2D.Impulse);
+                        touchingBody = null;
+                        touchState = TouchState.None;
+                    }
+                }
+                break;
         }
 
         if (counter > 0)
@@ -125,12 +172,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    /*private void TurnTo(bool right)
-    {
-        isFacingRight = right;
-        transform.Find("Spaceman").localScale = new Vector3(right ? 1 : -1, 1, 1);
-    }*/
-
     public void Hurt(float damage)
     {
         hp -= damage;
@@ -139,26 +180,5 @@ public class PlayerController : MonoBehaviour
         {
             //À¿Õˆ
         }
-    }
-
-    public bool TryTouch()
-    {
-        Transform trans = transform.Find("Spaceman/TouchPos");
-        RaycastHit2D[] raycasts = Physics2D.RaycastAll(trans.position, trans.up, touchDis);
-        foreach (var ray in raycasts)
-        {
-            if (ray.rigidbody != null && ray.rigidbody != body)
-            {
-                springJoint.enabled = true;
-                springJoint.enableCollision = true;
-                springJoint.anchor = body.centerOfMass;
-                springJoint.connectedBody = ray.rigidbody;
-                touchingPos = ray.point + (Vector2)trans.up * 0.1f;
-                springJoint.connectedAnchor = ray.rigidbody.transform.InverseTransformPoint(touchingPos);
-                touchingBody = ray.rigidbody;
-                return true;
-            }
-        }
-        return false;
     }
 }

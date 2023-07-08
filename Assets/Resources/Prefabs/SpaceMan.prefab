@@ -277,8 +277,9 @@ MonoBehaviour:
   animationCounter: 0.6
   rotateFart: 4
   maxHP: 0
-  touchDis: 2
+  touchDis: 5
   pushForce: 10
+  threshold: 1
 --- !u!60 &6092374437610706294
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -356,8 +357,8 @@ SpringJoint2D:
   m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
-  m_AutoConfigureDistance: 1
-  m_Distance: 1
+  m_AutoConfigureDistance: 0
+  m_Distance: 0.005
   m_DampingRatio: 0
   m_Frequency: 1
 --- !u!1 &7171077395021509815
