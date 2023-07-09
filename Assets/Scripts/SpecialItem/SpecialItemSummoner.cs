@@ -4,12 +4,13 @@ using UnityEngine;
 using QxFramework.Core;
 public class SpecialItemSummoner : MonoBehaviour
 {
+    
     public float summonInterval=20f;
-    private float curCount=0;
-    private SpecialItem[] specialItems;
+    private float curCount=0f;
+    private GameObject[] specialItems;
     void Start()
     {
-        specialItems = ResourceManager.Instance.LoadAll<SpecialItem>("Prefabs/Item");
+        specialItems = ResourceManager.Instance.LoadAll<GameObject>("Prefabs/Item");
     }
 
     // Update is called once per frame
@@ -26,7 +27,9 @@ public class SpecialItemSummoner : MonoBehaviour
     public void SummonItem()
     {
         int itemID=Random.Range(0, specialItems.Length);
-        SpecialItem item = ResourceManager.Instance.Instantiate($"Prefabs/Item/{specialItems[itemID].name}").GetComponent<SpecialItem>();
+        Debug.Log($"准备生成{specialItems[itemID].name}");
+        //GameObject testObj= ResourceManager.Instance.Instantiate("Prefabs/Item/BeanPot");
+        GameObject go = ResourceManager.Instance.Instantiate($"Prefabs/Item/{specialItems[itemID].name}");
         float screenX= Camera.main.orthographicSize * Camera.main.aspect, screenY= Camera.main.orthographicSize;
         int direction= Random.Range(0, 4);
         float x=0, y=0;
@@ -35,30 +38,30 @@ public class SpecialItemSummoner : MonoBehaviour
             case 0://上
                 {
                     x = (Random.value * 2 - 1) * screenX; y = screenY + 5f;
-                    item.transform.position = new Vector3(x, y);
+                    go.transform.position = new Vector3(x, y);
                     break;
                 }
                 case 1://下
                 {
                     x = (Random.value * 2 - 1) * screenX; y = -screenY - 5f;
-                    item.transform.position = new Vector3(x, y);
+                    go.transform.position = new Vector3(x, y);
                     break;
                 }
                 case 2://左
                 {
                     x = -screenX - 5f; y = (Random.value * 2 - 1) * screenY;
-                    item.transform.position = new Vector3(x, y);
+                    go.transform.position = new Vector3(x, y);
                     break;
                 }
                 case 3://右
                 {
                     x = screenX + 5f; y = (Random.value * 2 - 1) * screenY;
-                    item.transform.position = new Vector3(x, y);
+                    go.transform.position = new Vector3(x, y);
                     break;
                 }
         }
 
-        item.GetComponent<Rigidbody2D>().velocity = (new Vector3(x, y, 0) - new Vector3()).normalized * 1.5f;
-        item.GetComponent<Rigidbody2D>().angularVelocity = Random.Range(-1f, 1f);
+        go.GetComponent<Rigidbody2D>().velocity = new Vector3(-x,-y).normalized * 1.5f;
+        go.GetComponent<Rigidbody2D>().angularVelocity = Random.Range(-1f, 1f);
     }
 }

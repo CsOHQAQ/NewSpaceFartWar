@@ -9,9 +9,10 @@ public class Exploder : MonoBehaviour
     public int explodePiece = 6;
     public float explodeForce = 10f;
     public float explodeSpeed = 5f;
-    public bool explodable = false;
+    private bool explodable = false;
     private void Start()
     {
+        explodable = false;
         MessageManager.Instance.Get<PlayerController.TouchState>().RegisterHandler(PlayerController.TouchState.Throw, SetExplodable);
     }
     private void OnCollisionEnter2D(Collision2D collision)
