@@ -25,42 +25,47 @@ public class Exploder : MonoBehaviour
     
     private void SetExplodable(System.Object sender, EventArgs arg)
     {
-        if (this== null)
+        if (this == null)
             return;
-        UIArgs<Rigidbody2D> rigbody=(UIArgs<Rigidbody2D>)arg;
+        UIArgs<Rigidbody2D> rigbody = (UIArgs<Rigidbody2D>)arg;
         GameObject gameObj = rigbody.Data.gameObject;
-        if (gameObj.GetHashCode()==this.gameObject.GetHashCode())
+        if (gameObj.GetHashCode() == this.gameObject.GetHashCode())
         {
             explodable = true;
         }
     }
 
-     private void Explode()
+    private void Explode()
     {
-        GetComponent<PolygonCollider2D>().enabled = false;
+        /*GetComponent<PolygonCollider2D>().enabled = false;
         for (int i = 1; i <= explodePiece; i++)
         {
             float curAngle = 2 * 3.14f * i / explodePiece;
             GameObject piece = ResourceManager.Instance.Instantiate("Prefabs/Trash/Debris (6)");
             piece.transform.position = transform.position + new Vector3(Mathf.Cos(curAngle), Mathf.Sin(curAngle));
-            piece.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(curAngle), Mathf.Sin(curAngle)) * explodeForce);
+            piece.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(curAngle), Mathf.Sin(curAngle)) * explodeForce, ForceMode2D.Impulse);
             //piece.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos(curAngle), Mathf.Sin(curAngle)) * explodeForce;
         }
+        ObjectPool.Recycle(this.gameObject);*/
+        Launcher.Instance.StartCoroutine(LateSummonExplode(transform.position));
         ObjectPool.Recycle(this.gameObject);
     }
+
     private IEnumerator LateSummonExplode(Vector2 pos)
     {
         Debug.Log("跳过第一帧");
-        yield return 0;
+        yield return new WaitForSeconds(0.05f);
         Debug.Log("开始执行后续");
         for (int i = 1; i <= explodePiece; i++)
         {
             float curAngle = 2 * 3.14f * i / explodePiece;
-            GameObject piece = ResourceManager.Instance.Instantiate("Prefabs/Trash/Debris (6)");
+            GameObject piece = ResourceManager.Instance.Instantiate($"Prefabs/Explode/Debris ({i})");
+            ResourceManager.Instance.Instantiate("Prefabs/Effect/Diffuse").transform.position = pos;
+            ResourceManager.Instance.Instantiate("Prefabs/Effect/Flash").transform.position = pos;
             piece.transform.position = pos + new Vector2(Mathf.Cos(curAngle), Mathf.Sin(curAngle));
-            //piece.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(curAngle), Mathf.Sin(curAngle)) * explodeForce);
-            piece.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos(curAngle), Mathf.Sin(curAngle)) * explodeForce;
+            Rigidbody2D rig = piece.GetComponent<Rigidbody2D>();
+            rig.WakeUp();
+            rig.AddForce(new Vector2(Mathf.Cos(curAngle), Mathf.Sin(curAngle)) * explodeForce, ForceMode2D.Impulse);
         }
-
     }
 }
