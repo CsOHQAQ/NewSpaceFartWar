@@ -478,7 +478,7 @@ public class PlayerController : MonoBehaviour
         UIArgs<float> uIArgs = arg as UIArgs<float>;
         float addTime = uIArgs.Data;
         saberTime += addTime;
-        LightSaber saber=(LightSaber)sender;
+        lightSaber=(LightSaber)sender;
     }
 }
 
