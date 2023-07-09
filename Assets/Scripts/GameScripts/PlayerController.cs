@@ -293,6 +293,7 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("Fart");
             counter = animationCounter;
             body.AddForce(transform.localScale.x * transform.right * bigFart*Time.deltaTime, ForceMode2D.Impulse);
+            body.AddForceAtPosition(transform.localScale.x * transform.right * bigFart * Time.deltaTime, GetComponent<Rigidbody2D>().centerOfMass + (Vector2)transform.position, ForceMode2D.Impulse);
             if(lightSaber!=null)
             {
                 lightSaber.Dash(transform.localScale.x * transform.right * bigFart,this);

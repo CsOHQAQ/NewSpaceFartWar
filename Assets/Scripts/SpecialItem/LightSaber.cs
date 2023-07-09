@@ -29,6 +29,7 @@ public class LightSaber : SpecialItem
             {
                 continue;
             }
+
             Rigidbody2D rig=obj.GetComponent<Rigidbody2D>();
             if(rig != null)
             {
