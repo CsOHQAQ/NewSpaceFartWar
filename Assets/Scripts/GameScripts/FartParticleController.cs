@@ -16,10 +16,9 @@ public class FartParticleController : MonoBehaviour
 
     private void OnParticleTrigger()
     {
-        List<ParticleSystem.Particle> insideP=new List<ParticleSystem.Particle>();
-        ParticleSystem.ColliderData collider=new ParticleSystem.ColliderData();
-        int numInside= particleSys.GetTriggerParticles(ParticleSystemTriggerEventType.Inside,insideP,out collider);
-        for(int i=0;i<numInside;i++)
+        List<ParticleSystem.Particle> insideP = new List<ParticleSystem.Particle>();
+        int numInside = particleSys.GetTriggerParticles(ParticleSystemTriggerEventType.Inside, insideP, out var collider);
+        for (int i = 0; i < numInside; i++)
         {
             ParticleSystem.Particle p = insideP[i];
             if (p.startLifetime - p.remainingLifetime < 0.5f || p.remainingLifetime < 0.5f)
@@ -27,15 +26,15 @@ public class FartParticleController : MonoBehaviour
                 Debug.Log("不在可伤害时间中，跳过伤害判定");
                 continue;
             }
-            if (collider.GetColliderCount(i)>0)
+            if (collider.GetColliderCount(i) > 0)
             {
-                for(int j=0;j<collider.GetColliderCount(i);j++)
+                for (int j = 0; j < collider.GetColliderCount(i); j++)
                 {
-                    PlayerController player= collider.GetCollider(i, j).gameObject.GetComponent<PlayerController>();
+                    PlayerController player = collider.GetCollider(i, j).gameObject.GetComponent<PlayerController>();
                     Debug.Log($"正在对玩家{player.playerIndex}造成伤害");
-                    if (player!= null)
+                    if (player != null)
                     {
-                        player.Hurt(Time.deltaTime*0.5f);
+                        player.Hurt(Time.deltaTime * 0.5f);
                     }
                 }
             }

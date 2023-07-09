@@ -63,6 +63,9 @@ public class PlayerController : MonoBehaviour
         }
     }
     public float threshold;
+    public AnimationCurve stunGain;
+    public AnimationCurve collisionDamage;
+    public AnimationCurve collisionStun;
 
     public bool isDead = false;
 
@@ -77,6 +80,7 @@ public class PlayerController : MonoBehaviour
     private float counter;
     private float touchCounter;
     private float airCounter;
+    private float stunCounter;
     private Rigidbody2D touchingBody;
     private SpringJoint2D springJoint;
     private DistanceJoint2D distanceJoint;
@@ -113,95 +117,85 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (player.GetButtonDown("Heavy") && counter <= 0)
+        if (stunCounter <= 0)
         {
-            HeavyFart();
-        }
-        if (saberTime > 0)
-        {
-
-        }
-        else//在光剑时间结束前无法抓取东西
-        {
-            switch (touchState)
+            if (player.GetButtonDown("Heavy") && counter <= 0)
             {
-                case TouchState.None:
-                    if (player.GetButtonDown("Touch"))
-                    {
-                        animator.SetTrigger("Catch");
-                        Transform trans = transform.Find("Spaceman/TouchPos");
-                        RaycastHit2D[] raycasts = Physics2D.RaycastAll(trans.position, trans.up, touchDis);
-                        foreach (var ray in raycasts)
+                HeavyFart();
+            }
+            if (saberTime <= 0)//在光剑时间结束前无法抓取东西
+            {
+                switch (touchState)
+                {
+                    case TouchState.None:
+                        if (player.GetButtonDown("Touch"))
                         {
-                            if (ray.rigidbody != null && ray.rigidbody != body)
+                            animator.SetTrigger("Catch");
+                            Transform trans = transform.Find("Spaceman/TouchPos");
+                            RaycastHit2D[] raycasts = Physics2D.RaycastAll(trans.position, trans.up, touchDis);
+                            foreach (var ray in raycasts)
                             {
-                                touchingPos = ray.point + (Vector2)trans.up * 0.1f;
-                                touchingBody = ray.rigidbody;
+                                if (ray.rigidbody != null && ray.rigidbody != body)
+                                {
+                                    touchingPos = ray.point + (Vector2)trans.up * 0.1f;
+                                    touchingBody = ray.rigidbody;
 
-                                springJoint.enabled = true;
-                                springJoint.enableCollision = true;
-                                springJoint.anchor = body.centerOfMass;
-                                springJoint.connectedBody = ray.rigidbody;
-                                springJoint.connectedAnchor = ray.rigidbody.transform.InverseTransformPoint(touchingPos);
+                                    springJoint.enabled = true;
+                                    springJoint.enableCollision = true;
+                                    springJoint.anchor = body.centerOfMass;
+                                    springJoint.connectedBody = ray.rigidbody;
+                                    springJoint.connectedAnchor = ray.rigidbody.transform.InverseTransformPoint(touchingPos);
 
-                                distanceJoint.enabled = false;
-                                distanceJoint.enableCollision = true;
-                                distanceJoint.anchor = body.centerOfMass;
-                                distanceJoint.connectedBody = ray.rigidbody;
-                                distanceJoint.connectedAnchor = ray.rigidbody.transform.InverseTransformPoint(touchingPos);
-                                touchState = TouchState.Pull;
-                                touchCounter = 0.6f;
-                                break;
+                                    distanceJoint.enabled = false;
+                                    distanceJoint.enableCollision = true;
+                                    distanceJoint.anchor = body.centerOfMass;
+                                    distanceJoint.connectedBody = ray.rigidbody;
+                                    distanceJoint.connectedAnchor = ray.rigidbody.transform.InverseTransformPoint(touchingPos);
+                                    touchState = TouchState.Pull;
+                                    touchCounter = 0.6f;
+                                    break;
+                                }
+                            }
+                            if (touchState == TouchState.Pull)
+                            {
+                                GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Effect/Line2");
+                                go.transform.position = new Vector3();
+                                LineRenderer line = go.GetComponent<LineRenderer>();
+                                line.positionCount = 2;
+                                go.GetComponent<SyncLinePos>().SetPos(trans, trans.position, touchingBody.transform, touchingPos);
+                                go = ResourceManager.Instance.Instantiate("Prefabs/Effect/TouchEffect");
+                                go.transform.position = touchingPos;
+                                go.transform.eulerAngles = new Vector3(0, 0, 180 + transform.eulerAngles.z);
+                            }
+                            else
+                            {
+                                GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Effect/Line1");
+                                go.transform.SetParent(transform);
+                                go.transform.position = new Vector3();
+                                LineRenderer line = go.GetComponent<LineRenderer>();
+                                line.positionCount = 2;
+                                go.GetComponent<SyncLinePos>().SetPos(trans, trans.position, trans, trans.position + (trans.up * touchDis));
                             }
                         }
-                        if (touchState == TouchState.Pull)
+                        break;
+                    case TouchState.Pull:
+                        if (touchCounter > 0)
                         {
-                            GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Effect/Line2");
-                            go.transform.position = new Vector3();
-                            LineRenderer line = go.GetComponent<LineRenderer>();
-                            line.positionCount = 2;
-                            go.GetComponent<SyncLinePos>().SetPos(trans, trans.position, touchingBody.transform, touchingPos);
-                            go = ResourceManager.Instance.Instantiate("Prefabs/Effect/TouchEffect");
-                            go.transform.position = touchingPos;
-                            go.transform.eulerAngles = new Vector3(0, 0, 180 + transform.eulerAngles.z);
+                            touchCounter -= Time.deltaTime;
                         }
-                        else
+                        if (touchCounter < 0 || Vector2.Distance(touchingPos, transform.TransformPoint(body.centerOfMass)) < threshold)
                         {
-                            GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Effect/Line1");
-                            go.transform.SetParent(transform);
-                            go.transform.position = new Vector3();
-                            LineRenderer line = go.GetComponent<LineRenderer>();
-                            line.positionCount = 2;
-                            go.GetComponent<SyncLinePos>().SetPos(trans, trans.position, trans, trans.position + (trans.up * touchDis));
-                        }
-                    }
-                    break;
-                case TouchState.Pull:
-                    if (touchCounter > 0)
-                    {
-                        touchCounter -= Time.deltaTime;
-                    }
-                    if (touchCounter < 0 || Vector2.Distance(touchingPos, transform.TransformPoint(body.centerOfMass)) < threshold)
-                    {
-                        animator.SetTrigger("Touch");
-                        springJoint.enabled = false;
-                        distanceJoint.enabled = true;
-                        touchState = TouchState.Touch;
+                            animator.SetTrigger("Touch");
+                            springJoint.enabled = false;
+                            distanceJoint.enabled = true;
+                            touchState = TouchState.Touch;
 
-                        if (touchingBody.GetComponent<SpecialItem>() != null)
-                        {
-                            SpecialItem specialItem = touchingBody.GetComponent<SpecialItem>();
-                            specialItem.Use();
+                            if (touchingBody.GetComponent<SpecialItem>() != null)
+                            {
+                                SpecialItem specialItem = touchingBody.GetComponent<SpecialItem>();
+                                specialItem.Use();
+                            }
                         }
-                    }
-                    if (player.GetButtonDown("Touch"))
-                    {
-                        Release();
-                    }
-                    break;
-                case TouchState.Touch:
-                    if (touchingBody != null)
-                    {
                         if (player.GetButtonDown("Touch"))
                         {
                             animator.SetTrigger("Stop");
@@ -210,46 +204,81 @@ public class PlayerController : MonoBehaviour
                             touchingBody = null;
                             touchState = TouchState.None;
                         }
-                        else if (player.GetButtonDown("Push"))
+                        break;
+                    case TouchState.Touch:
+                        if (touchingBody != null)
                         {
-                            if (touchingBody.TryGetComponent<PlayerController>(out var com))
+                            if (player.GetButtonDown("Touch"))
                             {
-                                com.Release();
+                                Release();
                             }
-                            touchingBody.AddForce(transform.localScale.x * transform.right.normalized * throwForce, ForceMode2D.Impulse);
-                            body.AddForce(-transform.localScale.x * transform.right.normalized * throwForce, ForceMode2D.Impulse);
+                            else if (player.GetButtonDown("Push"))
+                            {
+                                MessageManager.Instance.Get<TouchState>().DispatchMessage(TouchState.Throw, this, new UIArgs<Rigidbody2D>(touchingBody));
+                                animator.SetTrigger("Throw");
+                                springJoint.enabled = false;
+                                distanceJoint.enabled = false;
+                                if (touchingBody != null && touchingBody.mass > body.mass * 1.1f)
+                                {
+                                    touchingBody.AddForceAtPosition(transform.localScale.x * transform.right.normalized * pushForce, touchingBody.centerOfMass, ForceMode2D.Impulse);
+                                    body.AddForce(-transform.localScale.x * transform.right.normalized * pushForce, ForceMode2D.Impulse);
+                                }
+                                else
+                                {
+                                    if (touchingBody.TryGetComponent<PlayerController>(out var com))
+                                    {
+                                        com.Release();
+                                        com.Hurt(10);
+                                        com.Stun(3);
+                                    }
+                                    touchingBody.AddForce(transform.localScale.x * transform.right.normalized * throwForce, ForceMode2D.Impulse);
+                                    body.AddForce(-transform.localScale.x * transform.right.normalized * throwForce, ForceMode2D.Impulse);
+                                }
+                                touchingBody = null;
+                                touchState = TouchState.None;
 
-                            MessageManager.Instance.Get<TouchState>().DispatchMessage(TouchState.Throw, this, new UIArgs<Rigidbody2D>(touchingBody));
-                            animator.SetTrigger("Throw");
+                                MessageManager.Instance.Get<TouchState>().DispatchMessage(TouchState.Throw, this, new UIArgs<Rigidbody2D>(touchingBody));
+                                animator.SetTrigger("Throw");
+                                springJoint.enabled = false;
+                                distanceJoint.enabled = false;
+                                if (touchingBody != null && touchingBody.mass > body.mass * 1.1f)
+                                {
+                                    touchingBody.AddForceAtPosition(transform.localScale.x * transform.right.normalized * PushForce, touchingBody.centerOfMass, ForceMode2D.Impulse);
+                                    body.AddForce(-transform.localScale.x * transform.right.normalized * PushForce, ForceMode2D.Impulse);
+                                }
+                                else
+                                {
+                                    touchingBody.AddForce(transform.localScale.x * transform.right.normalized * ThrowForce, ForceMode2D.Impulse);
+                                    body.AddForce(-transform.localScale.x * transform.right.normalized * ThrowForce, ForceMode2D.Impulse);
+                                }
+                                touchingBody = null;
+                                touchState = TouchState.None;
+                            }
+                        }
+                        else//这一段是菊花为了防止使用拾取后道具自己销毁导致卡状态
+                        {
                             springJoint.enabled = false;
                             distanceJoint.enabled = false;
-                            if (touchingBody != null && touchingBody.mass > body.mass * 1.1f)
-                            {
-                                touchingBody.AddForceAtPosition(transform.localScale.x * transform.right.normalized * PushForce, touchingBody.centerOfMass, ForceMode2D.Impulse);
-                                body.AddForce(-transform.localScale.x * transform.right.normalized * PushForce, ForceMode2D.Impulse);
-                            }
-                            else
-                            {
-                                touchingBody.AddForce(transform.localScale.x * transform.right.normalized * ThrowForce, ForceMode2D.Impulse);
-                                body.AddForce(-transform.localScale.x * transform.right.normalized * ThrowForce, ForceMode2D.Impulse);
-                            }
-                            touchingBody = null;
                             touchState = TouchState.None;
                         }
-                    }
-                    else//这一段是菊花为了防止使用拾取后道具自己销毁导致卡状态
-                    {
-                        springJoint.enabled = false;
-                        distanceJoint.enabled = false;
-                        touchState = TouchState.None;
-                    }
-                    break;
+                        break;
+                }
             }
         }
 
         if (counter > 0)
         {
             counter -= Time.deltaTime;
+        }
+
+        if (stunCounter > 0)
+        {
+            stunCounter -= Time.deltaTime;
+            transform.Find("Spaceman/Stun").gameObject.SetActive(true);
+        }
+        else
+        {
+            transform.Find("Spaceman/Stun").gameObject.SetActive(false);
         }
 
         if (airCounter > 0)
@@ -280,7 +309,6 @@ public class PlayerController : MonoBehaviour
             if (saberTime <= 0)
             {
                 ObjectPool.Recycle(touchingBody.gameObject);
-
             }
         }
 
@@ -316,6 +344,11 @@ public class PlayerController : MonoBehaviour
                 foreach (var rig in rigs)
                 {
                     rig.AddForce(trans.up * bigFartAttack, ForceMode2D.Impulse);
+                    if (rig.TryGetComponent(out PlayerController player))
+                    {
+                        player.Hurt(10);
+                        player.Stun(3);
+                    }
                 }
             }
             animator.SetTrigger("Fart");
@@ -327,7 +360,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (player.GetButton("LightLeft") && !player.GetButton("LightRight") && UseAir(lightAirConsumeSpeed * Time.fixedDeltaTime))
+        if (player.GetButton("LightLeft") && !player.GetButton("LightRight") && stunCounter <= 0 && UseAir(lightAirConsumeSpeed * Time.fixedDeltaTime))
         {
             animator.SetBool("RotateForward", true);
             animator.SetBool("RotateBackward", false);
@@ -337,12 +370,11 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                
                 body.AddTorque(RotateFart);
             }
             lightParticle.LightEmission();
         }
-        else if (!player.GetButton("LightLeft") && player.GetButton("LightRight") && UseAir(lightAirConsumeSpeed * Time.fixedDeltaTime))
+        else if (!player.GetButton("LightLeft") && player.GetButton("LightRight") && stunCounter <= 0 && UseAir(lightAirConsumeSpeed * Time.fixedDeltaTime))
         {
             animator.SetBool("RotateBackward", true);
             animator.SetBool("RotateForward", false);
@@ -375,6 +407,11 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
+    public void Stun(float time)
+    {
+        stunCounter = time * stunGain.Evaluate(hp / maxHP);
+    }
+
     public void Hurt(float damage)
     {
         hp -= damage;
@@ -388,7 +425,11 @@ public class PlayerController : MonoBehaviour
     {
         hp = 0;
         isDead = true;
+        ResourceManager.Instance.Instantiate("Prefabs/Effect/Die").transform.position = transform.position;
+        gameObject.SetActive(false);
+        MessageManager.Instance.Get<PlayerMessage>().DispatchMessage(PlayerMessage.UIRefresh, this, new UIArgs<float>(hp / maxHP));
         MessageManager.Instance.Get<PlayerMessage>().DispatchMessage(PlayerMessage.Die, this);
+        MessageManager.Instance.Get<OffsetControlType>().DispatchMessage(OffsetControlType.Shake, this, new OffsetArgs(0.5f, 0.3f));
     }
 
     public void Release()
@@ -398,6 +439,20 @@ public class PlayerController : MonoBehaviour
         distanceJoint.enabled = false;
         touchingBody = null;
         touchState = TouchState.None;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.attachedRigidbody != null && collision.collider.attachedRigidbody != touchingBody && !collision.collider.attachedRigidbody.TryGetComponent<PlayerController>(out _))
+        {
+            Debug.Log(Mathf.Pow(collision.relativeVelocity.magnitude, 2) * collision.collider.attachedRigidbody.mass / 2);
+            float damage = collisionDamage.Evaluate(collision.relativeVelocity.magnitude);
+            if (damage > 0)
+            {
+                Hurt(damage);
+                Stun(collisionStun.Evaluate(collision.relativeVelocity.magnitude));
+            }
+        }
     }
 
     public void UseBeanPot(System.Object sender, EventArgs arg)

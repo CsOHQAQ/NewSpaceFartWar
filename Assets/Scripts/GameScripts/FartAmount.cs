@@ -17,7 +17,8 @@ public class FartAmount : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         MessageManager.Instance.Get<PlayerMessage>().RegisterHandler(PlayerMessage.FartAmount, (sender, args) =>
         {
-            if (sender is PlayerController player && player.playerIndex == GetComponentInParent<PlayerController>().playerIndex)
+            PlayerController playerController = GetComponentInParent<PlayerController>();
+            if (sender is PlayerController player && playerController != null && player.playerIndex == playerController.playerIndex)
             {
                 amount = 1 - (args as UIArgs<float>).Data;
             }
