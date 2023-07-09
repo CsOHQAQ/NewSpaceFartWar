@@ -223,7 +223,7 @@ public class PlayerController : MonoBehaviour
                                 animator.SetTrigger("Throw");
                                 springJoint.enabled = false;
                                 distanceJoint.enabled = false;
-                                if (touchingBody != null && touchingBody.mass > body.mass * 1.1f)
+                                if (touchingBody != null && touchingBody.mass > body.mass * 2f)
                                 {
                                     touchingBody.AddForceAtPosition(transform.localScale.x * transform.right.normalized * pushForce, touchingBody.centerOfMass, ForceMode2D.Impulse);
                                     body.AddForce(-transform.localScale.x * transform.right.normalized * pushForce, ForceMode2D.Impulse);
@@ -238,23 +238,6 @@ public class PlayerController : MonoBehaviour
                                     }
                                     touchingBody.AddForce(transform.localScale.x * transform.right.normalized * throwForce, ForceMode2D.Impulse);
                                     body.AddForce(-transform.localScale.x * transform.right.normalized * throwForce, ForceMode2D.Impulse);
-                                }
-                                touchingBody = null;
-                                touchState = TouchState.None;
-
-                                MessageManager.Instance.Get<TouchState>().DispatchMessage(TouchState.Throw, this, new UIArgs<Rigidbody2D>(touchingBody));
-                                animator.SetTrigger("Throw");
-                                springJoint.enabled = false;
-                                distanceJoint.enabled = false;
-                                if (touchingBody != null && touchingBody.mass > body.mass * 1.1f)
-                                {
-                                    touchingBody.AddForceAtPosition(transform.localScale.x * transform.right.normalized * PushForce, touchingBody.centerOfMass, ForceMode2D.Impulse);
-                                    body.AddForce(-transform.localScale.x * transform.right.normalized * PushForce, ForceMode2D.Impulse);
-                                }
-                                else
-                                {
-                                    touchingBody.AddForce(transform.localScale.x * transform.right.normalized * ThrowForce, ForceMode2D.Impulse);
-                                    body.AddForce(-transform.localScale.x * transform.right.normalized * ThrowForce, ForceMode2D.Impulse);
                                 }
                                 touchingBody = null;
                                 touchState = TouchState.None;

@@ -23,7 +23,7 @@ public class FartParticleController : MonoBehaviour
             ParticleSystem.Particle p = insideP[i];
             if (p.startLifetime - p.remainingLifetime < 0.5f || p.remainingLifetime < 0.5f)
             {
-                Debug.Log("不在可伤害时间中，跳过伤害判定");
+                //Debug.Log("不在可伤害时间中，跳过伤害判定");
                 continue;
             }
             if (collider.GetColliderCount(i) > 0)
@@ -31,7 +31,7 @@ public class FartParticleController : MonoBehaviour
                 for (int j = 0; j < collider.GetColliderCount(i); j++)
                 {
                     PlayerController player = collider.GetCollider(i, j).gameObject.GetComponent<PlayerController>();
-                    Debug.Log($"正在对玩家{player.playerIndex}造成伤害");
+                    //Debug.Log($"正在对玩家{player.playerIndex}造成伤害");
                     if (player != null)
                     {
                         player.Hurt(Time.deltaTime * 0.5f);

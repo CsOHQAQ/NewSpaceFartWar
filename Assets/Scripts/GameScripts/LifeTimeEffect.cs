@@ -21,7 +21,12 @@ public class LifeTimeEffect : MonoBehaviour
         }
         else
         {
-            ObjectPool.Recycle(gameObject);
+            DestroyThis();
         }
+    }
+
+    private void DestroyThis()
+    {
+        ObjectPool.Recycle(gameObject);
     }
 }
