@@ -62,6 +62,7 @@ public class Exploder : MonoBehaviour
             GameObject piece = ResourceManager.Instance.Instantiate($"Prefabs/Explode/Debris ({i})");
             ResourceManager.Instance.Instantiate("Prefabs/Effect/Diffuse").transform.position = pos;
             ResourceManager.Instance.Instantiate("Prefabs/Effect/Flash").transform.position = pos;
+            MessageManager.Instance.Get<OffsetControlType>().DispatchMessage(OffsetControlType.Shake, this, new OffsetArgs(0.5f, 0.3f));
             piece.transform.position = pos + new Vector2(Mathf.Cos(curAngle), Mathf.Sin(curAngle));
             Rigidbody2D rig = piece.GetComponent<Rigidbody2D>();
             rig.WakeUp();

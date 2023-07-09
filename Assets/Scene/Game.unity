@@ -2236,7 +2236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explodePiece: 6
-  explodeForce: 7
+  explodeForce: 10
   explodeSpeed: 5
 --- !u!1001 &7864455868928240012
 PrefabInstance:
