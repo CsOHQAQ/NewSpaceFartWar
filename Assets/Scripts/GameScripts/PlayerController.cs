@@ -248,6 +248,7 @@ public class PlayerController : MonoBehaviour
                             springJoint.enabled = false;
                             distanceJoint.enabled = false;
                             touchState = TouchState.None;
+                            animator.SetTrigger("Stop");
                         }
                         break;
                 }
