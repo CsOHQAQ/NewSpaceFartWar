@@ -48,8 +48,8 @@ Material:
     m_Colors:
     - _Center: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _Color: {r: 3.9999995, g: 3.9999995, b: 3.9999995, a: 0}
-    - _LightOffset: {r: -0.014081717, g: -0.03743558, b: 0, a: 0}
+    - _LightOffset: {r: -0.039986666, g: -0.0007672217, b: 0, a: 0}
     - _Offset: {r: -0.18616652, g: -0.06764111, b: -0.02768941, a: 0}
-    - _ShadowOffset: {r: 0.021122575, g: 0.056153372, b: 0, a: 0}
+    - _ShadowOffset: {r: 0.05998, g: 0.0011508325, b: 0, a: 0}
     - _TilingAndOffset: {r: 0.00074308284, g: 0.028520862, b: 0.99851376, a: 0.97073597}
   m_BuildTextureStacks: []

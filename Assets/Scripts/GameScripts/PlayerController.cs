@@ -36,6 +36,16 @@ public class PlayerController : MonoBehaviour
     public float maxHP=100;
     public float maxAirAmount=100;
     public float airRecoverSpeed;
+    public float AirRecoverSpeed
+    {
+        get
+        {
+            if (beanPotTime > 0)
+                return airRecoverSpeed * beanPotIndex;
+            else
+                return airRecoverSpeed;
+        }
+    }
     public float airRecoverCounter;
     public float heavyAirConsume;
     public float lightAirConsumeSpeed;
@@ -89,7 +99,7 @@ public class PlayerController : MonoBehaviour
     private TouchState touchState;
 
     private float beanPotTime = 0f;
-    private float beanPotIndex = 1.5f;
+    private float beanPotIndex = 2f;
 
     private float saberTime = 0f;
     private float saberSpeed = 10f;
@@ -241,7 +251,7 @@ public class PlayerController : MonoBehaviour
                                     {
                                         com.Release();
                                         com.Hurt(10);
-                                        com.Stun(3);
+                                        com.Stun(1);
                                     }
                                     touchingBody.AddForce(transform.localScale.x * transform.right.normalized * throwForce, ForceMode2D.Impulse);
                                     body.AddForce(-transform.localScale.x * transform.right.normalized * throwForce, ForceMode2D.Impulse);
@@ -283,7 +293,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            airAmount += Time.deltaTime * airRecoverSpeed;
+            airAmount += Time.deltaTime * AirRecoverSpeed;
             if (airAmount > maxAirAmount)
             {
                 airAmount = maxAirAmount;
