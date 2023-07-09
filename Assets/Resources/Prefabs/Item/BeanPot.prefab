@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7864455868444390472}
   - component: {fileID: 7864455868444390479}
   - component: {fileID: 7864455868444390478}
-  - component: {fileID: 7864455868444390477}
   - component: {fileID: 7864455868444390473}
+  - component: {fileID: 3112455129175791177}
   m_Layer: 0
   m_Name: BeanPot
   m_TagString: Untagged
@@ -97,7 +97,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2ec54d62e38087f4ea6722a39f141f04, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f73334fbc2e35d446986344b31ae0428, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -108,8 +108,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &7864455868444390477
-BoxCollider2D:
+--- !u!114 &7864455868444390473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7864455868444390476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24a12513a721ff4daa4e1f00d49dd98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buffTime: 20
+--- !u!60 &3112455129175791177
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -125,24 +138,27 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.38, y: 1.37}
+    oldSize: {x: 2.7324457, y: 2.048}
     newSize: {x: 1.38, y: 1.37}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.38, y: 1.37}
-  m_EdgeRadius: 0
---- !u!114 &7864455868444390473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7864455868444390476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c24a12513a721ff4daa4e1f00d49dd98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Points:
+    m_Paths:
+    - - {x: 0.29967308, y: 0.7234795}
+      - {x: 0.6049323, y: 0.5938344}
+      - {x: 0.713027, y: 0.4895221}
+      - {x: 0.7252512, y: -0.5281489}
+      - {x: 0.6551156, y: -0.6596371}
+      - {x: 0.51689196, y: -0.77600133}
+      - {x: 0.27312088, y: -0.8618705}
+      - {x: -0.013521671, y: -0.89302254}
+      - {x: -0.2816062, y: -0.86410403}
+      - {x: -0.5481529, y: -0.77174044}
+      - {x: -0.6858325, y: -0.63822067}
+      - {x: -0.73624563, y: -0.51330805}
+      - {x: -0.7157831, y: 0.5097134}
+      - {x: -0.5503888, y: 0.63996387}
+      - {x: -0.3014989, y: 0.72510076}
+      - {x: -0.010383606, y: 0.7611685}

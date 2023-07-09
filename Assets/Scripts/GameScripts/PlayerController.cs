@@ -309,7 +309,6 @@ public class PlayerController : MonoBehaviour
             if (saberTime <= 0)
             {
                 ObjectPool.Recycle(touchingBody.gameObject);
-
             }
         }
 
@@ -371,7 +370,6 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                
                 body.AddTorque(RotateFart);
             }
             lightParticle.LightEmission();
@@ -445,7 +443,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.attachedRigidbody != null && collision.collider.attachedRigidbody != touchingBody)
+        if (collision.collider.attachedRigidbody != null && collision.collider.attachedRigidbody != touchingBody && !collision.collider.attachedRigidbody.TryGetComponent<PlayerController>(out _))
         {
             Debug.Log(Mathf.Pow(collision.relativeVelocity.magnitude, 2) * collision.collider.attachedRigidbody.mass / 2);
             float damage = collisionDamage.Evaluate(collision.relativeVelocity.magnitude);
