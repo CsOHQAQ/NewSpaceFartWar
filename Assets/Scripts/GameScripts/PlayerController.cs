@@ -457,6 +457,7 @@ public class PlayerController : MonoBehaviour
     {
         if (touchingBody == null || touchingBody.gameObject != ((SpecialItem)sender).gameObject)
             return;
+        ResourceManager.Instance.Instantiate("Prefabs/Effect/UseBean").transform.position = transform.position;
         UIArgs<float> uIArgs = arg as UIArgs<float>;
         float beanTime = uIArgs.Data;
         beanPotTime += beanTime;
@@ -465,6 +466,7 @@ public class PlayerController : MonoBehaviour
     {
         if (touchingBody == null || touchingBody.gameObject != ((SpecialItem)sender).gameObject)
             return;
+        ResourceManager.Instance.Instantiate("Prefabs/Effect/UseCream").transform.position = transform.position;
         UIArgs<float> uIArgs=arg as UIArgs<float>;
         float recHP = uIArgs.Data;
         Hurt(-recHP);
