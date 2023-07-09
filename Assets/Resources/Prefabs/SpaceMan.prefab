@@ -388,10 +388,10 @@ MonoBehaviour:
   rotateFart: 4
   maxHP: 100
   maxAirAmount: 100
-  airRecoverSpeed: 15
+  airRecoverSpeed: 25
   airRecoverCounter: 0.5
-  heavyAirConsume: 25
-  lightAirConsumeSpeed: 20
+  heavyAirConsume: 15
+  lightAirConsumeSpeed: 15
   touchDis: 5
   heavyAttackDis: 1.5
   pushForce: 8
