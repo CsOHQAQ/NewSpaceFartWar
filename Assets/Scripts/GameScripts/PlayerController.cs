@@ -412,6 +412,7 @@ public class PlayerController : MonoBehaviour
     public void Hurt(float damage)
     {
         hp -= damage;
+        hp = Mathf.Clamp(hp, 0, maxHP);
         if (hp < 0)
         {
             Die();
