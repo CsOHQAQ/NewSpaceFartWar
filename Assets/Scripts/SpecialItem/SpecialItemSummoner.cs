@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using QxFramework.Core;
 public class SpecialItemSummoner : MonoBehaviour
-{
-    
-    public float summonInterval=20f;
+{   
+    private float summonInterval=6f;
     private float curCount=0f;
     private GameObject[] specialItems;
     void Start()
@@ -61,7 +60,7 @@ public class SpecialItemSummoner : MonoBehaviour
                 }
         }
 
-        go.GetComponent<Rigidbody2D>().velocity = new Vector3(-x,-y).normalized * 1.5f;
+        go.GetComponent<Rigidbody2D>().velocity = new Vector3(-x,-y).normalized * 3f;
         go.GetComponent<Rigidbody2D>().angularVelocity = Random.Range(-1f, 1f);
     }
 }
