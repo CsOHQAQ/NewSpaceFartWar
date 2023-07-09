@@ -4,6 +4,7 @@ using UnityEngine;
 using Rewired;
 using QxFramework.Core;
 using System;
+using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
@@ -109,6 +110,10 @@ public class PlayerController : MonoBehaviour
         hp = maxHP;
         airAmount = maxAirAmount;
         animator = transform.Find("Spaceman").GetComponent<Animator>();
+        AudioSource audioSource = transform.Find("Heavy").GetComponent<AudioSource>();
+        audioSource.Stop();
+        audioSource = transform.Find("Light").GetComponent<AudioSource>();
+        audioSource.Stop();
 
         MessageManager.Instance.Get<SpecialItem.ItemFunc>().RegisterHandler(SpecialItem.ItemFunc.Cream, UseCream);
         MessageManager.Instance.Get<SpecialItem.ItemFunc>().RegisterHandler(SpecialItem.ItemFunc.BeanPot, UseBeanPot);
@@ -154,6 +159,8 @@ public class PlayerController : MonoBehaviour
                                     distanceJoint.connectedAnchor = ray.rigidbody.transform.InverseTransformPoint(touchingPos);
                                     touchState = TouchState.Pull;
                                     touchCounter = 0.6f;
+
+                                    AudioControl.Instance.PlaySound("Hit");
                                     break;
                                 }
                             }
@@ -319,6 +326,8 @@ public class PlayerController : MonoBehaviour
     {
         if (UseAir(heavyAirConsume))
         {
+            AudioSource audioSource = transform.Find("Heavy").GetComponent<AudioSource>();
+            audioSource.Play();
             HashSet<Rigidbody2D> rigs = new HashSet<Rigidbody2D>();
             Transform trans = transform.Find("Spaceman/FartPos");
             for (float i = 0; i <= 21; i += 10)
@@ -357,10 +366,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    bool isPlaying = false;
+
     private void FixedUpdate()
     {
         if (player.GetButton("LightLeft") && !player.GetButton("LightRight") && stunCounter <= 0 && UseAir(lightAirConsumeSpeed * Time.fixedDeltaTime))
         {
+            AudioSource audioSource = transform.Find("Light").GetComponent<AudioSource>();
+            if (!isPlaying)
+            {
+                isPlaying = true;
+                audioSource.Play();
+                audioSource.DOFade(1, 0.5f);
+            }
             animator.SetBool("RotateForward", true);
             animator.SetBool("RotateBackward", false);
             if (touchingBody != null && touchingBody.mass > body.mass * 1.1f)
@@ -375,6 +393,13 @@ public class PlayerController : MonoBehaviour
         }
         else if (!player.GetButton("LightLeft") && player.GetButton("LightRight") && stunCounter <= 0 && UseAir(lightAirConsumeSpeed * Time.fixedDeltaTime))
         {
+            AudioSource audioSource = transform.Find("Light").GetComponent<AudioSource>();
+            if (!isPlaying)
+            {
+                isPlaying = true;
+                audioSource.Play();
+                audioSource.DOFade(1, 0.5f);
+            }
             animator.SetBool("RotateBackward", true);
             animator.SetBool("RotateForward", false);
             if (touchingBody != null && touchingBody.mass > body.mass)
@@ -389,6 +414,9 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            AudioSource audioSource = transform.Find("Light").GetComponent<AudioSource>();
+            audioSource.DOFade(0, 0.5f);
+            isPlaying = false;
             animator.SetBool("RotateBackward", false);
             animator.SetBool("RotateForward", false);
             lightParticle.EndLightEmission();
@@ -415,7 +443,7 @@ public class PlayerController : MonoBehaviour
     {
         hp -= damage;
         hp = Mathf.Clamp(hp, 0, maxHP);
-        if (hp < 0)
+        if (hp <= 0)
         {
             Die();
         }

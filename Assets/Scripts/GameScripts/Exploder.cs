@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using QxFramework.Core;
 using System;
+using static UnityEditor.PlayerSettings;
 
 public class Exploder : MonoBehaviour
 {
@@ -47,6 +48,9 @@ public class Exploder : MonoBehaviour
             //piece.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos(curAngle), Mathf.Sin(curAngle)) * explodeForce;
         }
         ObjectPool.Recycle(this.gameObject);*/
+        ResourceManager.Instance.Instantiate("Prefabs/Effect/Diffuse").transform.position = transform.position;
+        ResourceManager.Instance.Instantiate("Prefabs/Effect/Flash").transform.position = transform.position;
+        AudioControl.Instance.PlaySound("Explode");
         Launcher.Instance.StartCoroutine(LateSummonExplode(transform.position));
         ObjectPool.Recycle(this.gameObject);
     }
@@ -60,8 +64,6 @@ public class Exploder : MonoBehaviour
         {
             float curAngle = 2 * 3.14f * i / explodePiece;
             GameObject piece = ResourceManager.Instance.Instantiate($"Prefabs/Explode/Debris ({i})");
-            ResourceManager.Instance.Instantiate("Prefabs/Effect/Diffuse").transform.position = pos;
-            ResourceManager.Instance.Instantiate("Prefabs/Effect/Flash").transform.position = pos;
             MessageManager.Instance.Get<OffsetControlType>().DispatchMessage(OffsetControlType.Shake, this, new OffsetArgs(0.5f, 0.3f));
             piece.transform.position = pos + new Vector2(Mathf.Cos(curAngle), Mathf.Sin(curAngle));
             Rigidbody2D rig = piece.GetComponent<Rigidbody2D>();
