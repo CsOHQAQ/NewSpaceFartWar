@@ -7,4 +7,10 @@ public class SpecialItem : MonoBehaviour
     public virtual void Use()
     {
     }
+    public enum ItemFunc
+    {
+        BeanPot,
+        Cream,
+        LightSaber,
+    }
 }
