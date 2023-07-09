@@ -92,6 +92,7 @@ public class PlayerController : MonoBehaviour
 
     private float saberTime = 0f;
     private float saberSpeed = 10f;
+    private LightSaber lightSaber = null;
 
 
     private void Start()
@@ -193,6 +194,10 @@ public class PlayerController : MonoBehaviour
                             if (touchingBody.GetComponent<SpecialItem>() != null)
                             {
                                 SpecialItem specialItem = touchingBody.GetComponent<SpecialItem>();
+                                if(specialItem is LightSaber)
+                                {
+                                    lightSaber= (LightSaber)specialItem;
+                                }
                                 specialItem.Use();
                             }
                         }
@@ -305,10 +310,19 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("Fart");
             counter = animationCounter;
             body.AddForce(transform.localScale.x * transform.right * bigFart*Time.deltaTime, ForceMode2D.Impulse);
-            touchingBody.transform.rotation = Quaternion.Euler(new Vector3(touchingBody.transform.rotation.x+0.5f, touchingBody.transform.rotation.y, touchingBody.transform.rotation.z));
-            if (saberTime <= 0)
+            if(lightSaber!=null)
             {
-                ObjectPool.Recycle(touchingBody.gameObject);
+                lightSaber.Dash(transform.localScale.x * transform.right * bigFart,this);
+            }
+            else
+            {
+                Debug.LogError("在Saber时间中的光剑不存在！");
+            }
+            if (saberTime <= 0)
+            {                
+                ObjectPool.Recycle(lightSaber); 
+                lightSaber = null;
+
             }
         }
 
@@ -445,7 +459,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.collider.attachedRigidbody != null && collision.collider.attachedRigidbody != touchingBody && !collision.collider.attachedRigidbody.TryGetComponent<PlayerController>(out _))
         {
-            Debug.Log(Mathf.Pow(collision.relativeVelocity.magnitude, 2) * collision.collider.attachedRigidbody.mass / 2);
+            //Debug.Log(Mathf.Pow(collision.relativeVelocity.magnitude, 2) * collision.collider.attachedRigidbody.mass / 2);
             float damage = collisionDamage.Evaluate(collision.relativeVelocity.magnitude);
             if (damage > 0)
             {
@@ -457,24 +471,28 @@ public class PlayerController : MonoBehaviour
 
     public void UseBeanPot(System.Object sender, EventArgs arg)
     {
+        if (touchingBody == null || touchingBody.gameObject != ((SpecialItem)sender).gameObject)
+            return;
         UIArgs<float> uIArgs = arg as UIArgs<float>;
         float beanTime = uIArgs.Data;
         beanPotTime += beanTime;
     }
     public void UseCream(System.Object sender, EventArgs arg)
     {
+        if (touchingBody == null || touchingBody.gameObject != ((SpecialItem)sender).gameObject)
+            return;
         UIArgs<float> uIArgs=arg as UIArgs<float>;
         float recHP = uIArgs.Data;
         Hurt(-recHP);
     }
     public void UseLightSaber(System.Object sender, EventArgs arg)
     {
+        if (touchingBody == null || touchingBody.gameObject != ((SpecialItem)sender).gameObject)
+            return;
         UIArgs<float> uIArgs = arg as UIArgs<float>;
         float addTime = uIArgs.Data;
         saberTime += addTime;
         LightSaber saber=(LightSaber)sender;
-        saber.transform.position = transform.position + new Vector3(2f, 0, 0);        
-        saber.transform.SetParent(this.transform);
     }
 }
 
