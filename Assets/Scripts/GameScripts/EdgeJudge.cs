@@ -34,7 +34,6 @@ public class EdgeJudge : MonoBehaviour
                 GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Effect/OutEffect");
                 go.transform.position = p.transform.position;
                 go.transform.eulerAngles = new Vector3(0, 0, 0);
-                MessageManager.Instance.Get<OffsetControlType>().DispatchMessage(OffsetControlType.Shake, p, new OffsetArgs(0.5f, 0.3f));
                 p.Die();
                 Debug.LogWarning($"玩家{p.playerIndex}已位于界外！");
             }
@@ -43,16 +42,14 @@ public class EdgeJudge : MonoBehaviour
                 GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Effect/OutEffect");
                 go.transform.position = p.transform.position;
                 go.transform.eulerAngles = new Vector3(0, 0, 180);
-                MessageManager.Instance.Get<OffsetControlType>().DispatchMessage(OffsetControlType.Shake, p, new OffsetArgs(0.5f, 0.3f));
                 p.Die();
                 Debug.LogWarning($"玩家{p.playerIndex}已位于界外！");
             }
             if (p.transform.position.y < -screenY)
             {
-                GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Effect/LinOutEffecte2");
+                GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Effect/OutEffect");
                 go.transform.position = p.transform.position;
                 go.transform.eulerAngles = new Vector3(0, 0, 90);
-                MessageManager.Instance.Get<OffsetControlType>().DispatchMessage(OffsetControlType.Shake, p, new OffsetArgs(0.5f, 0.3f));
                 p.Die();
                 Debug.LogWarning($"玩家{p.playerIndex}已位于界外！");
             }
@@ -61,7 +58,6 @@ public class EdgeJudge : MonoBehaviour
                 GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Effect/OutEffect");
                 go.transform.position = p.transform.position;
                 go.transform.eulerAngles = new Vector3(0, 0, 270);
-                MessageManager.Instance.Get<OffsetControlType>().DispatchMessage(OffsetControlType.Shake, p, new OffsetArgs(0.5f, 0.3f));
                 p.Die();
                 Debug.LogWarning($"玩家{p.playerIndex}已位于界外！");
             }
