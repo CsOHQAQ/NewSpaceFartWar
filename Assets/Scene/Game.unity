@@ -515,6 +515,21 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2871176230974658948, guid: 740753f512a52d2459e6b6ce400028a5,
+        type: 3}
+      propertyPath: TriggerModule.primitives.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2871176230974658948, guid: 740753f512a52d2459e6b6ce400028a5,
+        type: 3}
+      propertyPath: TriggerModule.primitives.Array.data[0]
+      value: 
+      objectReference: {fileID: 1509269911}
+    - target: {fileID: 2871176230974658948, guid: 740753f512a52d2459e6b6ce400028a5,
+        type: 3}
+      propertyPath: TriggerModule.primitives.Array.data[1]
+      value: 
+      objectReference: {fileID: 605233727}
     - target: {fileID: 4046593224540097918, guid: 740753f512a52d2459e6b6ce400028a5,
         type: 3}
       propertyPath: ShapeModule.radius.value
@@ -535,6 +550,21 @@ PrefabInstance:
       propertyPath: EmissionModule.rateOverTime.scalar
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 4046593224540097918, guid: 740753f512a52d2459e6b6ce400028a5,
+        type: 3}
+      propertyPath: TriggerModule.primitives.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4046593224540097918, guid: 740753f512a52d2459e6b6ce400028a5,
+        type: 3}
+      propertyPath: TriggerModule.primitives.Array.data[0]
+      value: 
+      objectReference: {fileID: 1509269911}
+    - target: {fileID: 4046593224540097918, guid: 740753f512a52d2459e6b6ce400028a5,
+        type: 3}
+      propertyPath: TriggerModule.primitives.Array.data[1]
+      value: 
+      objectReference: {fileID: 605233727}
     - target: {fileID: 4046593224540097918, guid: 740753f512a52d2459e6b6ce400028a5,
         type: 3}
       propertyPath: VelocityModule.x.maxCurve.m_Curve.Array.data[0].time
@@ -662,6 +692,12 @@ PrefabInstance:
       objectReference: {fileID: 759568670}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 740753f512a52d2459e6b6ce400028a5, type: 3}
+--- !u!4 &605233727 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4768982745140205529, guid: 740753f512a52d2459e6b6ce400028a5,
+    type: 3}
+  m_PrefabInstance: {fileID: 605233726}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &759568664
 GameObject:
   m_ObjectHideFlags: 0
@@ -1219,11 +1255,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2871176230974658948, guid: 740753f512a52d2459e6b6ce400028a5,
+        type: 3}
+      propertyPath: TriggerModule.primitives.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2871176230974658948, guid: 740753f512a52d2459e6b6ce400028a5,
+        type: 3}
+      propertyPath: TriggerModule.primitives.Array.data[0]
+      value: 
+      objectReference: {fileID: 1509269911}
+    - target: {fileID: 2871176230974658948, guid: 740753f512a52d2459e6b6ce400028a5,
+        type: 3}
+      propertyPath: TriggerModule.primitives.Array.data[1]
+      value: 
+      objectReference: {fileID: 605233727}
     - target: {fileID: 4046593224540097918, guid: 740753f512a52d2459e6b6ce400028a5,
         type: 3}
       propertyPath: InitialModule.startSpeed.scalar
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4046593224540097918, guid: 740753f512a52d2459e6b6ce400028a5,
+        type: 3}
+      propertyPath: TriggerModule.primitives.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4046593224540097918, guid: 740753f512a52d2459e6b6ce400028a5,
+        type: 3}
+      propertyPath: TriggerModule.primitives.Array.data[0]
+      value: 
+      objectReference: {fileID: 1509269911}
+    - target: {fileID: 4046593224540097918, guid: 740753f512a52d2459e6b6ce400028a5,
+        type: 3}
+      propertyPath: TriggerModule.primitives.Array.data[1]
+      value: 
+      objectReference: {fileID: 605233727}
     - target: {fileID: 4768982745140205529, guid: 740753f512a52d2459e6b6ce400028a5,
         type: 3}
       propertyPath: m_RootOrder
@@ -1326,6 +1392,12 @@ PrefabInstance:
       objectReference: {fileID: 759568670}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 740753f512a52d2459e6b6ce400028a5, type: 3}
+--- !u!4 &1509269911 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4768982745140205529, guid: 740753f512a52d2459e6b6ce400028a5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1509269910}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1830060348147227044 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6369612846436211353, guid: 2f5085f189bc1de4d992f25fde64ffe5,
@@ -1860,7 +1932,6 @@ MonoBehaviour:
   explodePiece: 6
   explodeForce: 20
   explodeSpeed: 5
-  explodable: 0
 --- !u!1001 &7864455868928240012
 PrefabInstance:
   m_ObjectHideFlags: 0
